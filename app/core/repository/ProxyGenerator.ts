@@ -215,11 +215,12 @@ export module entity.proxy {
    */
   function generateProxyWrapper(
     parentObject:IProxiedEntity,
-    ProxiedClassName:string
+    propertyName:string,
+    ProxiedObjectClass:any
   ) {
     let jsonProxyObject = parentObject[ProxiedClassName];
     verifyProxyJson(jsonProxyObject);
-    let ProxiedObjectClass:IProxiedEntityClass = this.entityRegistry.get(ProxiedClassName);
+    // let ProxiedObjectClass:IProxiedEntityClass = this.entityRegistry.get(ProxiedClassName);
     let object = new ProxiedObjectClass(jsonProxyObject);
 
     let propertyWrapper:IEntityProxyWrapper = {

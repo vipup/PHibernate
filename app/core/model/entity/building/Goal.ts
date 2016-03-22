@@ -32,24 +32,11 @@ export class Goal extends CoreGoal {
 
 export class CoreGoal extends LabeledEntity<IGoal, GoalRepository> {
 
-  static createIGoal(
-    rate:number,
-    units:IGoalUnits[]
-  ):IGoal {
-    let iGoal:IGoal = LabeledEntity.createILabeledEntity(EntityName.GOAL, EntityType.GOAL);
-    iGoal.rate = rate;
-
-    return iGoal;
-  }
-
-  constructor(
-    iGoal:IGoal
-  ) {
-    super(iGoal);
-  }
-
-  getRepository():GoalRepository {
-    return REPOES.GoalRepository;
-  };
+  curator:Person;
+  date:Date;
+  description:string;
+  editor:Person;
+  labels:ILabel[];
+  summary:string;
 
 }

@@ -8,5 +8,8 @@ export interface ILabeledEntity extends IEntity {
 }
 
 export class LabeledEntity extends Entity<ILabeledEntity> {
+
+
+  labels:ILabel[];
   
 }

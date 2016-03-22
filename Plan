@@ -1,0 +1,48 @@
+2016.03.21
+
+Target build 0.1
+
+Miminum requirements:
+
+Support entity proxying off of the following format
+
+a)  reserved directory  (Ex: ../model) which has model classes.
+
+b)  Model classes have nothing but member variable definitions.  The idea is to by-pass all of the usual overhead that a
+regualar JPA annotated file will have.  Just leave the very basic core.  We an always go back to the annotation solution
+if this proves to be to inflexible.
+
+export class Goal extends Entity {
+
+  curator:Person;
+  date:Date;
+  description:string;
+  editor:Person;
+  summary:string;
+
+}
+
+c)  They are first pre-processed with text search that checks the types to figure out the linking between the entities.
+This frees up the variable names to be anything the have to be.
+
+d)  The preprocessor runs at dev time as entities by a gulp watch task.  It builds a more verbose source version that
+contains the required metadata in a generated source file, in which registers itself to point to the original entity:
+
+Goal.meta.ts
+import {Goal} from './Goal';
+import {Person} from './Person';
+import {proxy} from '../'
+
+proxy.generateProxyWrapper(Goal, 'curator', Promise);
+proxy.generateProxyWrapper(Goal, 'editor', Promise);
+
+NOTE: doing so at run time would require knowledge of where the files are located which I don't know how to get to with
+JSPM of if that knowledge might not be available once JSPM is replaced by native solutions.  It would be preferred to do
+this at run time of course.
+
+e)  Preproc overrides all entities with async getters and setters for the required entity (or list). (See, currently,
+ProxyGenerator).
+
+f)  Then at run-time you cold do;
+
+await goal.curator;
