@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "isolatedModules": true,
+    "noLib": true,
+    "target": "ES5",
+    "module": "system",
+    "moduleResolution": "node",
+    "noEmitOnError": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "sourceMap": false,
+    "inlineSourceMap": false,
+    "inlineSources": false,
+    "outDir": "build"
+  },
+  "exclude": [
+    "node_modules",
+    "../node_modules",
+    "resources",
+    "../resources",
+    "www",
+    "../www"
+  ],
+  "compileOnSave": false,
+  "atom": {
+    "rewriteTsconfig": false
+  }
+}
