@@ -1,15 +1,21 @@
-import {IonicApp, Page, NavController, NavParams} from 'ionic-angular';
+import {Page, NavController, NavParams} from 'ionic-angular';
+import {ItemDetailsPage} from '../item-details/item-details';
+
 
 @Page({
   templateUrl: 'build/pages/list/list.html'
 })
 export class ListPage {
+  static get parameters() {
+    return [[NavController], [NavParams]];
+  }
+
   nav;
   selectedItem;
   icons;
   items;
 
-  constructor(app: IonicApp, nav: NavController, navParams: NavParams) {
+  constructor(nav, navParams) {
     this.nav = nav;
 
     // If we navigated to this page, we will have an item available as a nav param
@@ -29,11 +35,8 @@ export class ListPage {
   }
 
   itemTapped(event, item) {
-
-    console.log('You selected:', item.title);
-
-     // this.nav.push(ItemDetailsPage, {
-     //   item: item
-     // });
+     this.nav.push(ItemDetailsPage, {
+       item: item
+     });
   }
 }
