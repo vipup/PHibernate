@@ -26,6 +26,8 @@ tmp/
 www/build/core
 www/components/
 www/data/
+/watch/gulpsrc/node_modules
+/watch/gulpsrc/package.json
 www/img/
 www/jspm_packages/
 $RECYCLE.BIN/
