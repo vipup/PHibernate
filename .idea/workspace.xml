@@ -5,26 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/app/Goal.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/app/Task.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/app/core/Entity.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpclass.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/Logger.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/build/Logger.d.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/build/Logger.js" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/build/Logger.js.map" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/entityDefinitionGenerator.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/parser/EntityCandidate.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/parser/EntityCandidateRegistry.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/tsconfig.json" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/tsreq/gulpfile.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/tsconfig.json" afterPath="$PROJECT_DIR$/tsconfig.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpfile.js" afterPath="$PROJECT_DIR$/watch/gulpfile.js" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -615,12 +596,12 @@
       <updated>1458536067812</updated>
       <workItem from="1458536069094" duration="531000" />
       <workItem from="1458616892948" duration="14529000" />
-      <workItem from="1458741642002" duration="33901000" />
+      <workItem from="1458741642002" duration="34111000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="48961000" />
+    <option name="totallyTimeSpent" value="49171000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
