@@ -1,4 +1,6 @@
 import {EntityCandidate} from "./EntityCandidate";
+import {PropertyDocEntry} from "./DocEntry";
+import {endsWith}  from "./utils";
 /**
  * Created by Papa on 3/27/2016.
  */
@@ -43,23 +45,66 @@ export class EntityCandidateRegistry {
 			if (parent === this.rootEntity) {
 				verifiedEntities.push(candidate);
 			} else {
-				let errorMessage = `Could not verify entity ${candidate.type}`;
-				if (parent !== candidate) {
-					let inheritanceChain = '';
-					parent = candidate.parent;
-					while (parent) {
-						inheritanceChain += ` -> ${parent.type}`;
-						parent = parent.parent;
-					}
-					errorMessage += inheritanceChain;
-				}
-				errorMessage += '.';
-				throw errorMessage;
+				/*
+				 let errorMessage = `Could not verify entity ${candidate.type}`;
+				 if (parent !== candidate) {
+				 let inheritanceChain = '';
+				 parent = candidate.parent;
+				 while (parent) {
+				 inheritanceChain += ` -> ${parent.type}`;
+				 parent = parent.parent;
+				 }
+				 errorMessage += inheritanceChain;
+				 }
+				 errorMessage += '.';
+				 throw errorMessage;
+				 */
 			}
 		}
 
+		verifiedEntities.forEach(( //
+			verifiedEntity:EntityCandidate //
+		) => {
+			let properties = verifiedEntity.docEntry.properties;
+			if (!properties) {
+				return;
+			}
+			properties.forEach(( //
+				property:PropertyDocEntry //
+			) => {
+				let type = property.type;
+				if (endsWith(type, '[]')) {
+					property.isArray = true;
+					type = type.substr(0, type.length - 2);
+				}
+				switch (type) {
+					case 'boolean':
+						property.primitive = 'boolean';
+						return;
+					case 'number':
+						property.primitive = 'number';
+						return;
+					case 'string':
+						property.primitive = 'string';
+						return;
+				}
+				let foundEntity = verifiedEntities.some(( //
+					verifiedEntity:EntityCandidate //
+				) => {
+					if (verifiedEntity.type === type) {
+						property.entity = verifiedEntity;
+						return true;
+					}
+				});
+				if (!foundEntity) {
+					throw `Unknown Entity type: '${type}'`;
+				}
+			});
+		});
+
 		return verifiedEntities;
 	}
+
 
 	matchToExistingEntity(
 		entityCandidate:EntityCandidate

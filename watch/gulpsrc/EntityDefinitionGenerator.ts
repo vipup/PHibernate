@@ -8,19 +8,11 @@ import * as fs from 'fs';
 import SyntaxKind = ts.SyntaxKind;
 import {EntityCandidate} from "./parser/EntityCandidate";
 import {EntityCandidateRegistry} from "./parser/EntityCandidateRegistry";
+import {getParentClassName, getParentClassImport, getClassPath} from "./parser/utils";
+import {DocEntry} from "./parser/DocEntry";
 
-interface DocEntry {
-	name?:string,
-	fileName?:string,
-	documentation?:string,
-	type?:string,
-	constructors?:DocEntry[],
-	parameters?:DocEntry[],
-	properties?:DocEntry[],
-	returnType?:string
-}
 
-var rootEntity = new EntityCandidate('Entity', null, 'PHibernate', true);
+var rootEntity = new EntityCandidate('Entity', null, null, 'PHibernate', true);
 var entityCandidateRegistry = new EntityCandidateRegistry(rootEntity);
 
 /** Generate documention for all classes in a set of .ts files */
@@ -41,6 +33,8 @@ function generateEntityDefinitions(
 		// Walk the tree to search for classes
 		ts.forEachChild(sourceFile, visit);
 	}
+
+	let entities = entityCandidateRegistry.verify();
 
 	// print out the doc
 	fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
@@ -84,14 +78,6 @@ function generateEntityDefinitions(
 	function serializeClass( symbol:ts.Symbol ) {
 		let details = serializeSymbol(symbol);
 
-		if (!importsEntity(<ts.Node><any>symbol)) {
-			return null;
-		}
-
-		if (!extendsEntity(symbol)) {
-			return null;
-		}
-
 		let properties:DocEntry[] = [];
 
 		for (let memberName in symbol.members) {
@@ -100,7 +86,6 @@ function generateEntityDefinitions(
 				console.log(`Property: ${memberName}`);
 				let propertySymbolDescriptor = serializeSymbol(member);
 				properties.push(propertySymbolDescriptor);
-				console.log(propertySymbolDescriptor);
 			}
 		}
 		details.properties = properties;
@@ -108,9 +93,26 @@ function generateEntityDefinitions(
 		// Get the construct signatures
 		let constructorType = checker.getTypeOfSymbolAtLocation(symbol, symbol.valueDeclaration);
 		details.constructors = constructorType.getConstructSignatures().map(serializeSignature);
+
+		let classPath = getClassPath(<ts.Node><any>symbol);
+
+		// Only top level entities are supported
+		if (!classPath) {
+			return details;
+		}
+
+		let parentClassName = getParentClassName(symbol);
+		let parentClassImport:string;
+		if (parentClassName) {
+			parentClassImport = getParentClassImport(<ts.Node><any>symbol, parentClassName);
+		}
+		let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport);
+		entityCandidate.docEntry = details;
+
+		entityCandidateRegistry.addCandidate(entityCandidate);
+
 		return details;
 	}
-
 
 
 	/** Serialize a signature (call or construct) */

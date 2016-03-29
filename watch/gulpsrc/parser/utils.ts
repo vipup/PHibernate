@@ -1,11 +1,30 @@
 /// <reference path="../typings/main.d.ts" />
 
+import * as ts from "typescript";
 import SyntaxKind = ts.SyntaxKind;
 /**
  * Created by Papa on 3/27/2016.
  */
 
-function getParentClassImport(
+export function getClassPath(
+	classSymbol:ts.Node
+):string {
+	let classPath:string = null;
+
+	let parent = <ts.Symbol><any>classSymbol.parent;
+	if (!parent) {
+		return classPath;
+	}
+	let valueDeclaration:ts.SourceFile = <ts.SourceFile>parent.valueDeclaration;
+	if (!valueDeclaration || valueDeclaration.kind !== SyntaxKind.SourceFile) {
+		return classPath;
+	}
+	classPath = valueDeclaration.path;
+
+	return classPath;
+}
+
+export function getParentClassImport(
 	classSymbol:ts.Node,
 	parentClassName:string
 ):string {
@@ -23,7 +42,7 @@ function getParentClassImport(
 	if (!imports || !imports.length) {
 		return parentClassImport;
 	}
-	return imports.some((
+	imports.some((
 		anImport:ts.Identifier
 	) => {
 		if (anImport.kind !== SyntaxKind.StringLiteral) {
@@ -46,10 +65,10 @@ function getParentClassImport(
 	return parentClassImport;
 }
 
-export function getParentEntityName(
+export function getParentClassName(
 	classSymbol:ts.Symbol
 ):string {
-	let parentEntityName = null;
+	let parentEntityName:string = null;
 
 	if (!classSymbol.declarations || !classSymbol.declarations.length) {
 		return parentEntityName;
@@ -94,7 +113,7 @@ export function getParentEntityName(
 	return parentEntityName;
 }
 
-function endsWith(
+export function endsWith(
 	target:string,
 	suffix:string
 ) {
