@@ -6,9 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" afterPath="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" afterPath="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" afterPath="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -130,12 +127,12 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+          <file leaf-file-name="README.md" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/README.md">
               <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
                 <state split_layout="SPLIT">
-                  <first_editor relative-caret-position="68">
-                    <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+                  <first_editor relative-caret-position="272">
+                    <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
                     <folding />
                   </first_editor>
                   <second_editor />
@@ -155,7 +152,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
+          <file leaf-file-name=".gitignore" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/.gitignore">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="272">
@@ -499,12 +496,12 @@
       <updated>1458536067812</updated>
       <workItem from="1458536069094" duration="531000" />
       <workItem from="1458616892948" duration="14529000" />
-      <workItem from="1458741642002" duration="38996000" />
+      <workItem from="1458741642002" duration="39303000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="54056000" />
+    <option name="totallyTimeSpent" value="54363000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -981,17 +978,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/README.md">
-      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
-        <state split_layout="SPLIT">
-          <first_editor relative-caret-position="68">
-            <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
-            <folding />
-          </first_editor>
-          <second_editor />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="184">
@@ -1012,6 +998,17 @@
         <state relative-caret-position="272">
           <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="272">
+            <caret line="16" column="0" selection-start-line="16" selection-start-column="0" selection-end-line="16" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
         </state>
       </provider>
     </entry>
