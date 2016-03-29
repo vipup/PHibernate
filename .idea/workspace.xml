@@ -5,8 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.gitignore" afterPath="$PROJECT_DIR$/.gitignore" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/README.md" afterPath="$PROJECT_DIR$/README.md" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" afterPath="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" afterPath="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" afterPath="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -39,17 +41,7 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="typescript.d.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/watch/gulpsrc/node_modules/typescript/lib/typescript.d.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="175">
-                  <caret line="385" column="8" selection-start-line="385" selection-start-column="8" selection-end-line="385" selection-end-column="8" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="EntityCandidateRegistry.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="EntityCandidateRegistry.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/watch/gulpsrc/parser/EntityCandidateRegistry.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="68">
@@ -62,11 +54,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="utils.ts" pinned="false" current-in-tab="false">
+          <file leaf-file-name="utils.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="429">
-                  <caret line="115" column="7" selection-start-line="115" selection-start-column="7" selection-end-line="115" selection-end-column="7" />
+                <state relative-caret-position="0">
+                  <caret line="0" column="27" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
                   <folding />
                 </state>
               </provider>
@@ -111,11 +103,11 @@
           <file leaf-file-name="Compiler.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/watch/gulpsrc/Compiler.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="204">
-                  <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
+                <state relative-caret-position="0">
+                  <caret line="0" column="27" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
                   <folding>
-                    <element signature="e#44#77#0" expanded="true" />
-                    <element signature="e#105#145#0" expanded="false" />
+                    <element signature="e#50#83#0" expanded="true" />
+                    <element signature="e#111#151#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -124,36 +116,29 @@
           <file leaf-file-name="EntityDefinitionGenerator.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="357">
+                <state relative-caret-position="184">
                   <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
                   <folding>
-                    <element signature="e#85#118#0" expanded="true" />
-                    <element signature="e#180#237#0" expanded="true" />
-                    <marker date="1459220758557" expanded="true" signature="1675:2722" placeholder="..." />
-                    <marker date="1459220758557" expanded="true" signature="2510:2722" placeholder="..." />
-                    <marker date="1459220758557" expanded="true" signature="3686:4372" placeholder="..." />
-                    <marker date="1459220758557" expanded="true" signature="3688:4372" placeholder="..." />
+                    <element signature="e#91#124#0" expanded="true" />
+                    <element signature="e#186#243#0" expanded="true" />
+                    <marker date="1459260816656" expanded="true" signature="1681:2728" placeholder="..." />
+                    <marker date="1459260816656" expanded="true" signature="2516:2728" placeholder="..." />
+                    <marker date="1459260816656" expanded="true" signature="3692:4378" placeholder="..." />
+                    <marker date="1459260816656" expanded="true" signature="3694:4378" placeholder="..." />
                   </folding>
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="typescriptServices.d.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/watch/gulpsrc/node_modules/typescript/lib/typescriptServices.d.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="172">
-                  <caret line="385" column="15" selection-start-line="385" selection-start-column="8" selection-end-line="385" selection-end-column="15" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="typescript.d.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/watch/gulpsrc/node_modules/typescript/lib/typescript.d.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="172">
-                  <caret line="1303" column="8" selection-start-line="1303" selection-start-column="8" selection-end-line="1303" selection-end-column="8" />
-                  <folding />
+          <file leaf-file-name="README.md" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/README.md">
+              <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+                <state split_layout="SPLIT">
+                  <first_editor relative-caret-position="68">
+                    <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+                    <folding />
+                  </first_editor>
+                  <second_editor />
                 </state>
               </provider>
             </entry>
@@ -173,8 +158,8 @@
           <file leaf-file-name=".gitignore" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/.gitignore">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="493">
-                  <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+                <state relative-caret-position="272">
+                  <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
                   <folding />
                 </state>
               </provider>
@@ -240,18 +225,19 @@
         <option value="$PROJECT_DIR$/watch/gulpsrc/Logger.ts" />
         <option value="$PROJECT_DIR$/watch/gulpclass.ts" />
         <option value="$PROJECT_DIR$/watch/gulpsrc/docGenerator.ts" />
-        <option value="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" />
         <option value="$PROJECT_DIR$/watch/app/Task.ts" />
         <option value="$PROJECT_DIR$/watch/app/core/Goal.ts" />
         <option value="$PROJECT_DIR$/watch/gulpsrc/entityDefinitionGenerator.ts" />
         <option value="$PROJECT_DIR$/watch/classes.json" />
         <option value="$PROJECT_DIR$/watch/gulpsrc/parser/EntityCandidate.ts" />
-        <option value="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" />
         <option value="$PROJECT_DIR$/watch/gulpsrc/parser/DocEntry.ts" />
         <option value="$PROJECT_DIR$/watch/app/Goal.ts" />
         <option value="$PROJECT_DIR$/watch/gulpsrc/parser/EntityCandidateRegistry.ts" />
-        <option value="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" />
         <option value="$PROJECT_DIR$/.gitignore" />
+        <option value="$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts" />
+        <option value="$PROJECT_DIR$/watch/gulpsrc/Compiler.ts" />
+        <option value="$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts" />
+        <option value="$PROJECT_DIR$/README.md" />
       </list>
     </option>
   </component>
@@ -513,18 +499,18 @@
       <updated>1458536067812</updated>
       <workItem from="1458536069094" duration="531000" />
       <workItem from="1458616892948" duration="14529000" />
-      <workItem from="1458741642002" duration="38127000" />
+      <workItem from="1458741642002" duration="38996000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="53187000" />
+    <option name="totallyTimeSpent" value="54056000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12118019" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12012645" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3281412" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32883817" sideWeight="0.41148576" order="7" side_tool="true" content_ui="tabs" />
@@ -532,9 +518,9 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.33125648" sideWeight="0.5885142" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33125648" sideWeight="0.5885142" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3956386" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3956386" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -575,26 +561,11 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="javascript">
-          <url>file://$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts</url>
-          <line>39</line>
-          <properties />
-          <option name="timeStamp" value="28" />
-        </line-breakpoint>
-      </breakpoints>
       <option name="time" value="32" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/zone.js/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/config.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -900,17 +871,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/Compiler.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="14" column="44" selection-start-line="14" selection-start-column="44" selection-end-line="14" selection-end-column="44" />
-          <folding>
-            <element signature="e#44#77#0" expanded="true" />
-            <element signature="e#105#145#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/watch/gulpsrc/node_modules/typescript/lib/typescriptServices.d.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="172">
@@ -983,26 +943,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts">
+    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/tsreq/gulpfile.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="429">
-          <caret line="115" column="7" selection-start-line="115" selection-start-column="7" selection-end-line="115" selection-end-column="7" />
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
-          <folding>
-            <element signature="e#85#118#0" expanded="true" />
-            <element signature="e#180#237#0" expanded="true" />
-            <marker date="1459220758557" expanded="true" signature="1675:2722" placeholder="..." />
-            <marker date="1459220758557" expanded="true" signature="2510:2722" placeholder="..." />
-            <marker date="1459220758557" expanded="true" signature="3686:4372" placeholder="..." />
-            <marker date="1459220758557" expanded="true" signature="3688:4372" placeholder="..." />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1017,18 +962,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/tsreq/gulpfile.js">
+    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/parser/utils.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <caret line="0" column="27" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/Compiler.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="27" selection-start-line="0" selection-start-column="27" selection-end-line="0" selection-end-column="27" />
+          <folding>
+            <element signature="e#50#83#0" expanded="true" />
+            <element signature="e#111#151#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/README.md">
+      <provider selected="true" editor-type-id="split-provider[text-editor;markdown-preview-editor]">
+        <state split_layout="SPLIT">
+          <first_editor relative-caret-position="68">
+            <caret line="4" column="0" selection-start-line="4" selection-start-column="0" selection-end-line="4" selection-end-column="0" />
+            <folding />
+          </first_editor>
+          <second_editor />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/watch/gulpsrc/EntityDefinitionGenerator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="39" column="2" selection-start-line="39" selection-start-column="2" selection-end-line="39" selection-end-column="2" />
+          <folding>
+            <element signature="e#91#124#0" expanded="true" />
+            <element signature="e#186#243#0" expanded="true" />
+            <marker date="1459260816656" expanded="true" signature="1681:2728" placeholder="..." />
+            <marker date="1459260816656" expanded="true" signature="2516:2728" placeholder="..." />
+            <marker date="1459260816656" expanded="true" signature="3692:4378" placeholder="..." />
+            <marker date="1459260816656" expanded="true" signature="3694:4378" placeholder="..." />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="29" column="22" selection-start-line="29" selection-start-column="22" selection-end-line="29" selection-end-column="22" />
+        <state relative-caret-position="272">
+          <caret line="25" column="8" selection-start-line="25" selection-start-column="8" selection-end-line="25" selection-end-column="8" />
           <folding />
         </state>
       </provider>

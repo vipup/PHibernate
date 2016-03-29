@@ -1,4 +1,4 @@
-/// <reference path="typings/main.d.ts" />
+/// <reference path="../../typings/main.d.ts" />
 
 /**
  * Created by Papa on 3/26/2016.
