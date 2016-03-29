@@ -23,11 +23,14 @@ plugins/android.json
 plugins/ios.json
 temp/
 tmp/
+typings/
+watch/gulpsrc/build/
+watch/gulpsrc/node_modules
+watch/gulpsrc/package.json
+watch/gulpsrc/typings/
 www/build/core
 www/components/
 www/data/
-/watch/gulpsrc/node_modules
-/watch/gulpsrc/package.json
 www/img/
 www/jspm_packages/
 $RECYCLE.BIN/
