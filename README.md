@@ -9,6 +9,9 @@ npm install gulp -g
 
 npm install typings -g
 
+npm install gulpclass -g
+
+
 
 Inside the project:
 
