@@ -16,7 +16,7 @@ npm install gulpclass -g
 Inside the project:
 
 npm install
-c
+
 typings install node --ambient
 
 
