@@ -7,11 +7,13 @@ npm install typescript@next -g
 
 npm install gulp -g
 
+npm install typings -g
+
 
 Inside the project:
 
 npm install
-
+c
 typings install node --ambient
 
 
