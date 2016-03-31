@@ -34,7 +34,7 @@ function watch(rootFileNames:string[], options:ts.CompilerOptions) {
     // Create the language service files
     const services = ts.createLanguageService(servicesHost, ts.createDocumentRegistry());
 
-    // First time around, emit all files
+    // First time around, process all files
     processFiles(rootFileNames);
 
     // Now let's watch the files
@@ -51,8 +51,8 @@ function watch(rootFileNames:string[], options:ts.CompilerOptions) {
                 // Update the version to signal a change in the file
                 files[fileName].version++;
 
-                // write the changes to disk
-                emitFile(fileName);
+                // process file
+                processFiles([fileName]);
             });
     });
 
