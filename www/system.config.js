@@ -41,6 +41,7 @@ System.config({
     "ejs": "npm:ejs@2.4.1",
     "ionic-angular": "npm:ionic-angular@2.0.0-beta.3",
     "ionicons": "npm:ionicons@3.0.0-alpha.3",
+    "lru-cache": "npm:lru-cache@4.0.1",
     "ts": "github:frankwallis/plugin-typescript@4.0.2",
     "typescript": "npm:typescript@1.8.7",
     "github:frankwallis/plugin-typescript@4.0.2": {
@@ -369,6 +370,11 @@ System.config({
     "npm:lodash@3.10.1": {
       "process": "github:jspm/nodelibs-process@0.1.2"
     },
+    "npm:lru-cache@4.0.1": {
+      "pseudomap": "npm:pseudomap@1.0.2",
+      "util": "github:jspm/nodelibs-util@0.1.0",
+      "yallist": "npm:yallist@2.0.0"
+    },
     "npm:miller-rabin@4.0.0": {
       "bn.js": "npm:bn.js@4.11.0",
       "brorand": "npm:brorand@1.0.5"
@@ -411,6 +417,9 @@ System.config({
     },
     "npm:process@0.11.2": {
       "assert": "github:jspm/nodelibs-assert@0.1.0"
+    },
+    "npm:pseudomap@1.0.2": {
+      "process": "github:jspm/nodelibs-process@0.1.2"
     },
     "npm:public-encrypt@4.0.0": {
       "bn.js": "npm:bn.js@4.11.0",
