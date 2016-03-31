@@ -38,6 +38,7 @@ System.config({
   map: {
     "clean-css": "npm:clean-css@3.4.10",
     "css": "github:systemjs/plugin-css@0.1.20",
+    "ejs": "npm:ejs@2.4.1",
     "ionic-angular": "npm:ionic-angular@2.0.0-beta.3",
     "ionicons": "npm:ionicons@3.0.0-alpha.3",
     "ts": "github:frankwallis/plugin-typescript@4.0.2",
@@ -287,6 +288,12 @@ System.config({
       "crypto": "github:jspm/nodelibs-crypto@0.1.0",
       "miller-rabin": "npm:miller-rabin@4.0.0",
       "randombytes": "npm:randombytes@2.0.3",
+      "systemjs-json": "github:systemjs/plugin-json@0.1.0"
+    },
+    "npm:ejs@2.4.1": {
+      "fs": "github:jspm/nodelibs-fs@0.1.2",
+      "path": "github:jspm/nodelibs-path@0.1.0",
+      "process": "github:jspm/nodelibs-process@0.1.2",
       "systemjs-json": "github:systemjs/plugin-json@0.1.0"
     },
     "npm:elliptic@6.2.3": {

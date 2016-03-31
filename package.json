@@ -10,6 +10,7 @@
   "version": "0.0.1",
   "dependencies": {
     "angular2": "^2.0.0-beta.7",
+    "ejs": "^2.4.1",
     "es6-promise": "3.0.2",
     "es6-shim": "0.33.13",
     "file-line-reader": "^1.0.2",
@@ -76,6 +77,7 @@
     "configFile": "www/system.config.js",
     "dependencies": {
       "css": "github:systemjs/plugin-css@^0.1.20",
+      "ejs": "npm:ejs@^2.4.1",
       "ionic-angular": "npm:ionic-angular@^2.0.0-beta.3",
       "ionicons": "npm:ionicons@^3.0.0-alpha.3",
       "ts": "github:frankwallis/plugin-typescript@4.0.2"
