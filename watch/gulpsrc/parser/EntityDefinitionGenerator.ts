@@ -1,4 +1,4 @@
-/// <reference path="../../typings/main.d.ts" />
+/// <reference path="../../../typings/main.d.ts" />
 
 /**
  * Created by Papa on 3/26/2016.
@@ -6,17 +6,17 @@
 import * as ts from "typescript";
 import * as fs from 'fs';
 import SyntaxKind = ts.SyntaxKind;
-import {EntityCandidate} from "./parser/EntityCandidate";
-import {EntityCandidateRegistry} from "./parser/EntityCandidateRegistry";
-import {getParentClassName, getParentClassImport, getClassPath} from "./parser/utils";
-import {DocEntry} from "./parser/DocEntry";
+import {EntityCandidate} from "./EntityCandidate";
+import {EntityCandidateRegistry} from "./EntityCandidateRegistry";
+import {getParentClassName, getParentClassImport, getClassPath} from "./utils";
+import {DocEntry} from "./DocEntry";
 
 
 var rootEntity = new EntityCandidate('Entity', null, null, 'PHibernate', true);
 var entityCandidateRegistry = new EntityCandidateRegistry(rootEntity);
 
 /** Generate documention for all classes in a set of .ts files */
-function generateEntityDefinitions(
+export function generateEntityDefinitions(
 	fileNames:string[],
 	options:ts.CompilerOptions
 ):void {
@@ -129,7 +129,3 @@ function generateEntityDefinitions(
 		return (node.flags & ts.NodeFlags.Export) !== 0 || (node.parent && node.parent.kind === ts.SyntaxKind.SourceFile);
 	}
 }
-
-generateEntityDefinitions(process.argv.slice(2), {
-	target: ts.ScriptTarget.ES5, module: ts.ModuleKind.CommonJS
-});
