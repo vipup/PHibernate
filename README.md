@@ -20,12 +20,14 @@ npm install
 typings install node --ambient
 
 
-To run the parser,
+To run the file watcher,
 
 a) from within the 'watch\gulpsrc' directory:
 
 tsc
 
-b) from within the 'watch' directory:
+b) within the 'watch\app' directory as the base:
 
-node gulpsrc\build\entityDefinitionGenerator.js app\Goal.ts app\Task.ts
+node gulpsrc\build\FileWatcher.js
+
+    Or, just open the project in WebStorm and debug the "FileWatcher" target.
