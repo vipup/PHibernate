@@ -12,19 +12,20 @@ import {getParentClassName, getParentClassImport, getClassPath} from "./utils";
 import {DocEntry} from "./DocEntry";
 
 
-var rootEntity = new EntityCandidate('Entity', null, null, 'PHibernate', true);
-var entityCandidateRegistry = new EntityCandidateRegistry(rootEntity);
+export var rootEntity = new EntityCandidate('Entity', null, null, 'PHibernate', true);
+export var globalCandidateRegistry = new EntityCandidateRegistry(rootEntity);
 
 /** Generate documention for all classes in a set of .ts files */
 export function generateEntityDefinitions(
 	fileNames:string[],
 	options:ts.CompilerOptions
-):void {
+):EntityCandidate[] {
 	// Build a program using the set of root file names in fileNames
 	let program = ts.createProgram(fileNames, options);
 
 	// Get the checker, we will use it to find more about classes
 	let checker = program.getTypeChecker();
+	var processedCandidateRegistry = new EntityCandidateRegistry(rootEntity);
 
 	let output:DocEntry[] = [];
 
@@ -33,13 +34,12 @@ export function generateEntityDefinitions(
 		// Walk the tree to search for classes
 		ts.forEachChild(sourceFile, visit);
 	}
-
-	let entities = entityCandidateRegistry.verify();
-
+	
 	// print out the doc
-	fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
+	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
 
-	return;
+	globalCandidateRegistry.verify();
+	return globalCandidateRegistry.matchVerifiedEntities(processedCandidateRegistry);
 
 	/** visit nodes finding exported classes */
 	function visit( node:ts.Node ) {
@@ -109,7 +109,8 @@ export function generateEntityDefinitions(
 		let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport);
 		entityCandidate.docEntry = details;
 
-		entityCandidateRegistry.addCandidate(entityCandidate);
+		globalCandidateRegistry.addCandidate(entityCandidate);
+		processedCandidateRegistry.addCandidate(entityCandidate);
 
 		return details;
 	}

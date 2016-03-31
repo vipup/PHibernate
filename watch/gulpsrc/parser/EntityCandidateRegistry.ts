@@ -7,7 +7,7 @@ import {endsWith}  from "./utils";
 
 export class EntityCandidateRegistry {
 
-	entityCandidateMap:{[type:string]:EntityCandidate} = {};
+	entityCandidateMap:Map<string, EntityCandidate> = new Map<string, EntityCandidate>();
 
 	constructor(
 		private rootEntity:EntityCandidate
@@ -19,25 +19,47 @@ export class EntityCandidateRegistry {
 	):void {
 		let matchesExisting = this.matchToExistingEntity(candidate);
 		if (!matchesExisting) {
-			this.entityCandidateMap[candidate.type] = candidate;
+			this.entityCandidateMap.set(candidate.type, candidate);
 		} else {
-			candidate = this.entityCandidateMap[candidate.type];
+			candidate = this.entityCandidateMap.get(candidate.type);
 		}
 		if (candidate.parentKeyword === this.rootEntity.type) {
 			candidate.parent = this.rootEntity;
 		} else {
-			let parentEntity = this.entityCandidateMap[candidate.parentKeyword];
+			let parentEntity = this.entityCandidateMap.get(candidate.parentKeyword);
 			if (parentEntity) {
 				candidate.parent = parentEntity;
 			}
 		}
 	}
 
+	matchVerifiedEntities( //
+		targetCandidateRegistry?:EntityCandidateRegistry //
+	):EntityCandidate[] {
+
+		let verifiedEntities = this.verify();
+
+		let verifiedEntitySet = new Set();
+
+		for (let candidate of this.entityCandidateMap.values()) {
+			verifiedEntitySet.add(candidate);
+		}
+
+		let matchingEntities:EntityCandidate[] = [];
+
+		for (let targetCandidate of targetCandidateRegistry.entityCandidateMap.values()) {
+			if (verifiedEntitySet.has(targetCandidate)) {
+				matchingEntities.push(targetCandidate);
+			}
+		}
+
+		return matchingEntities;
+	}
+
 	verify():EntityCandidate[] {
 		let verifiedEntities:EntityCandidate[] = [];
 
-		for (let type in this.entityCandidateMap) {
-			let candidate = this.entityCandidateMap[type];
+		for (let [type, candidate] of this.entityCandidateMap) {
 			let parent = candidate;
 			while (parent.parent) {
 				parent = parent.parent;
@@ -109,7 +131,7 @@ export class EntityCandidateRegistry {
 	matchToExistingEntity(
 		entityCandidate:EntityCandidate
 	) {
-		let existingCandidate = this.entityCandidateMap[entityCandidate.type];
+		let existingCandidate = this.entityCandidateMap.get(entityCandidate.type);
 		if (!existingCandidate) {
 			return false;
 		}
