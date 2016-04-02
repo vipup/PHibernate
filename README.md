@@ -1,6 +1,8 @@
 # PHibernate
 Client side Hibernate for PouchDb and Spring/JPA/Relational
 
+Will depend on https://github.com/russoturisto/QueryDSL-TypeScript
+
 As Administrator (or sudo):
 
 npm install typescript@next -g
