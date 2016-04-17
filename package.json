@@ -12,7 +12,7 @@
     "angular2": "^2.0.0-beta.7",
     "ejs": "^2.4.1",
     "es6-promise": "3.0.2",
-    "es6-shim": "0.33.13",
+    "es6-shim": "^0.33.13",
     "file-line-reader": "^1.0.2",
     "file-system": "^2.2.1",
     "ionic-angular": "^2.0.0-beta.3",
