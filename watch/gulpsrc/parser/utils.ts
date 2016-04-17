@@ -2,9 +2,34 @@
 
 import * as ts from "typescript";
 import SyntaxKind = ts.SyntaxKind;
+import NodeArray = ts.NodeArray;
+import Decorator = ts.Decorator;
 /**
  * Created by Papa on 3/27/2016.
  */
+
+export function isDecoratedAsEntity(
+	decorators:NodeArray<Decorator>
+):boolean {
+	if(!decorators || !decorators.length) {
+		return false;
+	}
+	let isDecoratedAsEntity = decorators.some((
+		decorator:Decorator
+	) => {
+		let expression:ts.Identifier = <any>decorator.expression;
+		if (!expression || expression.kind !== SyntaxKind.Identifier) {
+			return false;
+		}
+		let decoratorName = expression.text;
+
+		let isEntityDecorator = decoratorName === 'Entity';
+
+		return isEntityDecorator;
+	});
+
+	return isDecoratedAsEntity;
+}
 
 export function getClassPath(
 	classSymbol:ts.Node

@@ -2,8 +2,10 @@
  * Created by Papa on 3/30/2016.
  */
 /// <reference path="../../typings/main.d.ts" />
+/// <reference path="../../typings/ejs/ejs.d.ts" />
 
 import * as fs from "fs";
+import * as ejs from "ejs";
 import * as ts from "typescript";
 import {generateEntityDefinitions} from "./parser/EntityDefinitionGenerator";
 import {EntityCandidate} from "./parser/EntityCandidate";
@@ -69,6 +71,7 @@ function watch(
 		let entities:EntityCandidate[] = generateEntityDefinitions(rootFileNames, {
 			target: ts.ScriptTarget.ES5, module: ts.ModuleKind.CommonJS
 		});
+		emitFiles(entities);
 	}
 
 	function emitFiles(
@@ -77,7 +80,10 @@ function watch(
 		entities.forEach((
 			entity:EntityCandidate
 		) => {
-			// TODO: work here next
+			let templateData = fs.readFileSync('../gulpsrc/Templates/GeneratedRepository.ejs');
+			let template = templateData.toString();
+			var result = ejs.render(template, { entity: entity });
+			fs.writeFileSync(`../out/Generated${entity.type}Repository.ts`, result);
 		});
 	}
 

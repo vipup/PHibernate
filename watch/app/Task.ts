@@ -1,9 +1,11 @@
-import {Entity} from "./core/Entity";
 /**
  * Created by Papa on 3/26/2016.
  */
+import {Entity as AbstractEntity} from "./core/Entity";
+import {Entity} from './core/entityDecorators';
 
-export class Task extends Entity {
+@Entity
+export class Task extends AbstractEntity {
 
 	/**
 	 * The other tasks

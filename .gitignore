@@ -23,6 +23,7 @@ plugins/android.json
 plugins/ios.json
 temp/
 tmp/
+/watch/out
 typings/
 watch/gulpsrc/build/
 watch/gulpsrc/node_modules

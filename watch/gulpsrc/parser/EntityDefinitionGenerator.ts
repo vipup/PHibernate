@@ -8,8 +8,10 @@ import * as fs from 'fs';
 import SyntaxKind = ts.SyntaxKind;
 import {EntityCandidate} from "./EntityCandidate";
 import {EntityCandidateRegistry} from "./EntityCandidateRegistry";
-import {getParentClassName, getParentClassImport, getClassPath} from "./utils";
+import {getParentClassName, getParentClassImport, getClassPath, isDecoratedAsEntity} from "./utils";
 import {DocEntry} from "./DocEntry";
+import Decorator = ts.Decorator;
+import NodeArray = ts.NodeArray;
 
 
 export var rootEntity = new EntityCandidate('Entity', null, null, 'PHibernate', true);
@@ -34,7 +36,7 @@ export function generateEntityDefinitions(
 		// Walk the tree to search for classes
 		ts.forEachChild(sourceFile, visit);
 	}
-	
+
 	// print out the doc
 	// fs.writeFileSync("classes.json", JSON.stringify(output, undefined, 4));
 
@@ -51,7 +53,7 @@ export function generateEntityDefinitions(
 		if (node.kind === ts.SyntaxKind.ClassDeclaration) {
 			// This is a top level class, get its symbol
 			let symbol = checker.getSymbolAtLocation((<ts.ClassDeclaration>node).name);
-			let serializedClass = serializeClass(symbol);
+			let serializedClass = serializeClass(symbol, node.decorators);
 			if (serializedClass) {
 				output.push(serializedClass);
 			}
@@ -75,7 +77,10 @@ export function generateEntityDefinitions(
 	}
 
 	/** Serialize a class symbol information */
-	function serializeClass( symbol:ts.Symbol ) {
+	function serializeClass(
+		symbol:ts.Symbol,
+		decorators:NodeArray<Decorator>
+	) {
 		let details = serializeSymbol(symbol);
 
 		let properties:DocEntry[] = [];
@@ -106,11 +111,14 @@ export function generateEntityDefinitions(
 		if (parentClassName) {
 			parentClassImport = getParentClassImport(<ts.Node><any>symbol, parentClassName);
 		}
-		let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport);
-		entityCandidate.docEntry = details;
 
-		globalCandidateRegistry.addCandidate(entityCandidate);
-		processedCandidateRegistry.addCandidate(entityCandidate);
+		if (isDecoratedAsEntity(decorators)) {
+			let entityCandidate = EntityCandidate.create(details.name, classPath, parentClassName, parentClassImport);
+			entityCandidate.docEntry = details;
+
+			globalCandidateRegistry.addCandidate(entityCandidate);
+			processedCandidateRegistry.addCandidate(entityCandidate);
+		}
 
 		return details;
 	}

@@ -1,3 +1,5 @@
+/// <reference path="../../../typings/main.d.ts" />
+
 import {EntityCandidate} from "./EntityCandidate";
 import {PropertyDocEntry} from "./DocEntry";
 import {endsWith}  from "./utils";
