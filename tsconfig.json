@@ -1,13 +1,14 @@
 {
-  "version": "1.8.9",
+  "version": "1.8.10",
   "compileOnSave": false,
   "compilerOptions": {
+    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "module": "system",
+    "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
-    "outDir": "lib",
+    "outDir": "lib/",
     "removeComments": false,
     "sourceMap": true,
     "target": "ES5"
