@@ -2,6 +2,15 @@
  * Created by Papa on 4/17/2016.
  */
 
+export function Id() {
+	return function (
+		targetObject:any,
+		propertyKey:string
+	) {
+
+	}
+}
+
 export interface EntityConfiguration {
 
 }
@@ -46,8 +55,9 @@ export function Query(
 
 	return function (
 		targetObject:any,
-		propertyKey: string,
-		descriptor: PropertyDescriptor) {
+		propertyKey:string,
+		descriptor:PropertyDescriptor
+	) {
 	}
 
 }
