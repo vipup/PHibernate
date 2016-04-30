@@ -3,21 +3,21 @@
  */
 import {IQEntity} from "querydsl-typescript";
 
-export class QueryState<QE extends IQEntity> {
+export class QueryState<QE extends IQEntity<QE>> {
 	hasAll:boolean = false;
 	hasFind:boolean = false;
 	hasRetrieve:boolean = false;
 	theBy:QE;
-	byOthers:IQEntity[] = [];
-	includes:IQEntity[] = [];
+	byOthers:IQEntity<QE>[] = [];
+	includes:IQEntity<QE>[] = [];
 
-	setAll():void {
+	setSelectAll():void {
 		let errorPrefix = 'Cannot specify "selectAll()": ';
 		this.validateByOrAllSetup(errorPrefix);
 		this.hasAll = true;
 	}
 
-	setBy( //
+	setWhere( //
 		entity:QE //
 	):void {
 		let errorPrefix = 'Cannot specify "where(q)": ';
@@ -25,7 +25,7 @@ export class QueryState<QE extends IQEntity> {
 		this.theBy = entity;
 	}
 
-	setFind():void {
+	setSelect():void {
 		let errorPrefix = 'Cannot specify "select()": ';
 		if (this.hasFind) {
 			throw errorPrefix + `find() is already specified`;
@@ -33,7 +33,7 @@ export class QueryState<QE extends IQEntity> {
 		this.hasFind = true;
 	}
 
-	addByOther<OQE extends IQEntity>( //
+	addWhereOther<OQE extends IQEntity<QE>>( //
 		otherQ:OQE //
 	):void {
 		let errorPrefix = 'Cannot specify "otherBy(qO)": ';
@@ -41,7 +41,7 @@ export class QueryState<QE extends IQEntity> {
 		this.byOthers.push(otherQ);
 	}
 
-	addInclude<OQE extends IQEntity>(
+	addInclude<OQE extends IQEntity<QE>>(
 		otherQ:OQE //
 	):void {
 		let errorPrefix = 'Cannot specify "include(qO)": ';

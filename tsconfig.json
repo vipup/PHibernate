@@ -2,19 +2,24 @@
   "version": "1.8.9",
   "compileOnSave": false,
   "compilerOptions": {
-    "target": "ES5",
-    "module": "system",
-    "moduleResolution": "node",
-    "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
+    "module": "system",
+    "moduleResolution": "node",
+    "noImplicitAny": false,
+    "outDir": "lib",
     "removeComments": false,
-    "noImplicitAny": false
+    "sourceMap": true,
+    "target": "ES5"
   },
   "exclude": [
+    "app",
+    "lib",
     "node_modules",
     "resources",
-    "www/jspm_packages",
-    "dist"
+    "typings",
+    "watch",
+    "www",
+    "www/jspm_packages"
   ]
 }

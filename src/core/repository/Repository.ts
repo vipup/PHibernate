@@ -1,11 +1,12 @@
+///<reference path="../../../typings/tsd.d.ts"/>
 /**
  * Created by Papa on 4/21/2016.
  */
-
+import "es6-shim";
 import {IOperation, IQEntity} from "querydsl-typescript";
 import {QueryState} from "../query/QueryState";
 
-export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE, R>> {
+export interface IRepository<E, QE extends IQEntity<QE>, R extends IRepository<E, QE, R>> {
 
 	selectAll():R;
 
@@ -19,18 +20,18 @@ export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE
 
 	getQ():QE;
 
-	include<OQE extends IQEntity>( //
+	include<OQE extends IQEntity<QE>>( //
 		otherQ:OQE //
 	):R;
 
 	execute():Promise<E[]>;
 
-	whereOther<OQE extends IQEntity>( //
+	whereOther<OQE extends IQEntity<QE>>( //
 		otherQ:OQE //
 	):R;
 }
 
-export abstract class Repository<E, QE extends IQEntity, R extends IRepository<E, QE, R>>
+export abstract class QRepository<E, QE extends IQEntity<QE>, R extends IRepository<E, QE, R>>
 implements IRepository<E, QE, R> {
 
 	currentQueryState:QueryState<QE>;
@@ -39,37 +40,37 @@ implements IRepository<E, QE, R> {
 
 	selectAll():R {
 		this.currentQueryState = new QueryState<QE>();
-		this.currentQueryState.setAll();
+		this.currentQueryState.setSelectAll();
 
 		return <any>this;
 	}
 
-	by( //
+	where( //
 		...operations:IOperation<QE>[] //
 	):R {
 		let q = this.getQ();
 		q.and.apply(q, operations);
-		this.currentQueryState.setBy(q);
+		this.currentQueryState.setWhere(q);
 
 		return <any>this;
 	}
 
-	find():R {
+	select():R {
 		this.currentQueryState = new QueryState<QE>();
-		this.currentQueryState.setFind();
+		this.currentQueryState.setSelect();
 
 		return <any>this;
 	}
 
-	byOther<OQE extends IQEntity>( //
+	whereOther<OQE extends IQEntity<QE>>( //
 		otherQ:OQE //
 	):R {
-		this.currentQueryState.addByOther(otherQ);
+		this.currentQueryState.addWhereOther(otherQ);
 
 		return <any>this;
 	}
 
-	include<OQE extends IQEntity>( //
+	include<OQE extends IQEntity<QE>>( //
 		otherQ:OQE //
 	):R {
 		this.currentQueryState.addInclude(otherQ);
@@ -86,7 +87,7 @@ implements IRepository<E, QE, R> {
 		this.currentQueryState = query;
 	}
 
-	retrieve( //
+	execute( //
 		repository?:any //
 	):Promise<E[]> {
 		// this.currentQueryState.setRetrieve(repository);
@@ -94,4 +95,3 @@ implements IRepository<E, QE, R> {
 		return null;
 	};
 }
-s
