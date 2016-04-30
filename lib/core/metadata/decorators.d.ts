@@ -1,6 +1,7 @@
 /**
  * Created by Papa on 4/17/2016.
  */
+export declare function Id(): (targetObject: any, propertyKey: string) => void;
 export interface EntityConfiguration {
 }
 export declare function Entity(entityConfiguration?: EntityConfiguration): (constructor: Function) => void;
