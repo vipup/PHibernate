@@ -1,5 +1,5 @@
 {
-  "name": "PHibernate",
+  "name": "phibernate",
   "description": "Client side Hibernate for PouchDb and Spring/JPA/Relational",
   "license": "MIT",
   "main": "lib/index.js",
@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/russoturisto/PHibernate.git"
   },
-  "version": "0.0.3",
+  "version": "0.0.4",
   "dependencies": {
     "es6-shim": "^0.35.0",
     "querydsl-typescript": "0.0.10"
