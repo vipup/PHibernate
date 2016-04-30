@@ -2,6 +2,12 @@
  * Created by Papa on 4/17/2016.
  */
 
+/**
+ * Annotates Id fields of Entities.
+ *
+ * @returns {function(any, string)}
+ * @constructor
+ */
 export function Id() {
 	return function (
 		targetObject:any,
@@ -15,6 +21,13 @@ export interface EntityConfiguration {
 
 }
 
+/**
+ * Annotates entities.
+ *
+ * @param entityConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
 export function Entity(
 	entityConfiguration?:EntityConfiguration
 ) {
@@ -24,7 +37,13 @@ export function Entity(
 	}
 }
 
-
+/**
+ * Annotates collections of Entities in other entities.
+ *
+ * @param foreignKeyFieldName
+ * @returns {function(any, string)}
+ * @constructor
+ */
 export function ForeignKey(
 	foreignKeyFieldName:string
 ) {
@@ -49,14 +68,20 @@ export function Repository(
 
 }
 
+/**
+ * Annotates query function pointers (variables).
+ *
+ * @param queryDefinition
+ * @returns {function(any, string)}
+ * @constructor
+ */
 export function Query(
 	queryDefinition:string
 ) {
 
 	return function (
 		targetObject:any,
-		propertyKey:string,
-		descriptor:PropertyDescriptor
+		propertyKey:string
 	) {
 	}
 
