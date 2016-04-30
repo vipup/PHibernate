@@ -18,7 +18,8 @@
     "lib",
     "node_modules",
     "resources",
-    "typings",
+    "typings/main",
+    "typings/main.d.ts",
     "watch",
     "www",
     "www/jspm_packages"

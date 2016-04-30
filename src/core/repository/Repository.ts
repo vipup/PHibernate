@@ -1,4 +1,3 @@
-///<reference path="../../../typings/tsd.d.ts"/>
 /**
  * Created by Papa on 4/21/2016.
  */
