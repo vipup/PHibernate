@@ -2,6 +2,7 @@
  * Created by Papa on 4/17/2016.
  */
 
+import {DSLParser} from "../query/DSLParser";
 /**
  * Annotates Id fields of Entities.
  *
@@ -83,6 +84,7 @@ export function Query(
 		targetObject:any,
 		propertyKey:string
 	) {
+		DSLParser.parse(queryDefinition);
 	}
 
 }

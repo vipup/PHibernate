@@ -4,17 +4,17 @@
 import {IQEntity} from "querydsl-typescript";
 
 export class QueryState<QE extends IQEntity<QE>> {
-	hasAll:boolean = false;
-	hasFind:boolean = false;
-	hasRetrieve:boolean = false;
-	theBy:QE;
-	byOthers:IQEntity<QE>[] = [];
+	hasSelectAll:boolean = false;
+	hasSelect:boolean = false;
+	hasExecute:boolean = false;
+	theWhere:QE;
+	whereOthers:IQEntity<QE>[] = [];
 	includes:IQEntity<QE>[] = [];
 
 	setSelectAll():void {
 		let errorPrefix = 'Cannot specify "selectAll()": ';
 		this.validateByOrAllSetup(errorPrefix);
-		this.hasAll = true;
+		this.hasSelectAll = true;
 	}
 
 	setWhere( //
@@ -22,15 +22,15 @@ export class QueryState<QE extends IQEntity<QE>> {
 	):void {
 		let errorPrefix = 'Cannot specify "where(q)": ';
 		this.validateByOrAllSetup(errorPrefix);
-		this.theBy = entity;
+		this.theWhere = entity;
 	}
 
 	setSelect():void {
 		let errorPrefix = 'Cannot specify "select()": ';
-		if (this.hasFind) {
+		if (this.hasSelect) {
 			throw errorPrefix + `find() is already specified`;
 		}
-		this.hasFind = true;
+		this.hasSelect = true;
 	}
 
 	addWhereOther<OQE extends IQEntity<QE>>( //
@@ -38,7 +38,7 @@ export class QueryState<QE extends IQEntity<QE>> {
 	):void {
 		let errorPrefix = 'Cannot specify "otherBy(qO)": ';
 		this.validateByOrAllPresent(errorPrefix);
-		this.byOthers.push(otherQ);
+		this.whereOthers.push(otherQ);
 	}
 
 	addInclude<OQE extends IQEntity<QE>>(
@@ -49,15 +49,15 @@ export class QueryState<QE extends IQEntity<QE>> {
 		this.includes.push(otherQ);
 	}
 
-	setRetrieve( //
+	setExecute( //
 		repository?:any //
 	):void {
 		let errorPrefix = 'Cannot specify "execute()": ';
-		if (this.hasRetrieve) {
+		if (this.hasExecute) {
 			throw errorPrefix + ` "retrieve()" IS already specified`;
 		}
 		this.validateByOrAllPresent(errorPrefix);
-		this.hasRetrieve = true;
+		this.hasExecute = true;
 
 		return null;
 	};
@@ -66,45 +66,45 @@ export class QueryState<QE extends IQEntity<QE>> {
 		otherState:QueryState<QE>, //
 		checkValues:boolean = true //
 	):boolean {
-		if (this.hasAll) {
-			if (!otherState.hasAll) {
+		if (this.hasSelectAll) {
+			if (!otherState.hasSelectAll) {
 				return false;
 			}
-		} else if (otherState.hasAll) {
+		} else if (otherState.hasSelectAll) {
 			return false;
 		}
-		if (this.hasFind) {
-			if (!otherState.hasFind) {
+		if (this.hasSelect) {
+			if (!otherState.hasSelect) {
 				return false;
 			}
-		} else if (otherState.hasFind) {
+		} else if (otherState.hasSelect) {
 			return false;
 		}
-		if (this.hasRetrieve) {
-			if (!otherState.hasRetrieve) {
+		if (this.hasExecute) {
+			if (!otherState.hasExecute) {
 				return false;
 			}
-		} else if (otherState.hasRetrieve) {
+		} else if (otherState.hasExecute) {
 			return false;
 		}
 
-		if (this.theBy) {
-			if (!otherState.theBy) {
+		if (this.theWhere) {
+			if (!otherState.theWhere) {
 				return false;
 			}
-		} else if (otherState.theBy) {
+		} else if (otherState.theWhere) {
 			return false;
 		}
-		if (!this.theBy.objectEquals(otherState.theBy, checkValues)) {
+		if (!this.theWhere.objectEquals(otherState.theWhere, checkValues)) {
 			return false;
 		}
 
-		if (this.byOthers.length != otherState.byOthers.length) {
+		if (this.whereOthers.length != otherState.whereOthers.length) {
 			return false;
 		}
-		for (let i = 0; i < this.byOthers.length; i++) {
-			let myByOther = this.byOthers[i];
-			let otherByOther = otherState.byOthers[i];
+		for (let i = 0; i < this.whereOthers.length; i++) {
+			let myByOther = this.whereOthers[i];
+			let otherByOther = otherState.whereOthers[i];
 			if (!myByOther.objectEquals(otherByOther, checkValues)) {
 				return false;
 			}
@@ -127,16 +127,16 @@ export class QueryState<QE extends IQEntity<QE>> {
 	private validateByOrAllSetup( //
 		errorPrefix:string //
 	):void {
-		if (!this.hasFind) {
+		if (!this.hasSelect) {
 			throw errorPrefix + `find() is NOT specified`;
 		}
-		if (this.theBy) {
+		if (this.theWhere) {
 			throw errorPrefix + `by(q) IS already specified`;
 		}
-		if (this.hasAll) {
+		if (this.hasSelectAll) {
 			throw errorPrefix + `all() IS already specified`;
 		}
-		if (this.byOthers) {
+		if (this.whereOthers) {
 			throw errorPrefix + `byOther(otherQ) IS already specified`;
 		}
 	}
@@ -144,10 +144,10 @@ export class QueryState<QE extends IQEntity<QE>> {
 	private validateByOrAllPresent( //
 		errorPrefix:string //
 	):void {
-		if (!this.theBy) {
+		if (!this.theWhere) {
 			throw errorPrefix + `by(q) is NOT specified`;
 		}
-		if (!this.hasAll) {
+		if (!this.hasSelectAll) {
 			throw errorPrefix + `all() is NOT specified`;
 		}
 	}
