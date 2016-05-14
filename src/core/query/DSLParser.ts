@@ -4,7 +4,7 @@
 import {IQEntity} from "querydsl-typescript";
 import {QueryState} from "./QueryState";
 
-interface QueryTokenNode {
+export interface QueryTokenNode {
 	childNodes:QueryTokenNode[];
 	indentation:number;
 	parentNode:QueryTokenNode;
@@ -24,7 +24,7 @@ export class DSLParser {
 			return queryLine.trim().length > 0;
 		});
 
-		let queryTree:QueryTokenNode = this.getQueryTokenTree(queryLines);
+		let queryTree:QueryTokenNode = this.getQueryTokenTree(nonEmptyQueryLines);
 
 		this.verifyIndentationUniformity(queryTree);
 

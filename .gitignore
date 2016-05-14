@@ -3,7 +3,11 @@
 
 node_modules/
 temp/
+test/**/*.js
+test/**/*.js.map
+test/typings/
 tmp/
+typings/
 www/build/core
 www/components/
 www/data/

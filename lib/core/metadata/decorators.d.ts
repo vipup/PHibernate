@@ -1,7 +1,4 @@
 /**
- * Created by Papa on 4/17/2016.
- */
-/**
  * Annotates Id fields of Entities.
  *
  * @returns {function(any, string)}

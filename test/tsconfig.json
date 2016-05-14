@@ -1,28 +1,16 @@
 {
   "version": "1.8.10",
-  "compileOnSave": false,
+  "compileOnSave": true,
   "compilerOptions": {
-    "declaration": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "module": "commonjs",
     "moduleResolution": "node",
     "noImplicitAny": false,
-    "outDir": "lib/",
     "removeComments": false,
     "sourceMap": true,
     "target": "ES5"
   },
   "exclude": [
-    "app",
-    "lib",
-    "node_modules",
-    "resources",
-    "test",
-    "typings/main",
-    "typings/main.d.ts",
-    "watch",
-    "www",
-    "www/jspm_packages"
   ]
 }
