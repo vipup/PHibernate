@@ -12,6 +12,7 @@ export enum FieldType {
 	BOOLEAN,
 	DATE,
 	ENTITY,
+	ENTITY_ARRAY,
 	NUMBER,
 	STRING
 }
@@ -27,4 +28,9 @@ export interface IProxiedEntity {
 	__initialized__:boolean;
 	__isDirty__:boolean;
 	__proxied__:boolean;
+}
+
+export interface IProxiedEntityClass {
+	___proxyWrapperMap:{[proxyName:string]:IEntityProxyWrapper};
+	___propertyWrapperMap:{[propertyName:string]:IEntityProxyWrapper};
 }
