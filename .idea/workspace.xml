@@ -7,16 +7,7 @@
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/proxy/Proxies.d.ts" afterPath="$PROJECT_DIR$/lib/core/proxy/Proxies.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.d.ts" afterPath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js" afterPath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js.map" afterPath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/index.d.ts" afterPath="$PROJECT_DIR$/lib/index.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/index.js.map" afterPath="$PROJECT_DIR$/lib/index.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/proxy/Proxies.ts" afterPath="$PROJECT_DIR$/src/core/proxy/Proxies.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/proxy/ProxyGenerator.ts" afterPath="$PROJECT_DIR$/src/core/proxy/ProxyGenerator.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.ts" afterPath="$PROJECT_DIR$/src/index.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,8 +77,8 @@
           <file leaf-file-name="DSLParser.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/core/query/DSLParser.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
+                <state relative-caret-position="102">
+                  <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                   </folding>
@@ -95,23 +86,21 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ProxyGenerator.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/core/repository/ProxyGenerator.ts">
+          <file leaf-file-name="Entity.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/src/core/entity/Entity.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-                  <folding>
-                    <element signature="e#0#67#0" expanded="true" />
-                  </folding>
+                <state relative-caret-position="312">
+                  <caret line="48" column="25" selection-start-line="48" selection-start-column="25" selection-end-line="48" selection-end-column="25" />
+                  <folding />
                 </state>
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Entity.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/core/model/entity/Entity.ts">
+          <file leaf-file-name="Relation.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/src/core/entity/Relation.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="18" selection-end-column="45" />
+                <state relative-caret-position="255">
+                  <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
                   <folding />
                 </state>
               </provider>
@@ -143,7 +132,7 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="index.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="index.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/index.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="256">
@@ -191,11 +180,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ProxyGenerator.ts" pinned="false" current-in-tab="false">
+          <file leaf-file-name="ProxyGenerator.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/core/proxy/ProxyGenerator.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="0">
-                  <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+                <state relative-caret-position="-306">
+                  <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
                   <folding>
                     <element signature="n#!!doc;n#ProxyGenerator#0" expanded="false" />
                   </folding>
@@ -643,7 +632,7 @@
       <workItem from="1463544671756" duration="117000" />
       <workItem from="1463544825929" duration="22000" />
       <workItem from="1463544911038" duration="1676000" />
-      <workItem from="1463573008190" duration="3130000" />
+      <workItem from="1463573008190" duration="4765000" />
     </task>
     <servers />
   </component>
@@ -674,7 +663,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="130350000" />
+    <option name="totallyTimeSpent" value="131985000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -736,8 +725,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/watch/classes.json" />
-    <entry file="file://$PROJECT_DIR$/watch/out/GeneratedGoalRepository.ts" />
     <entry file="file://$PROJECT_DIR$/watch/out/GeneratedTaskRepository.ts" />
     <entry file="file://$PROJECT_DIR$/app/core/entity/cache/repository/EntityRepository.ts">
       <provider selected="true" editor-type-id="text-editor">
@@ -819,16 +806,6 @@
     <entry file="file://$PROJECT_DIR$/test/index.test.js" />
     <entry file="file://$PROJECT_DIR$/test/index.test.js" />
     <entry file="file://$PROJECT_DIR$/test/core/query/DSLParser.test.js" />
-    <entry file="file://$PROJECT_DIR$/src/core/query/DSLParser.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="34" column="19" selection-start-line="34" selection-start-column="19" selection-end-line="34" selection-end-column="19" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -857,24 +834,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/test/core/query/DSLParser.test.ts" />
     <entry file="file://$PROJECT_DIR$/typings/browser/ambient/es6-promise/index.d.ts" />
-    <entry file="file://$PROJECT_DIR$/app/core/model/entity/Entity.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="18" selection-end-column="45" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/core/repository/ProxyGenerator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="19" selection-end-column="1" />
-          <folding>
-            <element signature="e#0#67#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tsconfig.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -897,16 +856,6 @@
           <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/proxy/ProxyGenerator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc;n#ProxyGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -949,6 +898,60 @@
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/core/repository/ProxyGenerator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-542">
+          <caret line="14" column="1" selection-start-line="14" selection-start-column="1" selection-end-line="14" selection-end-column="1" />
+          <folding>
+            <element signature="e#0#67#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/core/model/entity/Entity.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1462">
+          <caret line="17" column="44" selection-start-line="17" selection-start-column="44" selection-end-line="18" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/query/DSLParser.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="9" column="28" selection-start-line="9" selection-start-column="28" selection-end-line="9" selection-end-column="28" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/src/core/entity/Entity.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="48" column="25" selection-start-line="48" selection-start-column="25" selection-end-line="48" selection-end-column="25" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/src/core/entity/Relation.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="15" column="1" selection-start-line="15" selection-start-column="1" selection-end-line="15" selection-end-column="1" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/proxy/ProxyGenerator.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-306">
+          <caret line="23" column="8" selection-start-line="23" selection-start-column="8" selection-end-line="23" selection-end-column="8" />
+          <folding>
+            <element signature="n#!!doc;n#ProxyGenerator#0" expanded="false" />
           </folding>
         </state>
       </provider>
