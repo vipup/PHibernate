@@ -1,7 +1,7 @@
 /**
  * Created by Papa on 5/17/2016.
  */
-export interface IEntityProxyWrapper {
+export interface EntityField {
     get: {
         (): any;
     };
@@ -17,33 +17,30 @@ export declare enum FieldType {
     NUMBER = 4,
     STRING = 5,
 }
-export interface IProxiedEntity {
+export interface EntityProxy {
     __data__: {
         __accessed__: {
-            [propertyName: string]: boolean;
+            [fieldName: string]: boolean;
         };
         __current__: {
-            [propertyName: string]: any;
+            [fieldName: string]: any;
         };
         __initialized__: {
-            [propertyName: string]: boolean;
+            [fieldName: string]: boolean;
         };
         __original__: {
-            [propertyName: string]: any;
-        };
-        __types__: {
-            [propertyName: string]: FieldType;
+            [fieldName: string]: any;
         };
     };
     __initialized__: boolean;
     __isDirty__: boolean;
     __proxied__: boolean;
 }
-export interface IProxiedEntityClass {
-    ___proxyWrapperMap: {
-        [proxyName: string]: IEntityProxyWrapper;
+export interface EntityProxyClass {
+    __fieldMap__: {
+        [fieldName: string]: EntityField;
     };
-    ___propertyWrapperMap: {
-        [propertyName: string]: IEntityProxyWrapper;
+    __fieldTypeMap__: {
+        [fieldName: string]: FieldType;
     };
 }

@@ -7,6 +7,6 @@
 import { Entity, EntityConfiguration, ForeignKey, Id, Query, Repository, RepositoryConfiguration } from "./core/metadata/decorators";
 import { QueryState } from "./core/query/QueryState";
 import { IRepository, QRepository } from "./core/repository/Repository";
-import { FieldType, IEntityProxyWrapper, IProxiedEntity, IProxiedEntityClass } from "./core/proxy/Proxies";
+import { FieldType, EntityField, EntityProxy, EntityProxyClass } from "./core/proxy/Proxies";
 import { ProxyGenerator } from "./core/proxy/ProxyGenerator";
-export { Entity, EntityConfiguration, FieldType, ForeignKey, Id, IEntityProxyWrapper, IProxiedEntity, IProxiedEntityClass, IRepository, QRepository, Query, QueryState, ProxyGenerator, Repository, RepositoryConfiguration };
+export { Entity, EntityConfiguration, EntityField, EntityProxy, EntityProxyClass, FieldType, ForeignKey, Id, IRepository, QRepository, Query, QueryState, ProxyGenerator, Repository, RepositoryConfiguration };

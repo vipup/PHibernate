@@ -3,9 +3,9 @@
  */
 
 
-export interface IEntityProxyWrapper {
+export interface EntityField {
 	get:{():any};
-	set:{( value:any ):void};
+	set:{(value:any):void};
 }
 
 export enum FieldType {
@@ -17,20 +17,19 @@ export enum FieldType {
 	STRING
 }
 
-export interface IProxiedEntity {
+export interface EntityProxy {
 	__data__:{
-		__accessed__:{[propertyName:string]:boolean};
-		__current__:{[propertyName:string]:any};
-		__initialized__:{[propertyName:string]:boolean};
-		__original__:{[propertyName:string]:any};
-		__types__:{[propertyName:string]:FieldType};
+		__accessed__:{[fieldName:string]:boolean};
+		__current__:{[fieldName:string]:any};
+		__initialized__:{[fieldName:string]:boolean};
+		__original__:{[fieldName:string]:any};
 	}
 	__initialized__:boolean;
 	__isDirty__:boolean;
 	__proxied__:boolean;
 }
 
-export interface IProxiedEntityClass {
-	___proxyWrapperMap:{[proxyName:string]:IEntityProxyWrapper};
-	___propertyWrapperMap:{[propertyName:string]:IEntityProxyWrapper};
+export interface EntityProxyClass {
+	__fieldMap__:{[fieldName:string]:EntityField};
+	__fieldTypeMap__:{[fieldName:string]:FieldType};
 }
