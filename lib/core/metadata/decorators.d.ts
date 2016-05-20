@@ -1,3 +1,4 @@
+import { IQEntity } from "querydsl-typescript/lib/index";
 /**
  * Annotates Id fields of Entities.
  *
@@ -23,6 +24,7 @@ export declare function Entity(entityConfiguration?: EntityConfiguration): (cons
  * @constructor
  */
 export declare function ForeignKey(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
+export declare function MappedBy(collectionFieldName: string): (targetObject: any, propertyKey: string) => void;
 export interface RepositoryConfiguration {
 }
 export declare function Repository(repositoryConfiguration?: RepositoryConfiguration): (constructor: Function) => void;
@@ -33,4 +35,4 @@ export declare function Repository(repositoryConfiguration?: RepositoryConfigura
  * @returns {function(any, string)}
  * @constructor
  */
-export declare function Query(queryDefinition: string): (targetObject: any, propertyKey: string) => void;
+export declare function Query<IQ extends IQEntity<IQ>>(queryDefinition: IQ, entityClass: Function): (targetObject: any, propertyKey: string) => void;

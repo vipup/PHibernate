@@ -10,6 +10,7 @@ import {
 	EntityConfiguration,
 	ForeignKey,
 	Id,
+	MappedBy,
 	Query,
 	Repository,
 	RepositoryConfiguration
@@ -28,6 +29,7 @@ export {
 	FieldType,
 	ForeignKey,
 	Id,
+	MappedBy,
 	IRepository,
 	QRepository,
 	Query,

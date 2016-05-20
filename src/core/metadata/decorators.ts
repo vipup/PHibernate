@@ -3,6 +3,7 @@
  */
 
 import {DSLParser} from "../query/DSLParser";
+import {IQEntity} from "querydsl-typescript/lib/index";
 /**
  * Annotates Id fields of Entities.
  *
@@ -56,6 +57,17 @@ export function ForeignKey(
 	}
 }
 
+export function MappedBy(
+	collectionFieldName:string
+) {
+	return function (
+		targetObject:any,
+		propertyKey:string
+	) {
+
+	}
+}
+
 export interface RepositoryConfiguration {
 
 }
@@ -76,15 +88,15 @@ export function Repository(
  * @returns {function(any, string)}
  * @constructor
  */
-export function Query(
-	queryDefinition:string
+export function Query<IQ extends IQEntity<IQ>>(
+	queryDefinition:IQ,
+  entityClass:Function
 ) {
 
 	return function (
 		targetObject:any,
 		propertyKey:string
 	) {
-		DSLParser.parse(queryDefinition);
 	}
 
 }

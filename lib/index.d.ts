@@ -4,9 +4,9 @@
 /**
  * Created by Papa on 4/23/2016.
  */
-import { Entity, EntityConfiguration, ForeignKey, Id, Query, Repository, RepositoryConfiguration } from "./core/metadata/decorators";
+import { Entity, EntityConfiguration, ForeignKey, Id, MappedBy, Query, Repository, RepositoryConfiguration } from "./core/metadata/decorators";
 import { QueryState } from "./core/query/QueryState";
 import { IRepository, QRepository } from "./core/repository/Repository";
 import { FieldType, EntityField, EntityProxy, EntityProxyClass } from "./core/proxy/Proxies";
 import { ProxyGenerator } from "./core/proxy/ProxyGenerator";
-export { Entity, EntityConfiguration, EntityField, EntityProxy, EntityProxyClass, FieldType, ForeignKey, Id, IRepository, QRepository, Query, QueryState, ProxyGenerator, Repository, RepositoryConfiguration };
+export { Entity, EntityConfiguration, EntityField, EntityProxy, EntityProxyClass, FieldType, ForeignKey, Id, MappedBy, IRepository, QRepository, Query, QueryState, ProxyGenerator, Repository, RepositoryConfiguration };
