@@ -1,8 +1,16 @@
-import { FieldType } from "querydsl-typescript";
+import { FieldType, RelationType } from "querydsl-typescript";
 /**
  * Created by Papa on 5/17/2016.
  */
 export interface EntityField {
+    get: {
+        (): any;
+    };
+    set: {
+        (value: any): void;
+    };
+}
+export interface EntityRelation {
     get: {
         (): any;
     };
@@ -35,5 +43,11 @@ export interface EntityProxyClass {
     };
     __fieldTypeMap__: {
         [fieldName: string]: FieldType;
+    };
+    __relationMap__: {
+        [relationName: string]: EntityRelation;
+    };
+    __relationTypeMap__: {
+        [relationName: string]: RelationType;
     };
 }

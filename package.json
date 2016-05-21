@@ -8,10 +8,10 @@
     "type": "git",
     "url": "git+https://github.com/russoturisto/PHibernate.git"
   },
-  "version": "0.0.16",
+  "version": "0.0.17",
   "dependencies": {
     "es6-shim": "^0.35.1",
-    "querydsl-typescript": "0.0.16"
+    "querydsl-typescript": "0.0.17"
   },
   "devDependencies": {
     "chai": "^3.5.0",
