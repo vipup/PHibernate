@@ -17,7 +17,7 @@ import {
 } from "./core/metadata/decorators";
 import {QueryState} from "./core/query/QueryState";
 import {IRepository, QRepository} from "./core/repository/Repository";
-import {FieldType, EntityField, EntityProxy, EntityProxyClass} from "./core/proxy/Proxies";
+import {EntityField, EntityProxy, EntityProxyClass} from "./core/proxy/Proxies";
 import {ProxyGenerator} from "./core/proxy/ProxyGenerator";
 
 export {
@@ -26,7 +26,6 @@ export {
 	EntityField,
 	EntityProxy,
 	EntityProxyClass,
-	FieldType,
 	ForeignKey,
 	Id,
 	MappedBy,

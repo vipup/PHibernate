@@ -1,3 +1,4 @@
+import {FieldType} from "querydsl-typescript";
 /**
  * Created by Papa on 5/17/2016.
  */
@@ -6,15 +7,6 @@
 export interface EntityField {
 	get:{():any};
 	set:{(value:any):void};
-}
-
-export enum FieldType {
-	BOOLEAN,
-	DATE,
-	ENTITY,
-	ENTITY_ARRAY,
-	NUMBER,
-	STRING
 }
 
 export interface EntityProxy {

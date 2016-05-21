@@ -1,4 +1,5 @@
-import { FieldType, EntityProxy } from "./Proxies";
+import { EntityProxy } from "./Proxies";
+import { FieldType } from "querydsl-typescript";
 /**
  * Created by Papa on 5/15/2016.
  */
