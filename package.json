@@ -10,8 +10,9 @@
   },
   "version": "0.0.17",
   "dependencies": {
+    "delta-store": "0.0.4",
     "es6-shim": "^0.35.1",
-    "querydsl-typescript": "0.0.17"
+    "querydsl-typescript": "0.0.18"
   },
   "devDependencies": {
     "chai": "^3.5.0",
