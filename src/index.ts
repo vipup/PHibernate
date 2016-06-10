@@ -15,9 +15,13 @@ import {
 	Repository,
 	RepositoryConfiguration
 } from "./core/metadata/decorators";
-import {QueryState} from "./core/query/QueryState";
-import {IRepository, QRepository} from "./core/repository/Repository";
 import {EntityField, EntityProxy, EntityProxyClass} from "./core/proxy/Proxies";
+import {IRepository, QRepository} from "./core/repository/Repository";
+import {PHEntityConfig} from "./config/EntityConfig";
+import {PHChangeListConfig} from "./config/ChangeListConfig";
+import {PHLocalStoreConfig} from "./config/LocalStoreConfig";
+import {PHPersistenceConfig} from "./config/PersistenceConfig";
+import {QueryState} from "./core/query/QueryState";
 import {ProxyGenerator} from "./core/proxy/ProxyGenerator";
 
 export {
@@ -33,6 +37,10 @@ export {
 	QRepository,
 	Query,
 	QueryState,
+	PHChangeListConfig,
+	PHEntityConfig,
+	PHLocalStoreConfig,
+	PHPersistenceConfig,
 	ProxyGenerator,
 	Repository,
 	RepositoryConfiguration,
