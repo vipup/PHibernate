@@ -4,6 +4,7 @@
   "globalDependencies": {
     "es6-shim": "registry:dt/es6-shim#0.31.2+20160317120654",
     "gapi": "github:DefinitelyTyped/DefinitelyTyped/gapi/gapi.d.ts#edb64e4a35896510ce02b93c0bca5ec3878db738",
-    "google-drive-realtime-api": "registry:dt/google-drive-realtime-api#0.0.0+20160317120654"
+    "google-drive-realtime-api": "registry:dt/google-drive-realtime-api#0.0.0+20160317120654",
+    "pouch": "github:russoturisto/PouchDB-typescript-definitions/pouch.d.ts"
   }
 }

@@ -82,7 +82,7 @@ export class DeltaStore implements IDeltaStore {
 		return changeList;
 	}
 
-	goOffline() {
+	goOffline():void {
 		this.changeListMap = {};
 	}
 

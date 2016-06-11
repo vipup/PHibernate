@@ -6,6 +6,8 @@ import { ILocalStoreConfig, PHLocalStoreConfig } from "./LocalStoreConfig";
 import { IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig, IOfflineDeltaStoreConfig } from "./ChangeListConfig";
 import { PHDeltaStoreConfig, IDeltaStoreConfig } from "./DeltaStoreConfig";
 import { IQEntity } from "querydsl-typescript/lib/index";
+import { DistributionStrategy, PlatformType } from "delta-store/lib/index";
+import { LocalStoreType } from "../localStore/LocalStoreApi";
 export interface PHPersistenceConfig {
     appName: string;
     deltaStores?: {
@@ -48,6 +50,7 @@ export interface IPersistenceConfig {
 }
 export declare class PersistenceConfig implements IPersistenceConfig {
     private config;
+    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType): PHPersistenceConfig;
     changeListConfigMap: {
         [changeListName: string]: IChangeListConfig;
     };

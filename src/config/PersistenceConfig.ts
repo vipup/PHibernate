@@ -10,6 +10,8 @@ import {
 } from "./ChangeListConfig";
 import {PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig} from "./DeltaStoreConfig";
 import {IQEntity} from "querydsl-typescript/lib/index";
+import {DistributionStrategy, PlatformType} from "delta-store/lib/index";
+import {LocalStoreType} from "../localStore/LocalStoreApi";
 
 export interface PHPersistenceConfig {
 	appName:string;
@@ -45,6 +47,44 @@ export interface IPersistenceConfig {
 }
 
 export class PersistenceConfig implements IPersistenceConfig {
+
+	static getDefaultPHConfig(
+		appName:string = 'DefaultApp',
+		distributionStrategy:DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
+		deltaStorePlatform:PlatformType = PlatformType.GOOGLE,
+		localStoreType:LocalStoreType = LocalStoreType.POUCH_DB,
+		offlineDeltaStoreType:LocalStoreType = LocalStoreType.POUCH_DB
+	):PHPersistenceConfig {
+		return {
+			appName: appName,
+			changeLists: {
+				"DefaultChangeList": {}
+			},
+			default: {
+				changeList: {
+					distributionStrategy: distributionStrategy,
+					deltaStore: "DefaultDeltaStore"
+				},
+				entity: {
+					changeList: "DefaultChangeList",
+					localStore: "DefaultLocalStore"
+				}
+			},
+			deltaStores: {
+				"DefaultDeltaStore": {
+					platform: deltaStorePlatform
+				}
+			},
+			localStores: {
+				"DefaultLocalStore": {
+					type: localStoreType
+				}
+			},
+			offlineDeltaStore: {
+				type: offlineDeltaStoreType
+			}
+		};
+	}
 
 	changeListConfigMap:{[changeListName:string]:IChangeListConfig} = {};
 	deltaStoreConfigMap:{[className:string]:IDeltaStoreConfig} = {};
@@ -143,8 +183,8 @@ export class PersistenceConfig implements IPersistenceConfig {
 
 	getEntityConfigWithClassNameAndConstructor(
 		className:string,
-	  constructor:Function
-	):IEntityConfig{
+		constructor:Function
+	):IEntityConfig {
 		let entityConfig = this.entityConfigMap[className];
 		if (!entityConfig) {
 			let phEntityConfig = this.config.entities[className];

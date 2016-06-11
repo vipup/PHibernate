@@ -11,21 +11,20 @@ import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
 import {EntityProxy} from "../proxy/Proxies";
 import {IQEntity} from "querydsl-typescript/lib/index";
+import {StoreAdaptor} from "../../store/StoreAdaptor";
 
-export interface IEntityManager {
+export interface IEntityManager extends StoreAdaptor {
 
-	save<E>(
-		entity?:E
-	):Promise<E>;
-
-	delete<E>(
-		entity:E
-	):Promise<void>;
+	goOffline():void;
+	goOnline():Promise<any>;
+	initialize():Promise<any>;
+	isOnline():boolean;
 }
 
-export class EntityManager {
+export class EntityManager implements IEntityManager {
 
 	deltaStoreMap:{[deltaStoreName:string]:IDeltaStore} = {};
+	online:boolean;
 	offlineDeltaStore:IDeltaStore;
 	localStoreMap:{[localStoreTypeName:string]:LocalStoreAdaptor} = {};
 
@@ -69,6 +68,14 @@ export class EntityManager {
 		return Promise.all(initializers);
 	}
 
+	goOffline():void {
+		for (let deltaStoreName in this.deltaStoreMap) {
+			let deltaStore = this.deltaStoreMap[deltaStoreName];
+			deltaStore.goOffline();
+		}
+		this.online = false;
+	}
+
 	async goOnline():Promise<any> {
 		let initializers:Promise<any>[] = [];
 
@@ -77,11 +84,7 @@ export class EntityManager {
 			initializers.push(deltaStore.goOnline());
 		}
 
-		return Promise.all(initializers);
-	}
-
-	isExistingSetupInfo():boolean {
-		return false;
+		return Promise.all(initializers).then(results => this.online = true);
 	}
 
 	isOnline():boolean {
@@ -118,6 +121,7 @@ export class EntityManager {
 	):Promise<E> {
 		let entityConfig = this.config.getEntityConfig(entity);
 		let entityProxy:EntityProxy = <EntityProxy><any>entity;
+		let persistedInDeltaStore:boolean = false;
 		if (entityConfig.changeListConfig) {
 			if (this.isOnline()) {
 				let deltaStore = this.deltaStoreMap[entityConfig.changeListConfig.deltaStoreName];
@@ -125,10 +129,16 @@ export class EntityManager {
 			} else {
 				await this.offlineDeltaStore.addChange(entityConfig, entityProxy);
 			}
+			persistedInDeltaStore = true;
 		}
+		let persistedInLocalStore:boolean = false;
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			await localStore[operation](entity);
+			persistedInLocalStore = true;
+		}
+		if (!persistedInDeltaStore && !persistedInLocalStore) {
+			throw `Entity is not persisted in either Delta Store or Local Store`;
 		}
 		return entity;
 	}
