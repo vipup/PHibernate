@@ -5,6 +5,7 @@ import { IEntityConfig, PHEntityConfig } from "./EntityConfig";
 import { ILocalStoreConfig, PHLocalStoreConfig } from "./LocalStoreConfig";
 import { IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig, IOfflineDeltaStoreConfig } from "./ChangeListConfig";
 import { PHDeltaStoreConfig, IDeltaStoreConfig } from "./DeltaStoreConfig";
+import { IQEntity } from "querydsl-typescript/lib/index";
 export interface PHPersistenceConfig {
     appName: string;
     deltaStores?: {
@@ -43,6 +44,7 @@ export interface IPersistenceConfig {
     hasLocalStores: boolean;
     offlineDeltaStore: IOfflineDeltaStoreConfig;
     getEntityConfig(entity: any): IEntityConfig;
+    getEntityConfigFromQ<IQE extends IQEntity<IQE>>(qEntity: IQE): IEntityConfig;
 }
 export declare class PersistenceConfig implements IPersistenceConfig {
     private config;
@@ -64,4 +66,6 @@ export declare class PersistenceConfig implements IPersistenceConfig {
     offlineDeltaStore: IOfflineDeltaStoreConfig;
     constructor(config: PHPersistenceConfig);
     getEntityConfig(entity: any): IEntityConfig;
+    getEntityConfigFromQ<IQE extends IQEntity<IQE>>(qEntity: IQE): IEntityConfig;
+    getEntityConfigWithClassNameAndConstructor(className: string, constructor: Function): IEntityConfig;
 }

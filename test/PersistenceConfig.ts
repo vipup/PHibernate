@@ -7,30 +7,30 @@ import {LocalStoreType} from "../src/config/LocalStoreConfig";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/SharingAdaptor";
 
 export var PERSISTENCE_CONFIG:PHPersistenceConfig = {
-	appName: "Goals'n'Tasks",
+	appName: "DefaultApp",
 	changeLists: {
-		"GoalsNTasks": {}
+		"DefaultChangeList": {}
 	},
 	default: {
 		changeList: {
 			distributionStrategy: DistributionStrategy.S3_SECURE_POLL,
-			deltaStore: "GoogleGoalsNTasks"
+			deltaStore: "DefaultDeltaStore"
 		},
 		entity: {
-			changeList: "GoalsNTasks",
-			localStore: "GoalsNTasks"
+			changeList: "DefaultChangeList",
+			localStore: "DefaultLocalStore"
 		}
 	},
 	deltaStores: {
-		"GoogleGoalsNTasks": {
+		"DefaultDeltaStore": {
 			apiKey: null,
 			clientId: null,
 			platform: PlatformType.GOOGLE,
-			rootDir: "GoalsNTasks",
+			rootDir: "PHibernate",
 		}
 	},
 	localStores: {
-		"GoalsNTasks": {
+		"DefaultLocalStore": {
 			platform: LocalStoreType.POUCH_DB
 		}
 	},

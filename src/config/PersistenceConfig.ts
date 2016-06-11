@@ -9,6 +9,7 @@ import {
 	IOfflineDeltaStoreConfig, OfflineDeltaStoreConfig
 } from "./ChangeListConfig";
 import {PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig} from "./DeltaStoreConfig";
+import {IQEntity} from "querydsl-typescript/lib/index";
 
 export interface PHPersistenceConfig {
 	appName:string;
@@ -36,6 +37,10 @@ export interface IPersistenceConfig {
 
 	getEntityConfig(
 		entity:any
+	):IEntityConfig;
+
+	getEntityConfigFromQ<IQE extends IQEntity<IQE>>(
+		qEntity:IQE
 	):IEntityConfig;
 }
 
@@ -121,6 +126,25 @@ export class PersistenceConfig implements IPersistenceConfig {
 		entity:any
 	):IEntityConfig {
 		let className = EntityConfig.getObjectClassName(entity);
+		let constructor = entity.constructor;
+
+		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
+	}
+
+
+	getEntityConfigFromQ<IQE extends IQEntity<IQE>>(
+		qEntity:IQE
+	):IEntityConfig {
+		let constructor = qEntity.entityConstructor;
+		let className = EntityConfig.getClassName(constructor);
+
+		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
+	}
+
+	getEntityConfigWithClassNameAndConstructor(
+		className:string,
+	  constructor:Function
+	):IEntityConfig{
 		let entityConfig = this.entityConfigMap[className];
 		if (!entityConfig) {
 			let phEntityConfig = this.config.entities[className];
@@ -137,7 +161,7 @@ export class PersistenceConfig implements IPersistenceConfig {
 				}
 			}
 
-			entityConfig = new EntityConfig(className, entity.constructor, phEntityConfig, this);
+			entityConfig = new EntityConfig(className, constructor, phEntityConfig, this);
 			this.entityConfigMap[className] = entityConfig;
 		}
 

@@ -1,4 +1,5 @@
 import { FieldType, RelationType } from "querydsl-typescript";
+import { ChangeRecord } from "delta-store/lib/index";
 /**
  * Created by Papa on 5/17/2016.
  */
@@ -36,6 +37,7 @@ export interface EntityProxy {
     __initialized__: boolean;
     __isDirty__: boolean;
     __proxied__: boolean;
+    getChangeRecord(): ChangeRecord;
 }
 export interface EntityProxyClass {
     __fieldMap__: {

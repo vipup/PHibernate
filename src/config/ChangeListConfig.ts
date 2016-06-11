@@ -76,6 +76,10 @@ export class ChangeListConfig implements IChangeListConfig {
 
 export interface IOfflineDeltaStoreConfig extends IDeltaStoreConfig {
 	type:LocalStoreType;
+	getOfflineChangeListName(
+		deltaStoreName:string,
+		changeListName:string
+	):string;
 }
 
 export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
@@ -94,7 +98,8 @@ export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 			let deltaStoreConfig = deltaStoreConfigMap[deltaStoreName];
 			for (let changeListName in deltaStoreConfig.changeListConfigMap) {
 				let changeListConfig = deltaStoreConfig.changeListConfigMap[changeListName];
-				this.changeListConfigMap[`${deltaStoreName}:${changeListName}`] = {
+				let offlineChangeListName = this.getOfflineChangeListName(deltaStoreName, changeListName);
+				this.changeListConfigMap[offlineChangeListName] = {
 					changeListInfo: changeListConfig.changeListInfo,
 					deltaStoreConfig: this,
 					deltaStoreName: OfflineDeltaStoreConfig.OFFLINE_DELTA_STORE_NAME,
@@ -108,11 +113,11 @@ export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 		};
 	}
 
-	getAsMap():{[deltaStoreName:string]:OfflineDeltaStoreConfig} {
-		let map:{[deltaStoreName:string]:OfflineDeltaStoreConfig} = {};
-		map[OfflineDeltaStoreConfig.OFFLINE_DELTA_STORE_NAME] = this;
-
-		return map;
+	getOfflineChangeListName(
+		deltaStoreName:string,
+		changeListName:string
+	):string {
+		return `${deltaStoreName}:${changeListName}`;
 	}
 
 }

@@ -9,28 +9,77 @@ import {
 	GoogleRealtimeAdaptor,
 	GoogleSharingAdaptor,
 	PlatformType,
-	SharingAdaptor, SharedChangeList, ChangeListShareInfo
+	SharingAdaptor, SharedChangeList, ChangeListShareInfo, ChangeRecord
 } from "delta-store";
 import {IDeltaStoreConfig} from "../config/DeltaStoreConfig";
-import {IChangeListConfig} from "../config/ChangeListConfig";
+import {IChangeListConfig, IOfflineDeltaStoreConfig} from "../config/ChangeListConfig";
+import {EntityProxy} from "../core/proxy/Proxies";
+import {IEntityConfig} from "../config/EntityConfig";
 
 
 export interface IDeltaStore {
-	changeListMap:{[changeListName:string]:SharedChangeList};
 	config:IDeltaStoreConfig;
 	sharingAdaptor:SharingAdaptor;
+	addChange<E>(
+		entityConfig:IEntityConfig,
+		entityProxy:EntityProxy
+	):Promise<E>;
+	getChangeList(
+		changeListConfig:IChangeListConfig
+	):SharedChangeList;
+	getChangeListName(
+		changeListConfig:IChangeListConfig
+	):string;
 	goOffline():void;
 	goOnline():Promise<any>;
 }
 
 export class DeltaStore implements IDeltaStore {
 
-	changeListMap:{[changeListName:string]:SharedChangeList} = {};
+	batchChanges:boolean;
+	protected changeListMap:{[changeListName:string]:SharedChangeList} = {};
+	protected batchedChangeMap:{[changeListName:string]:ChangeRecord[]} = {};
 
 	constructor(
 		public config:IDeltaStoreConfig,
 		public sharingAdaptor:SharingAdaptor = null
 	) {
+	}
+
+	async addChange<E>(
+		entityConfig:IEntityConfig,
+		entityProxy:EntityProxy
+	):Promise<E> {
+		let changeListConfig = entityConfig.changeListConfig;
+		let changeRecord = entityProxy.getChangeRecord();
+		if (this.batchChanges) {
+			let changeListName = this.getChangeListName(changeListConfig);
+			let batchedChangeQueue = this.batchedChangeMap[changeListName];
+			if (!batchedChangeQueue) {
+				batchedChangeQueue = [];
+				this.batchedChangeMap[changeListName] = batchedChangeQueue;
+			}
+			batchedChangeQueue.push(changeRecord);
+			return <E><any>entityProxy;
+		} else {
+			let changeList = this.getChangeList(changeListConfig);
+			return await changeList.addChanges([changeRecord]);
+		}
+	}
+
+	getChangeListName(
+		changeListConfig:IChangeListConfig
+	):string {
+		return changeListConfig.changeListInfo.name;
+	}
+
+	getChangeList(
+		changeListConfig:IChangeListConfig
+	):SharedChangeList {
+		let changeListName = this.getChangeListName(changeListConfig);
+		let changeList = this.changeListMap[changeListName];
+
+		return changeList;
 	}
 
 	goOffline() {
@@ -42,7 +91,7 @@ export class DeltaStore implements IDeltaStore {
 		await this.setupChangeLists();
 	}
 
-	async setupChangeLists():Promise<any> {
+	private async setupChangeLists():Promise<any> {
 
 		await this.loadChangeLists();
 
@@ -90,6 +139,18 @@ export class DeltaStore implements IDeltaStore {
 		});
 
 		return null;
+	}
+
+}
+
+export class OfflineDeltaStore extends DeltaStore {
+
+	config:IOfflineDeltaStoreConfig;
+
+	getChangeListName(
+		changeListConfig:IChangeListConfig
+	):string {
+		return this.config.getOfflineChangeListName(changeListConfig.deltaStoreName, changeListConfig.changeListInfo.name);
 	}
 
 }

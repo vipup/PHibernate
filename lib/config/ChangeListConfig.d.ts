@@ -31,6 +31,7 @@ export declare class ChangeListConfig implements IChangeListConfig {
 }
 export interface IOfflineDeltaStoreConfig extends IDeltaStoreConfig {
     type: LocalStoreType;
+    getOfflineChangeListName(deltaStoreName: string, changeListName: string): string;
 }
 export declare class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
     private config;
@@ -43,7 +44,5 @@ export declare class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig
     constructor(config: PHOfflineDeltaStoreConfig, deltaStoreConfigMap: {
         [className: string]: IDeltaStoreConfig;
     });
-    getAsMap(): {
-        [deltaStoreName: string]: OfflineDeltaStoreConfig;
-    };
+    getOfflineChangeListName(deltaStoreName: string, changeListName: string): string;
 }

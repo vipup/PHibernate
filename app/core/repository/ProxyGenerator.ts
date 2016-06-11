@@ -2,6 +2,7 @@ import {EntityRegistry} from "./../entity/registry/EntityRegistry";
 import {CouchDbEntityCache} from "./EntityCache";
 import {Entity, IEntity, IEntityClass} from "../model/entity/Entity";
 import {IDbObjectClass, IDbObject} from "../model/db/DbObject";
+import {ChangeRecord} from "delta-store/lib/index";
 /**
  * Created by Papa on 3/18/2016.
  */

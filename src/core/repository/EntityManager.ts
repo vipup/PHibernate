@@ -5,12 +5,12 @@
 import {getSharingAdaptor, IDeltaStore, DeltaStore} from "../../changeList/DeltaStore";
 import {IPersistenceConfig} from "../../config/PersistenceConfig";
 import {IEntityConfig} from "../../config/EntityConfig";
-import {SharingAdaptor, PlatformType, SharedChangeList, ChangeListShareInfo} from "delta-store";
+import {PlatformType} from "delta-store";
 import {getLocalStoreAdaptor} from "../../localStore/LocalStore";
 import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
-import {IChangeListConfig} from "../../config/ChangeListConfig";
-import {IDeltaStoreConfig} from "../../config/DeltaStoreConfig";
+import {EntityProxy} from "../proxy/Proxies";
+import {IQEntity} from "querydsl-typescript/lib/index";
 
 export interface IEntityManager {
 
@@ -53,16 +53,8 @@ export class EntityManager {
 		}
 	}
 
-	if
-
 	async initialize():Promise<any> {
 		let initializers:Promise<any>[] = [];
-		let config = this.config;
-
-		for (let deltaStoreName in this.deltaStoreMap) {
-			let deltaStore = this.deltaStoreMap[deltaStoreName];
-			initializers.push(deltaStore.goOnline());
-		}
 
 		if (this.offlineDeltaStore) {
 			initializers.push(this.offlineDeltaStore.goOnline());
@@ -77,43 +69,81 @@ export class EntityManager {
 		return Promise.all(initializers);
 	}
 
+	async goOnline():Promise<any> {
+		let initializers:Promise<any>[] = [];
+
+		for (let deltaStoreName in this.deltaStoreMap) {
+			let deltaStore = this.deltaStoreMap[deltaStoreName];
+			initializers.push(deltaStore.goOnline());
+		}
+
+		return Promise.all(initializers);
+	}
+
 	isExistingSetupInfo():boolean {
 		return false;
 	}
 
-	async save<E>(
-		entity?:E
+	isOnline():boolean {
+		return true;
+	}
+
+	async create<E>(
+		entity:E
 	):Promise<E> {
-		if (entity) {
-			return this.saveEntity(entity);
-		}
-		return null;
+		return this.persistEntity(entity, 'create');
 	}
 
 	async delete<E>(
 		entity:E
-	):Promise<void> {
-		return null;
+	):Promise<E> {
+		return this.persistEntity(entity, 'delete');
 	}
 
-	private async saveEntity<E>(
+	async persist<E>(
 		entity:E
 	):Promise<E> {
-		let entityConfig = this.config.getEntityConfig(entity);
-		if (entityConfig.changeListConfig) {
-			let sharingAdaptor = getSharingAdaptor(PlatformType.GOOGLE);
-		}
-		return null;
+		return this.persistEntity(entity, 'persist');
 	}
 
-	private async saveEntityInChangeList(
-		entityConfig:IEntityConfig
-	):Promise<boolean> {
-		let changeListConfig = entityConfig.changeListConfig;
-		if (!changeListConfig) {
-			return false;
+	async update<E>(
+		entity:E
+	):Promise<E> {
+		return this.persistEntity(entity, 'update');
+	}
+
+	private async persistEntity<E>(
+		entity:E,
+		operation:'create' | 'delete' | 'persist' | 'update'
+	):Promise<E> {
+		let entityConfig = this.config.getEntityConfig(entity);
+		let entityProxy:EntityProxy = <EntityProxy><any>entity;
+		if (entityConfig.changeListConfig) {
+			if (this.isOnline()) {
+				let deltaStore = this.deltaStoreMap[entityConfig.changeListConfig.deltaStoreName];
+				await deltaStore.addChange(entityConfig, entityProxy);
+			} else {
+				await this.offlineDeltaStore.addChange(entityConfig, entityProxy);
+			}
 		}
-		return true;
+		if (entityConfig.localStoreConfig) {
+			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
+			await localStore[operation](entity);
+		}
+		return entity;
+	}
+
+	async query<E, IQE extends IQEntity<IQE>>(
+		qEntity:IQE
+	):Promise<E> {
+		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
+		if (entityConfig.localStoreConfig) {
+			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
+			if (localStore) {
+				return await <E><any>localStore.query(qEntity);
+			}
+		}
+		throw `Entity is not setup with a LocalStore`;
 	}
 
 }
