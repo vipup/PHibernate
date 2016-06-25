@@ -13,4 +13,5 @@ import { PHLocalStoreConfig } from "./config/LocalStoreConfig";
 import { PHPersistenceConfig } from "./config/PersistenceConfig";
 import { QueryState } from "./core/query/QueryState";
 import { ProxyGenerator } from "./core/proxy/ProxyGenerator";
-export { Entity, EntityConfiguration, EntityField, EntityProxy, EntityProxyClass, ForeignKey, Id, MappedBy, IRepository, QRepository, Query, QueryState, PHChangeListConfig, PHEntityConfig, PHLocalStoreConfig, PHPersistenceConfig, ProxyGenerator, Repository, RepositoryConfiguration };
+import { PH } from "./config/PH";
+export { Entity, EntityConfiguration, EntityField, EntityProxy, EntityProxyClass, ForeignKey, Id, MappedBy, IRepository, QRepository, Query, QueryState, PH, PHChangeListConfig, PHEntityConfig, PHLocalStoreConfig, PHPersistenceConfig, ProxyGenerator, Repository, RepositoryConfiguration };

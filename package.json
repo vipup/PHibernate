@@ -8,7 +8,7 @@
     "type": "git",
     "url": "git+https://github.com/russoturisto/PHibernate.git"
   },
-  "version": "0.0.19",
+  "version": "0.0.20",
   "dependencies": {
     "delta-store": "0.0.22",
     "es6-shim": "^0.35.1",

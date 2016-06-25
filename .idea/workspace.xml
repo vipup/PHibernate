@@ -6,7 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.ts" afterPath="$PROJECT_DIR$/src/index.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -791,7 +790,7 @@
       <workItem from="1465165364877" duration="38260000" />
       <workItem from="1465672055698" duration="7196000" />
       <workItem from="1465762790102" duration="6365000" />
-      <workItem from="1465992168654" duration="29494000" />
+      <workItem from="1465992168654" duration="29988000" />
     </task>
     <servers />
   </component>
@@ -822,7 +821,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="286443000" />
+    <option name="totallyTimeSpent" value="286937000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
@@ -1298,17 +1297,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/store/StoreAdaptor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
-          <folding>
-            <element signature="e#0#63#0" expanded="true" />
-            <element signature="n#!!doc;n#StoreSetupInfo#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/config/PH.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="561">
@@ -1316,6 +1304,17 @@
           <folding>
             <element signature="e#0#85#0" expanded="true" />
             <element signature="n#!!doc;n#PH#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/StoreAdaptor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#63#0" expanded="true" />
+            <element signature="n#!!doc;n#StoreSetupInfo#0" expanded="false" />
           </folding>
         </state>
       </provider>
