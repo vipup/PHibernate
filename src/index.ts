@@ -23,6 +23,7 @@ import {PHLocalStoreConfig} from "./config/LocalStoreConfig";
 import {PHPersistenceConfig} from "./config/PersistenceConfig";
 import {QueryState} from "./core/query/QueryState";
 import {ProxyGenerator} from "./core/proxy/ProxyGenerator";
+import {PH} from "./config/PH";
 
 export {
 	Entity,
@@ -37,6 +38,7 @@ export {
 	QRepository,
 	Query,
 	QueryState,
+	PH,
 	PHChangeListConfig,
 	PHEntityConfig,
 	PHLocalStoreConfig,
