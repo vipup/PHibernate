@@ -1,23 +1,48 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/shared/DateUtils.ts" line="48" mnemonic="1" />
+  </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/config/PH.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbModel.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/shared/DateUtils.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/shared/EntityUtils.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.d.ts" afterPath="$PROJECT_DIR$/lib/config/EntityConfig.d.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.js" afterPath="$PROJECT_DIR$/lib/config/EntityConfig.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/EntityConfig.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.d.ts" afterPath="$PROJECT_DIR$/lib/config/PersistenceConfig.d.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.js" afterPath="$PROJECT_DIR$/lib/config/PersistenceConfig.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/PersistenceConfig.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.d.ts" afterPath="$PROJECT_DIR$/lib/core/metadata/decorators.d.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.js" afterPath="$PROJECT_DIR$/lib/core/metadata/decorators.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.js.map" afterPath="$PROJECT_DIR$/lib/core/metadata/decorators.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/DSLParser.d.ts" afterPath="$PROJECT_DIR$/lib/core/query/DSLParser.d.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.d.ts" afterPath="$PROJECT_DIR$/lib/core/query/QueryState.d.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.js" afterPath="$PROJECT_DIR$/lib/core/query/QueryState.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.js.map" afterPath="$PROJECT_DIR$/lib/core/query/QueryState.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.d.ts" afterPath="$PROJECT_DIR$/lib/core/repository/EntityManager.d.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.js" afterPath="$PROJECT_DIR$/lib/core/repository/EntityManager.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/EntityManager.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.d.ts" afterPath="$PROJECT_DIR$/lib/core/repository/Repository.d.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.js" afterPath="$PROJECT_DIR$/lib/core/repository/Repository.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/Repository.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.d.ts" afterPath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.d.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js" afterPath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js.map" afterPath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/store/StoreAdaptor.d.ts" afterPath="$PROJECT_DIR$/lib/store/StoreAdaptor.d.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/DeltaStore.ts" afterPath="$PROJECT_DIR$/src/changeList/DeltaStore.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config/EntityConfig.ts" afterPath="$PROJECT_DIR$/src/config/EntityConfig.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config/PersistenceConfig.ts" afterPath="$PROJECT_DIR$/src/config/PersistenceConfig.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/metadata/decorators.ts" afterPath="$PROJECT_DIR$/src/core/metadata/decorators.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/query/DSLParser.ts" afterPath="$PROJECT_DIR$/src/core/query/DSLParser.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/query/QueryState.ts" afterPath="$PROJECT_DIR$/src/core/query/QueryState.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/repository/EntityManager.ts" afterPath="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/repository/Repository.ts" afterPath="$PROJECT_DIR$/src/core/repository/Repository.ts" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts" afterPath="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/typings.json" afterPath="$PROJECT_DIR$/typings.json" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/store/StoreAdaptor.ts" afterPath="$PROJECT_DIR$/src/store/StoreAdaptor.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -49,11 +74,11 @@
                     </provider>
                   </entry>
                 </file>
-                <file leaf-file-name="PersistenceConfig.ts" pinned="false" current-in-tab="false">
+                <file leaf-file-name="PersistenceConfig.ts" pinned="false" current-in-tab="true">
                   <entry file="file://$PROJECT_DIR$/src/config/PersistenceConfig.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="0">
-                        <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
+                      <state relative-caret-position="444">
+                        <caret line="188" column="18" selection-start-line="188" selection-start-column="18" selection-end-line="188" selection-end-column="18" />
                         <folding>
                           <element signature="e#42#117#0" expanded="true" />
                         </folding>
@@ -71,10 +96,22 @@
                     </provider>
                   </entry>
                 </file>
-                <file leaf-file-name="DeltaStore.ts" pinned="false" current-in-tab="true">
+                <file leaf-file-name="PouchDbAdaptor.ts" pinned="false" current-in-tab="false">
+                  <entry file="file://$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts">
+                    <provider selected="true" editor-type-id="text-editor">
+                      <state relative-caret-position="169">
+                        <caret line="62" column="33" selection-start-line="62" selection-start-column="33" selection-end-line="62" selection-end-column="33" />
+                        <folding>
+                          <element signature="e#0#55#0" expanded="true" />
+                        </folding>
+                      </state>
+                    </provider>
+                  </entry>
+                </file>
+                <file leaf-file-name="DeltaStore.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/changeList/DeltaStore.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="544">
+                      <state relative-caret-position="119">
                         <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
                         <folding>
                           <element signature="e#41#266#0" expanded="true" />
@@ -90,7 +127,7 @@
                 <file leaf-file-name="LocalStoreConfig.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/config/LocalStoreConfig.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="62">
+                      <state relative-caret-position="0">
                         <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
                         <folding>
                           <element signature="n#!!doc" expanded="true" />
@@ -99,11 +136,24 @@
                     </provider>
                   </entry>
                 </file>
+                <file leaf-file-name="StoreAdaptor.ts" pinned="false" current-in-tab="true">
+                  <entry file="file://$PROJECT_DIR$/src/store/StoreAdaptor.ts">
+                    <provider selected="true" editor-type-id="text-editor">
+                      <state relative-caret-position="476">
+                        <caret line="30" column="2" selection-start-line="30" selection-start-column="2" selection-end-line="30" selection-end-column="2" />
+                        <folding>
+                          <element signature="e#0#63#0" expanded="true" />
+                          <element signature="n#!!doc;n#StoreSetupInfo#0" expanded="false" />
+                        </folding>
+                      </state>
+                    </provider>
+                  </entry>
+                </file>
                 <file leaf-file-name="EntityConfig.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/config/EntityConfig.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="255">
-                        <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+                      <state relative-caret-position="289">
+                        <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
                         <folding>
                           <element signature="n#!!doc" expanded="true" />
                           <element signature="e#41#94#0" expanded="true" />
@@ -127,8 +177,8 @@
                 <file leaf-file-name="PersistenceConfig.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/config/PersistenceConfig.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="1751">
-                        <caret line="105" column="19" selection-start-line="105" selection-start-column="19" selection-end-line="105" selection-end-column="19" />
+                      <state relative-caret-position="368">
+                        <caret line="178" column="38" selection-start-line="178" selection-start-column="38" selection-end-line="178" selection-end-column="38" />
                         <folding>
                           <element signature="e#42#117#0" expanded="true" />
                         </folding>
@@ -136,11 +186,11 @@
                     </provider>
                   </entry>
                 </file>
-                <file leaf-file-name="ChangeListConfig.ts" pinned="false" current-in-tab="true">
+                <file leaf-file-name="ChangeListConfig.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/config/ChangeListConfig.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="275">
-                        <caret line="69" column="27" selection-start-line="69" selection-start-column="27" selection-end-line="69" selection-end-column="27" />
+                      <state relative-caret-position="300">
+                        <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
                         <folding>
                           <element signature="e#0#126#0" expanded="true" />
                           <element signature="n#!!doc;n#PHChangeListConfig#0" expanded="false" />
@@ -164,10 +214,36 @@
     <splitter split-orientation="horizontal" split-proportion="0.48744643">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="LocalStoreAdaptor.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/localStore/LocalStoreAdaptor.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="68">
+                  <caret line="6" column="46" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
+                  <folding>
+                    <element signature="e#0#52#0" expanded="true" />
+                    <element signature="n#!!doc;n#LocalStoreAdaptor#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="StoreAdaptor.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/store/StoreAdaptor.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="289">
+                  <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#0#63#0" expanded="true" />
+                    <element signature="n#!!doc;n#StoreSetupInfo#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="DeltaStoreConfig.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/config/DeltaStoreConfig.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="136">
+                <state relative-caret-position="119">
                   <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
                   <folding>
                     <element signature="e#42#138#0" expanded="true" />
@@ -176,14 +252,24 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="Entity.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/app/core/model/entity/Entity.ts">
+          <file leaf-file-name="PouchDbAdaptor.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="85">
-                  <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+                <state relative-caret-position="322">
+                  <caret line="71" column="7" selection-start-line="71" selection-start-column="7" selection-end-line="71" selection-end-column="7" />
                   <folding>
-                    <element signature="n#!!doc" expanded="true" />
+                    <element signature="e#0#55#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/package.json">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="170">
+                  <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -192,7 +278,7 @@
             <entry file="file://$PROJECT_DIR$/src/localStore/LocalStore.ts">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="306">
-                  <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+                  <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
                   <folding>
                     <element signature="e#160#200#0" expanded="false" />
                   </folding>
@@ -200,56 +286,14 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="PouchDbAdaptor.ts" pinned="false" current-in-tab="true">
-            <entry file="file://$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts">
+          <file leaf-file-name="decorators.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/core/metadata/decorators.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="68">
-                  <caret line="4" column="48" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
+                <state relative-caret-position="-824">
+                  <caret line="158" column="76" selection-start-line="158" selection-start-column="76" selection-end-line="158" selection-end-column="76" />
                   <folding>
-                    <element signature="e#0#55#0" expanded="true" />
+                    <element signature="e#42#87#0" expanded="true" />
                   </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/package.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="190">
-                  <caret line="107" column="14" selection-start-line="107" selection-start-column="10" selection-end-line="107" selection-end-column="14" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/package.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="357">
-                  <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
-                  <folding />
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="index.d.ts" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/typings/index.d.ts">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="51">
-                  <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="0" />
-                  <folding>
-                    <element signature="n#!!doc" expanded="true" />
-                  </folding>
-                </state>
-              </provider>
-            </entry>
-          </file>
-          <file leaf-file-name="typings.json" pinned="false" current-in-tab="false">
-            <entry file="file://$PROJECT_DIR$/typings.json">
-              <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="119">
-                  <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
-                  <folding />
                 </state>
               </provider>
             </entry>
@@ -261,8 +305,8 @@
           <file leaf-file-name="EntityManager.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/core/repository/EntityManager.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="591">
-                  <caret line="70" column="2" selection-start-line="70" selection-start-column="2" selection-end-line="70" selection-end-column="2" />
+                <state relative-caret-position="312">
+                  <caret line="161" column="13" selection-start-line="161" selection-start-column="13" selection-end-line="161" selection-end-column="13" />
                   <folding>
                     <element signature="n#!!doc" expanded="true" />
                     <element signature="e#42#129#0" expanded="true" />
@@ -271,14 +315,49 @@
               </provider>
             </entry>
           </file>
+          <file leaf-file-name="PH.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/config/PH.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="408">
+                  <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
+                  <folding>
+                    <element signature="e#0#85#0" expanded="true" />
+                    <element signature="n#!!doc;n#PH#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
           <file leaf-file-name="PersistenceConfig.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/test/PersistenceConfig.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="289">
-                  <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
+                <state relative-caret-position="102">
+                  <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
                   <folding>
                     <element signature="e#42#110#0" expanded="true" />
                   </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="DateUtils.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/shared/DateUtils.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="465">
+                  <caret line="49" column="17" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
+                  <folding>
+                    <element signature="e#0#78#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Repository.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/core/repository/Repository.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="244">
+                  <caret line="51" column="33" selection-start-line="51" selection-start-column="33" selection-end-line="51" selection-end-column="33" />
+                  <folding />
                 </state>
               </provider>
             </entry>
@@ -303,18 +382,10 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/test/core/metadata/Query.js" />
-        <option value="$PROJECT_DIR$/src/core/query/QueryState.ts" />
-        <option value="$PROJECT_DIR$/test/core/query/DSLParser.test.js" />
-        <option value="$PROJECT_DIR$/test/tsconfig.json" />
-        <option value="$PROJECT_DIR$/test/index.test.ts" />
-        <option value="$PROJECT_DIR$/test/index.test.js" />
         <option value="$PROJECT_DIR$/test/core/query/DSLParser.test.ts" />
-        <option value="$PROJECT_DIR$/src/core/query/DSLParser.ts" />
         <option value="$PROJECT_DIR$/.gitignore" />
         <option value="$PROJECT_DIR$/src/core/repository/ProxyGenerator.ts" />
         <option value="$PROJECT_DIR$/app/core/model/entity/Entity.ts" />
-        <option value="$PROJECT_DIR$/src/core/metadata/decorators.ts" />
         <option value="$PROJECT_DIR$/src/core/proxy/ProxyGenerator.ts" />
         <option value="$PROJECT_DIR$/src/core/repository/PersistenceConfiguration.ts" />
         <option value="$PROJECT_DIR$/src/core/repository/PHConfiguration.ts" />
@@ -335,7 +406,6 @@
         <option value="$PROJECT_DIR$/src/localStore/LocalStore.ts" />
         <option value="$PROJECT_DIR$/src/localStore/LocalStoreApi.ts" />
         <option value="$PROJECT_DIR$/src/config/LocalStoreConfig.ts" />
-        <option value="$PROJECT_DIR$/src/config/EntityConfig.ts" />
         <option value="$PROJECT_DIR$/tsconfig.json" />
         <option value="$PROJECT_DIR$/src/changeList/offline/pouchDb/OfflinePouchDbRepositoryApi.ts" />
         <option value="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbApi.ts" />
@@ -345,15 +415,24 @@
         <option value="$PROJECT_DIR$/src/config/ChangeListConfig.ts" />
         <option value="$PROJECT_DIR$/test/PersistenceConfig.ts" />
         <option value="$PROJECT_DIR$/src/localStore/LocalStoreAdaptor.ts" />
+        <option value="$PROJECT_DIR$/src/core/proxy/Proxies.ts" />
+        <option value="$PROJECT_DIR$/src/changeList/DeltaStore.ts" />
+        <option value="$PROJECT_DIR$/typings.json" />
+        <option value="$PROJECT_DIR$/src/shared/EntityUtils.ts" />
+        <option value="$PROJECT_DIR$/src/config/EntityConfig.ts" />
+        <option value="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbModel.ts" />
+        <option value="$PROJECT_DIR$/typings/index.d.ts" />
+        <option value="$PROJECT_DIR$/src/config/PersistenceConfig.ts" />
+        <option value="$PROJECT_DIR$/src/core/metadata/decorators.ts" />
+        <option value="$PROJECT_DIR$/src/shared/DateUtils.ts" />
+        <option value="$PROJECT_DIR$/src/core/repository/Repository.ts" />
+        <option value="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts" />
+        <option value="$PROJECT_DIR$/src/core/query/DSLParser.ts" />
+        <option value="$PROJECT_DIR$/src/core/query/QueryState.ts" />
+        <option value="$PROJECT_DIR$/src/config/PH.ts" />
+        <option value="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
         <option value="$PROJECT_DIR$/src/store/StoreAdaptor.ts" />
         <option value="$PROJECT_DIR$/package.json" />
-        <option value="$PROJECT_DIR$/src/core/proxy/Proxies.ts" />
-        <option value="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
-        <option value="$PROJECT_DIR$/src/changeList/DeltaStore.ts" />
-        <option value="$PROJECT_DIR$/src/config/PersistenceConfig.ts" />
-        <option value="$PROJECT_DIR$/typings/index.d.ts" />
-        <option value="$PROJECT_DIR$/typings.json" />
-        <option value="$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts" />
       </list>
     </option>
   </component>
@@ -367,9 +446,10 @@
     <scope name="TSFiles" pattern="file[PHibernate]:app//*||file[PHibernate]:src//*" />
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="1916" />
-    <option name="width" value="1932" />
-    <option name="height" value="1084" />
+    <option name="x" value="1912" />
+    <option name="y" value="-8" />
+    <option name="width" value="1936" />
+    <option name="height" value="1096" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -418,8 +498,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scratches" />
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -448,47 +526,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="typings" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PHibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PHibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="typings" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="globals" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="pouch" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PHibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="PHibernate" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="typings" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="globals" />
+              <option name="myItemId" value="test" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -516,7 +554,15 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="core" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="repository" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -530,11 +576,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pouchdb" />
+              <option name="myItemId" value="core" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -548,19 +594,84 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="node_modules" />
+              <option name="myItemId" value="src" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="pouchdb" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="lib" />
+              <option name="myItemId" value="config" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="TSFiles">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="External Dependencies">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="C:">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Users">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Papa">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="Documents">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="GitHub">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="QueryDSL-TypeScript">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="lib">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="PHibernate">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="src">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT USER_OBJECT="PHibernate">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scratches">
+        <subPane />
       </pane>
     </panes>
   </component>
@@ -577,19 +688,19 @@
     <property name="nodejs.mocha.mocha_node_package_dir" value="C:\Users\Papa\PHibernate\node_modules\mocha" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Papa\PHibernate\src\changeList" />
-      <recent name="C:\Users\Papa\PHibernate\src" />
-      <recent name="C:\Users\Papa\PHibernate\src\core\proxy" />
-      <recent name="C:\Users\Papa\PHibernate\test" />
-      <recent name="C:\Users\Papa\PHibernate\src\core\metadata" />
-    </key>
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Papa\PHibernate\test" />
       <recent name="C:\Users\Papa\PHibernate\node_modules\QueryDSL-TypeScript" />
       <recent name="C:\Users\Papa\PHibernate\node_modules" />
       <recent name="C:\Users\Papa\PHibernate\core\repository" />
       <recent name="C:\Users\Papa\PHibernate\core\query" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\Papa\PHibernate\src\changeList" />
+      <recent name="C:\Users\Papa\PHibernate\src" />
+      <recent name="C:\Users\Papa\PHibernate\src\core\proxy" />
+      <recent name="C:\Users\Papa\PHibernate\test" />
+      <recent name="C:\Users\Papa\PHibernate\src\core\metadata" />
     </key>
   </component>
   <component name="RunManager" selected="Mocha.Mocha tests">
@@ -702,7 +813,9 @@
       <workItem from="1463660416862" duration="62993000" />
       <workItem from="1464752534094" duration="9283000" />
       <workItem from="1465165364877" duration="38260000" />
-      <workItem from="1465672055698" duration="4807000" />
+      <workItem from="1465672055698" duration="7196000" />
+      <workItem from="1465762790102" duration="6365000" />
+      <workItem from="1465992168654" duration="28881000" />
     </task>
     <servers />
   </component>
@@ -733,20 +846,21 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="248195000" />
+    <option name="totallyTimeSpent" value="285830000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="1916" y="0" width="1932" height="1084" extended-state="0" />
-    <editor active="false" />
+    <frame x="1912" y="-8" width="1936" height="1096" extended-state="6" />
+    <editor active="true" />
     <layout>
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12777191" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12697576" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
-      <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32386962" sideWeight="0.5475185" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31335437" sideWeight="0.531679" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31983384" sideWeight="0.54320335" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31152648" sideWeight="0.5421496" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271028" sideWeight="0.44942045" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31335437" sideWeight="0.46832103" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31152648" sideWeight="0.45785037" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39356178" sideWeight="0.459431" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -754,23 +868,22 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32809225" sideWeight="0.4598733" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
     <layout-to-restore>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32502595" sideWeight="0.55426764" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TypeScript Compiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.31983384" sideWeight="0.54320335" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32063493" sideWeight="0.50851065" order="8" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31152648" sideWeight="0.5421496" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.49789253" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32063493" sideWeight="0.49148935" order="10" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.13244681" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.31152648" sideWeight="0.45785037" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12750264" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32592592" sideWeight="0.4893843" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271028" sideWeight="0.44942045" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
@@ -795,92 +908,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/lib/google/realtime/GoogleRealtimeNamespace.js.map" />
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/lib/google/realtime/GoogleRealtimeNamespace.js" />
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/lib/google/realtime/GoogleRealtimeNamespace.d.ts" />
-    <entry file="file://$PROJECT_DIR$/typings/globals/es6-shim/index.d.ts" />
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/index.d.ts" />
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/typings/globals/google-drive-realtime-api/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="200">
-          <caret line="495" column="29" selection-start-line="495" selection-start-column="18" selection-end-line="495" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/typings/globals/google-drive-realtime-api/typings.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/typings.json.old">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/lib/google/realtime/DocumentHandle.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="14" column="7" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/delta-store/lib/google/GoogleSharingModel.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="5" column="17" selection-start-line="5" selection-start-column="17" selection-end-line="5" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/offline/pouchDb/OfflinePouchDbChangeRecordIterator.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="61" selection-start-line="0" selection-start-column="61" selection-end-line="0" selection-end-column="61" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/index.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="138">
-          <caret line="23" column="37" selection-start-line="23" selection-start-column="37" selection-end-line="23" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/rxjs/Rx.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="238">
-          <caret line="139" column="10" selection-start-line="139" selection-start-column="9" selection-end-line="139" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/rxjs/package.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3154">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/offline/pouchDb/OfflinePouchDbSharingAdaptor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="e#42#134#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/typescriptCompiler/external/lib.es6.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="209">
-          <caret line="214" column="10" selection-start-line="214" selection-start-column="10" selection-end-line="214" selection-end-column="10" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/tsconfig.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="221">
@@ -900,7 +927,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="187">
           <caret line="11" column="22" selection-start-line="11" selection-start-column="22" selection-end-line="11" selection-end-column="22" />
-          <folding />
         </state>
       </provider>
     </entry>
@@ -943,17 +969,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/core/model/entity/Entity.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -971,10 +986,41 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="119">
           <caret line="9" column="16" selection-start-line="9" selection-start-column="16" selection-end-line="9" selection-end-column="16" />
-          <folding>
-            <element signature="e#0#43#0" expanded="false" />
-            <element signature="e#197#237#0" expanded="false" />
-          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/lib/index.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="480">
+          <caret line="8531" column="24" selection-start-line="8531" selection-start-column="17" selection-end-line="8531" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/dist/pouchdb.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="198">
+          <caret line="11112" column="24" selection-start-line="11112" selection-start-column="17" selection-end-line="11112" selection-end-column="24" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/tsd.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/typings/globals/pouch/typings.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="190">
+          <caret line="107" column="14" selection-start-line="107" selection-start-column="10" selection-end-line="107" selection-end-column="14" />
         </state>
       </provider>
     </entry>
@@ -994,30 +1040,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/store/StoreAdaptor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="9" column="17" selection-start-line="9" selection-start-column="17" selection-end-line="9" selection-end-column="17" />
-          <folding>
-            <element signature="n#!!doc;n#StoreSetupInfo#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/DeltaStore.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
-          <folding>
-            <element signature="e#41#266#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/config/EntityConfig.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="19" column="13" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
+        <state relative-caret-position="289">
+          <caret line="21" column="0" selection-start-line="21" selection-start-column="0" selection-end-line="21" selection-end-column="0" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#41#94#0" expanded="true" />
@@ -1025,44 +1051,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/test/PersistenceConfig.ts">
+    <entry file="file://$PROJECT_DIR$/www/jspm_packages/npm/angular2@2.0.0-beta.13/ts/src/core/metadata.dart">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="21" column="5" selection-start-line="21" selection-start-column="5" selection-end-line="21" selection-end-column="5" />
-          <folding>
-            <element signature="e#42#110#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="209">
+          <caret line="137" column="6" selection-start-line="137" selection-start-column="6" selection-end-line="137" selection-end-column="6" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/PersistenceConfig.ts">
+    <entry file="file://$PROJECT_DIR$/src/index.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="61" column="8" selection-start-line="61" selection-start-column="8" selection-end-line="61" selection-end-column="8" />
-          <folding>
-            <element signature="e#42#117#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="187">
+          <caret line="13" column="2" selection-start-line="13" selection-start-column="2" selection-end-line="13" selection-end-column="2" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/repository/EntityManager.ts">
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/core/operation/ComparisonOperation.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="591">
-          <caret line="70" column="2" selection-start-line="70" selection-start-column="2" selection-end-line="70" selection-end-column="2" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#42#129#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="570">
+          <caret line="54" column="4" selection-start-line="54" selection-start-column="4" selection-end-line="54" selection-end-column="4" />
+          <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/localStore/LocalStoreAdaptor.ts">
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/core/operation/QueryOperation.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        <state relative-caret-position="221">
+          <caret line="15" column="21" selection-start-line="15" selection-start-column="21" selection-end-line="15" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/localStore/pouchDb/PouchDbModel.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="7" column="2" selection-start-line="7" selection-start-column="2" selection-end-line="7" selection-end-column="16" />
           <folding>
-            <element signature="e#0#52#0" expanded="true" />
-            <element signature="n#!!doc;n#LocalStoreAdaptor#0" expanded="false" />
+            <element signature="n#!!doc;n#PouchDbRecord#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1070,56 +1096,28 @@
     <entry file="file://$PROJECT_DIR$/src/localStore/LocalStore.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="306">
-          <caret line="22" column="48" selection-start-line="22" selection-start-column="48" selection-end-line="22" selection-end-column="48" />
+          <caret line="22" column="42" selection-start-line="22" selection-start-column="42" selection-end-line="22" selection-end-column="42" />
           <folding>
             <element signature="e#160#200#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/LocalStoreConfig.ts">
+    <entry file="file://$PROJECT_DIR$/typings/globals/pouch/index.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="62">
-          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+        <state relative-caret-position="202">
+          <caret line="110" column="12" selection-start-line="110" selection-start-column="8" selection-end-line="110" selection-end-column="12" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/lib/index.js">
+    <entry file="file://$PROJECT_DIR$/typings.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="480">
-          <caret line="8531" column="24" selection-start-line="8531" selection-start-column="17" selection-end-line="8531" selection-end-column="24" />
+        <state relative-caret-position="119">
+          <caret line="7" column="75" selection-start-line="7" selection-start-column="14" selection-end-line="7" selection-end-column="75" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/dist/pouchdb.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="198">
-          <caret line="11112" column="24" selection-start-line="11112" selection-start-column="17" selection-end-line="11112" selection-end-column="24" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/tsd.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/DeltaStoreConfig.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
-          <folding>
-            <element signature="e#42#138#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1133,26 +1131,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/typings/globals/pouch/typings.json">
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/typings/globals/pouch/index.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/typings/globals/pouch/index.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="25" column="51" selection-start-line="25" selection-start-column="51" selection-end-line="25" selection-end-column="51" />
+        <state relative-caret-position="211">
+          <caret line="110" column="32" selection-start-line="110" selection-start-column="32" selection-end-line="110" selection-end-column="32" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/config/ChangeListConfig.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="275">
-          <caret line="69" column="27" selection-start-line="69" selection-start-column="27" selection-end-line="69" selection-end-column="27" />
+        <state relative-caret-position="300">
+          <caret line="83" column="0" selection-start-line="83" selection-start-column="0" selection-end-line="83" selection-end-column="0" />
           <folding>
             <element signature="e#0#126#0" expanded="true" />
             <element signature="n#!!doc;n#PHChangeListConfig#0" expanded="false" />
@@ -1160,45 +1150,213 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/typings.json">
+    <entry file="file://$PROJECT_DIR$/src/shared/DateUtils.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="18" selection-start-line="7" selection-start-column="18" selection-end-line="7" selection-end-column="18" />
+        <state relative-caret-position="465">
+          <caret line="49" column="17" selection-start-line="49" selection-start-column="17" selection-end-line="49" selection-end-column="17" />
+          <folding>
+            <element signature="e#0#78#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/repository/Repository.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="244">
+          <caret line="51" column="33" selection-start-line="51" selection-start-column="33" selection-end-line="51" selection-end-column="33" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/package.json">
+    <entry file="file://$PROJECT_DIR$/test/PersistenceConfig.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="21" column="4" selection-start-line="21" selection-start-column="4" selection-end-line="21" selection-end-column="4" />
+        <state relative-caret-position="102">
+          <caret line="8" column="36" selection-start-line="8" selection-start-column="36" selection-end-line="8" selection-end-column="36" />
+          <folding>
+            <element signature="e#42#110#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/DeltaStoreConfig.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+          <folding>
+            <element signature="e#42#138#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/localStore/LocalStoreAdaptor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="68">
+          <caret line="6" column="46" selection-start-line="6" selection-start-column="46" selection-end-line="6" selection-end-column="46" />
+          <folding>
+            <element signature="e#0#52#0" expanded="true" />
+            <element signature="n#!!doc;n#LocalStoreAdaptor#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/DeltaStore.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="34" column="1" selection-start-line="34" selection-start-column="1" selection-end-line="34" selection-end-column="1" />
+          <folding>
+            <element signature="e#41#266#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/core/model/entity/Entity.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-17">
+          <caret line="7" column="35" selection-start-line="7" selection-start-column="35" selection-end-line="7" selection-end-column="35" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/src/core/entity/Entity.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="377">
+          <caret line="51" column="5" selection-start-line="51" selection-start-column="5" selection-end-line="51" selection-end-column="5" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/core/field/Field.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="211">
+          <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/LocalStoreConfig.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="8" column="0" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/query/DSLParser.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="221">
+          <caret line="16" column="34" selection-start-line="16" selection-start-column="34" selection-end-line="16" selection-end-column="34" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/query/QueryState.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="113" column="35" selection-start-line="113" selection-start-column="35" selection-end-line="113" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/shared/EntityUtils.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="19" column="30" selection-start-line="19" selection-start-column="30" selection-end-line="19" selection-end-column="30" />
+          <folding>
+            <element signature="n#!!doc;n#EntityUtils#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/core/entity/Entity.d.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-          <folding />
+        <state relative-caret-position="170">
+          <caret line="12" column="4" selection-start-line="12" selection-start-column="4" selection-end-line="12" selection-end-column="4" />
+          <folding>
+            <element signature="e#41#82#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/node_modules/pouchdb/package.json">
+    <entry file="file://$PROJECT_DIR$/src/config/PH.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="190">
-          <caret line="107" column="14" selection-start-line="107" selection-start-column="10" selection-end-line="107" selection-end-column="14" />
+        <state relative-caret-position="408">
+          <caret line="35" column="8" selection-start-line="35" selection-start-column="8" selection-end-line="35" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#85#0" expanded="true" />
+            <element signature="n#!!doc;n#PH#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/query/PHQuery.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="21" selection-start-line="8" selection-start-column="21" selection-end-line="8" selection-end-column="21" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/localStore/pouchDb/PouchDbAdaptor.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" column="48" selection-start-line="4" selection-start-column="48" selection-end-line="4" selection-end-column="48" />
+        <state relative-caret-position="322">
+          <caret line="71" column="7" selection-start-line="71" selection-start-column="7" selection-end-line="71" selection-end-column="7" />
           <folding>
             <element signature="e#0#55#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/metadata/decorators.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-824">
+          <caret line="158" column="76" selection-start-line="158" selection-start-column="76" selection-end-line="158" selection-end-column="76" />
+          <folding>
+            <element signature="e#42#87#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/PersistenceConfig.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="444">
+          <caret line="188" column="18" selection-start-line="188" selection-start-column="18" selection-end-line="188" selection-end-column="18" />
+          <folding>
+            <element signature="e#42#117#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/repository/EntityManager.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="161" column="13" selection-start-line="161" selection-start-column="13" selection-end-line="161" selection-end-column="13" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#42#129#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/store/StoreAdaptor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="19" column="8" selection-start-line="19" selection-start-column="8" selection-end-line="19" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#63#0" expanded="true" />
+            <element signature="n#!!doc;n#StoreSetupInfo#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/package.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
+          <folding />
         </state>
       </provider>
     </entry>

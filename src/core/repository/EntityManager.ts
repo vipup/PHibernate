@@ -10,8 +10,10 @@ import {getLocalStoreAdaptor} from "../../localStore/LocalStore";
 import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
 import {EntityProxy} from "../proxy/Proxies";
-import {IQEntity} from "querydsl-typescript/lib/index";
+import {IQEntity, QEntity, IEntity} from "querydsl-typescript/lib/index";
 import {StoreAdaptor} from "../../store/StoreAdaptor";
+import {Observable} from "rxjs/Observable";
+import {PH} from "../../config/PH";
 
 export interface IEntityManager extends StoreAdaptor {
 
@@ -103,7 +105,7 @@ export class EntityManager implements IEntityManager {
 		return this.persistEntity(entity, 'delete');
 	}
 
-	async persist<E>(
+	async save<E>(
 		entity:E
 	):Promise<E> {
 		return this.persistEntity(entity, 'persist');
@@ -143,14 +145,29 @@ export class EntityManager implements IEntityManager {
 		return entity;
 	}
 
-	async query<E, IQE extends IQEntity<IQE>>(
-		qEntity:IQE
-	):Promise<E> {
+	query<IE extends IEntity>(
+		entityClass:any, iEntity:IE
+	):Observable<any> {
+		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return await <E><any>localStore.query(qEntity);
+				return localStore.query(iEntity, qEntity);
+			}
+		}
+		throw `Entity is not setup with a LocalStore`;
+	}
+
+	async queryOnce<IE extends IEntity>(
+		entityClass:any, iEntity:IE
+	):Promise<any> {
+		let qEntity = PH.getQEntityFromEntityClass(entityClass);
+		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
+		if (entityConfig.localStoreConfig) {
+			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
+			if (localStore) {
+				return await localStore.queryOnce(iEntity, qEntity);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;

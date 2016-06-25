@@ -3,13 +3,13 @@
  */
 import {IQEntity} from "querydsl-typescript";
 
-export class QueryState<QE extends IQEntity<QE>> {
+export class QueryState<QE extends IQEntity> {
 	hasSelectAll:boolean = false;
 	hasSelect:boolean = false;
 	hasExecute:boolean = false;
 	theWhere:QE;
-	whereOthers:IQEntity<QE>[] = [];
-	includes:IQEntity<QE>[] = [];
+	whereOthers:IQEntity[] = [];
+	includes:IQEntity[] = [];
 
 	setSelectAll():void {
 		let errorPrefix = 'Cannot specify "selectAll()": ';
@@ -33,7 +33,7 @@ export class QueryState<QE extends IQEntity<QE>> {
 		this.hasSelect = true;
 	}
 
-	addWhereOther<OQE extends IQEntity<QE>>( //
+	addWhereOther<OQE extends IQEntity>( //
 		otherQ:OQE //
 	):void {
 		let errorPrefix = 'Cannot specify "otherBy(qO)": ';
@@ -41,7 +41,7 @@ export class QueryState<QE extends IQEntity<QE>> {
 		this.whereOthers.push(otherQ);
 	}
 
-	addInclude<OQE extends IQEntity<QE>>(
+	addInclude<OQE extends IQEntity>(
 		otherQ:OQE //
 	):void {
 		let errorPrefix = 'Cannot specify "include(qO)": ';
@@ -95,6 +95,7 @@ export class QueryState<QE extends IQEntity<QE>> {
 		} else if (otherState.theWhere) {
 			return false;
 		}
+/*
 		if (!this.theWhere.objectEquals(otherState.theWhere, checkValues)) {
 			return false;
 		}
@@ -120,6 +121,7 @@ export class QueryState<QE extends IQEntity<QE>> {
 				return false;
 			}
 		}
+*/
 
 		return true;
 	}

@@ -14,7 +14,7 @@ export interface QueryTokenNode {
 
 export class DSLParser {
 
-	static parse<QE extends IQEntity<QE>>(
+	static parse<QE extends IQEntity>(
 		query:string
 	):QueryState<QE> {
 		let queryLines = query.split('\n');

@@ -5,32 +5,32 @@ import "es6-shim";
 import {IOperation, IQEntity} from "querydsl-typescript";
 import {QueryState} from "../query/QueryState";
 
-export interface IRepository<E, QE extends IQEntity<QE>, R extends IRepository<E, QE, R>> {
+export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE, R>> {
 
 	selectAll():R;
 
 	where( //
-		...operations:IOperation<QE>[] //
+		...operations:IOperation[] //
 	):R;
 
 	select(
-		...fields:IOperation<QE>[] //
+		...fields:IOperation[] //
 	):R;
 
 	getQ():QE;
 
-	include<OQE extends IQEntity<QE>>( //
+	include<OQE extends IQEntity>( //
 		otherQ:OQE //
 	):R;
 
 	execute():Promise<E[]>;
 
-	whereOther<OQE extends IQEntity<QE>>( //
+	whereOther<OQE extends IQEntity>( //
 		otherQ:OQE //
 	):R;
 }
 
-export abstract class QRepository<E, QE extends IQEntity<QE>, R extends IRepository<E, QE, R>>
+export abstract class QRepository<E, QE extends IQEntity, R extends IRepository<E, QE, R>>
 implements IRepository<E, QE, R> {
 
 	currentQueryState:QueryState<QE>;
@@ -45,10 +45,10 @@ implements IRepository<E, QE, R> {
 	}
 
 	where( //
-		...operations:IOperation<QE>[] //
+		...operations:IOperation[] //
 	):R {
 		let q = this.getQ();
-		q.and.apply(q, operations);
+		// q.and.apply(q, operations);
 		this.currentQueryState.setWhere(q);
 
 		return <any>this;
@@ -61,7 +61,7 @@ implements IRepository<E, QE, R> {
 		return <any>this;
 	}
 
-	whereOther<OQE extends IQEntity<QE>>( //
+	whereOther<OQE extends IQEntity>( //
 		otherQ:OQE //
 	):R {
 		this.currentQueryState.addWhereOther(otherQ);
@@ -69,7 +69,7 @@ implements IRepository<E, QE, R> {
 		return <any>this;
 	}
 
-	include<OQE extends IQEntity<QE>>( //
+	include<OQE extends IQEntity>( //
 		otherQ:OQE //
 	):R {
 		this.currentQueryState.addInclude(otherQ);

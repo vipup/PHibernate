@@ -19,8 +19,6 @@ export declare class EntityConfig implements IEntityConfig {
     clazz: Function;
     private config;
     private persistenceConfig;
-    static getObjectClassName(object: any): string;
-    static getClassName(clazz: Function): string;
     changeListConfig: IChangeListConfig;
     localStoreConfig: ILocalStoreConfig;
     constructor(className: string, clazz: Function, config: PHEntityConfig, persistenceConfig: IPersistenceConfig);

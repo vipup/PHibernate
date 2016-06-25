@@ -11,7 +11,7 @@ export interface QueryTokenNode {
     tokens: string[];
 }
 export declare class DSLParser {
-    static parse<QE extends IQEntity<QE>>(query: string): QueryState<QE>;
+    static parse<QE extends IQEntity>(query: string): QueryState<QE>;
     static getQueryTokenTree(queryLines: string[]): QueryTokenNode;
     static verifyIndentationUniformity(node: QueryTokenNode): void;
 }

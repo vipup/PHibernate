@@ -46,7 +46,7 @@ export interface IPersistenceConfig {
     hasLocalStores: boolean;
     offlineDeltaStore: IOfflineDeltaStoreConfig;
     getEntityConfig(entity: any): IEntityConfig;
-    getEntityConfigFromQ<IQE extends IQEntity<IQE>>(qEntity: IQE): IEntityConfig;
+    getEntityConfigFromQ<IQE extends IQEntity>(qEntity: IQE): IEntityConfig;
 }
 export declare class PersistenceConfig implements IPersistenceConfig {
     private config;
@@ -69,6 +69,6 @@ export declare class PersistenceConfig implements IPersistenceConfig {
     offlineDeltaStore: IOfflineDeltaStoreConfig;
     constructor(config: PHPersistenceConfig);
     getEntityConfig(entity: any): IEntityConfig;
-    getEntityConfigFromQ<IQE extends IQEntity<IQE>>(qEntity: IQE): IEntityConfig;
+    getEntityConfigFromQ<IQE extends IQEntity>(qEntity: IQE): IEntityConfig;
     getEntityConfigWithClassNameAndConstructor(className: string, constructor: Function): IEntityConfig;
 }

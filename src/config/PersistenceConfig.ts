@@ -12,6 +12,7 @@ import {PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig} from "./D
 import {IQEntity} from "querydsl-typescript/lib/index";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/index";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
+import {EntityUtils} from "../shared/EntityUtils";
 
 export interface PHPersistenceConfig {
 	appName:string;
@@ -41,7 +42,7 @@ export interface IPersistenceConfig {
 		entity:any
 	):IEntityConfig;
 
-	getEntityConfigFromQ<IQE extends IQEntity<IQE>>(
+	getEntityConfigFromQ<IQE extends IQEntity>(
 		qEntity:IQE
 	):IEntityConfig;
 }
@@ -165,18 +166,18 @@ export class PersistenceConfig implements IPersistenceConfig {
 	getEntityConfig(
 		entity:any
 	):IEntityConfig {
-		let className = EntityConfig.getObjectClassName(entity);
+		let className = EntityUtils.getObjectClassName(entity);
 		let constructor = entity.constructor;
 
 		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
 	}
 
 
-	getEntityConfigFromQ<IQE extends IQEntity<IQE>>(
+	getEntityConfigFromQ<IQE extends IQEntity>(
 		qEntity:IQE
 	):IEntityConfig {
-		let constructor = qEntity.entityConstructor;
-		let className = EntityConfig.getClassName(constructor);
+		let constructor = qEntity.__entityConstructor__;
+		let className = EntityUtils.getClassName(constructor);
 
 		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
 	}
