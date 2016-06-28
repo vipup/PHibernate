@@ -1,4 +1,10 @@
+/**
+ * Created by Papa on 4/17/2016.
+ */
 import { IQEntity, IQRelation, QEntity, QRelation, IEntity, QStringField, QNumberField, QDateField, IQStringField, IQNumberField, IQDateField, IDateOperation, IStringOperation, INumberOperation, JSONStringOperation, JSONNumberOperation, JSONDateOperation } from "querydsl-typescript/lib/index";
+export declare const PH_PRIMARY_KEY: string;
+export declare const PH_FOREIGN_KEYS: string;
+export declare const PH_MAPPED_BY: string;
 /**
  * Annotates Id fields of Entities.
  *
@@ -24,7 +30,7 @@ export declare function Entity(entityConfiguration?: EntityConfiguration): (cons
  * @constructor
  */
 export declare function ForeignKey(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
-export declare function MappedBy(collectionFieldName: string): (targetObject: any, propertyKey: string) => void;
+export declare function MappedBy(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
 export interface RepositoryConfiguration {
 }
 export declare function Repository(repositoryConfiguration?: RepositoryConfiguration): (constructor: Function) => void;
@@ -39,12 +45,13 @@ export declare function Query<IE extends IEntity, IParams>(entityClass: any, que
     (q, params: IParams): IE;
 }, paramsFactory: {
     (): IParams;
-}): (targetObject: any, propertyKey: string) => void;
+}): (target: any, propertyKey: string) => void;
 export declare class Task {
     description: string;
+    goal: Goal;
     taskId: number;
     name: string;
-    goal: Goal;
+    nextTaskId: number;
     prerequisiteTasks: Task[];
 }
 export interface ITask extends IEntity {

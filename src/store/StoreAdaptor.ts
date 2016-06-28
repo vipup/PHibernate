@@ -1,4 +1,4 @@
-import {QEntity, IEntity} from "querydsl-typescript/lib/index";
+import {QEntity, IEntity, PHQuery} from "querydsl-typescript/lib/index";
 import {Observable} from "rxjs/Observable";
 
 /**
@@ -23,15 +23,26 @@ export interface StoreAdaptor {
 		entity:E
 	):Promise<E>;
 
-	query<E, IE extends IEntity>(
-		iQEntity:IE,
-	  qEntity:QEntity<any>
+
+	searchOne<E>(
+		entityClass:{new ():E},
+		phQuery:PHQuery
 	):Observable<E>;
 
-	queryOnce<E, IE extends IEntity>(
-		iQEntity:IE,
-		qEntity:QEntity<any>
+	search<E>(
+		entityClass:{new ():E},
+		phQuery:PHQuery
+	):Observable<E[]>;
+
+	findOne<E>(
+		entityClass:{new ():E},
+		phQuery:PHQuery
 	):Promise<E>;
+
+	find<E>(
+		entityClass:{new ():E},
+		phQuery:PHQuery
+	):Promise<E[]>;
 
 	save<E>(
 		entity:E
