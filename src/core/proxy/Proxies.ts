@@ -1,5 +1,6 @@
 import {FieldType, RelationType} from "querydsl-typescript";
 import {ChangeRecord} from "delta-store/lib/index";
+import {IRecordState} from "../../store/RecordState";
 /**
  * Created by Papa on 5/17/2016.
  */
@@ -16,16 +17,7 @@ export interface EntityRelation {
 }
 
 export interface EntityProxy {
-	__data__:{
-		__accessed__:{[fieldName:string]:boolean};
-		__current__:{[fieldName:string]:any};
-		__initialized__:{[fieldName:string]:boolean};
-		__original__:{[fieldName:string]:any};
-	}
-	__initialized__:boolean;
-	__isDirty__:boolean;
-	__proxied__:boolean;
-	getChangeRecord():ChangeRecord;
+	__recordState__:IRecordState;
 }
 
 export interface EntityProxyClass {

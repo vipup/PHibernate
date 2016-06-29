@@ -8,33 +8,30 @@ import {getLocalStoreAdaptor} from "../../localStore/LocalStore";
 import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
 import {EntityProxy} from "../proxy/Proxies";
-import {QEntity, IEntity, PHQuery} from "querydsl-typescript/lib/index";
+import {QEntity, IEntity, PHQuery, RelationType} from "querydsl-typescript/lib/index";
 import {StoreAdaptor} from "../../store/StoreAdaptor";
 import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
+import {EntityUtils} from "../../shared/EntityUtils";
+import {CascadeRule} from "../../config/Rules";
+import {IEntityConfig} from "../../config/EntityConfig";
 
-export interface IEntityManager extends StoreAdaptor {
+export interface IEntityManager {
 
 	goOffline():void;
 	goOnline():Promise<any>;
 	initialize():Promise<any>;
 	isOnline():boolean;
 
+	create<E>(
+		entity:E,
+	  cascade?:CascadeRule
+	):Promise<E>;
 
-	searchOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE
-	):Observable<E>;
-
-	search<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE
-	):Observable<E[]>;
-
-	findOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE
+	delete<E>(
+		entity:E,
+		cascade?:CascadeRule
 	):Promise<E>;
 
 	find<E, IE extends IEntity>(
@@ -42,6 +39,32 @@ export interface IEntityManager extends StoreAdaptor {
 		iEntity:IE
 	):Promise<E[]>;
 
+	findOne<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		iEntity:IE
+	):Promise<E>;
+
+	initialize():Promise<any>;
+
+	search<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		iEntity:IE
+	):Observable<E[]>;
+
+	save<E>(
+		entity:E,
+		cascade?:CascadeRule
+	):Promise<E>;
+
+	searchOne<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		iEntity:IE
+	):Observable<E>;
+
+	update<E>(
+		entity:E,
+		cascade?:CascadeRule
+	):Promise<E>;
 }
 
 export class EntityManager implements IEntityManager {
@@ -115,36 +138,44 @@ export class EntityManager implements IEntityManager {
 	}
 
 	async create<E>(
-		entity:E
+		entity:E,
+		cascadeRule?:CascadeRule
 	):Promise<E> {
-		return this.persistEntity(entity, 'create');
+		return this.persistEntity(entity, 'create', cascadeRule);
 	}
 
 	async delete<E>(
-		entity:E
+		entity:E,
+		cascadeRule?:CascadeRule
 	):Promise<E> {
-		return this.persistEntity(entity, 'delete');
+		return this.persistEntity(entity, 'delete', cascadeRule);
 	}
 
 	async save<E>(
-		entity:E
+		entity:E,
+		cascadeRule?:CascadeRule
 	):Promise<E> {
-		return this.persistEntity(entity, 'persist');
+		return this.persistEntity(entity, 'persist', cascadeRule);
 	}
 
 	async update<E>(
-		entity:E
+		entity:E,
+		cascadeRule?:CascadeRule
 	):Promise<E> {
-		return this.persistEntity(entity, 'update');
+		return this.persistEntity(entity, 'update', cascadeRule);
 	}
 
 	private async persistEntity<E>(
 		entity:E,
-		operation:'create' | 'delete' | 'persist' | 'update'
+		operation:'create' | 'delete' | 'persist' | 'update',
+	  cascadeRule?:CascadeRule
 	):Promise<E> {
 		let entityConfig = this.config.getEntityConfig(entity);
 		let entityProxy:EntityProxy = <EntityProxy><any>entity;
 		let persistedInDeltaStore:boolean = false;
+
+		this.setForeignKeys(entity, cascadeRule);
+
 		if (entityConfig.changeListConfig) {
 			if (this.isOnline()) {
 				let deltaStore = this.deltaStoreMap[entityConfig.changeListConfig.deltaStoreName];
@@ -164,6 +195,50 @@ export class EntityManager implements IEntityManager {
 			throw `Entity is not persisted in either Delta Store or Local Store`;
 		}
 		return entity;
+	}
+
+	private ensureCascadeRule(
+		cascadeRule:CascadeRule,
+	  entityConfig:IEntityConfig
+	) {
+		if(cascadeRule || cascadeRule === 0) {
+			return cascadeRule;
+		}
+		if(entityConfig.cascadeRule) {
+			return cascadeRule;
+		}
+		// By default cascade many to ones to ensure correctness of foreign keys
+		return CascadeRule.CASCADE_MANY_TO_ONE;
+	}
+	
+	private ensureId<E>(
+		entity:E
+	) {
+		
+	}
+
+	private setForeignKeys<E>(
+		entity:E,
+	  cascadeRule?:CascadeRule
+	):void {
+		let entityConfig = this.config.getEntityConfig(entity);
+		let entityClassName = EntityUtils.getClassName(entity.constructor);
+		let entityRelationPropertyMap = PH.entitiesRelationPropertyMap[entityClassName];
+
+		let entityCascadeRule = this.ensureCascadeRule(cascadeRule, entityConfig);
+
+		for(let propertyName in entityRelationPropertyMap) {
+			let relationRecord:RelationRecord = entityRelationPropertyMap[propertyName];
+			if(entity[propertyName]) {
+				switch(relationRecord.relationType) {
+					case RelationType.MANY_TO_ONE:
+						let foreignKeyField = relationRecord.foreignKey;
+						break;
+					default:
+						// Nothing to do for One-to-Many, no foreign key in this entity
+				}
+			}
+		}
 	}
 
 	search<IE extends IEntity>(

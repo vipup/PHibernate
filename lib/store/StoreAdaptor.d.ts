@@ -7,21 +7,21 @@ export interface StoreSetupInfo {
     name: string;
 }
 export interface StoreAdaptor {
-    initialize(setupInfo: StoreSetupInfo): Promise<any>;
     create<E>(entity: E): Promise<E>;
     delete<E>(entity: E): Promise<E>;
-    searchOne<E>(entityClass: {
-        new (): E;
-    }, phQuery: PHQuery): Observable<E>;
-    search<E>(entityClass: {
-        new (): E;
-    }, phQuery: PHQuery): Observable<E[]>;
-    findOne<E>(entityClass: {
-        new (): E;
-    }, phQuery: PHQuery): Promise<E>;
     find<E>(entityClass: {
         new (): E;
     }, phQuery: PHQuery): Promise<E[]>;
+    findOne<E>(entityClass: {
+        new (): E;
+    }, phQuery: PHQuery): Promise<E>;
+    initialize(setupInfo: StoreSetupInfo): Promise<any>;
     save<E>(entity: E): Promise<E>;
+    search<E>(entityClass: {
+        new (): E;
+    }, phQuery: PHQuery): Observable<E[]>;
+    searchOne<E>(entityClass: {
+        new (): E;
+    }, phQuery: PHQuery): Observable<E>;
     update<E>(entity: E): Promise<E>;
 }
