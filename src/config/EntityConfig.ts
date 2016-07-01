@@ -4,16 +4,13 @@
 import {ILocalStoreConfig} from "./LocalStoreConfig";
 import {IChangeListConfig} from "./ChangeListConfig";
 import {IPersistenceConfig} from "./PersistenceConfig";
-import {CascadeRule} from "./Rules";
 
 export interface PHEntityConfig {
-	cascadeRule?:CascadeRule;
 	changeList?:string;
 	localStore?:string;
 }
 
 export interface IEntityConfig {
-	cascadeRule?:CasecadeRule;
 	changeListConfig?:IChangeListConfig;
 	className?:string;
 	clazz?:any;
@@ -22,7 +19,6 @@ export interface IEntityConfig {
 
 export class EntityConfig implements IEntityConfig {
 
-	cascadeRule:CasecadeRule;
 	changeListConfig:IChangeListConfig;
 	localStoreConfig:ILocalStoreConfig;
 
@@ -54,12 +50,6 @@ export class EntityConfig implements IEntityConfig {
 
 		if(!this.changeListConfig && !this.localStoreConfig) {
 			throw `Entity Configuration does not specify a Change List or a Local Store`;
-		}
-		if(config.cascadeRule) {
-			this.cascadeRule = config.cascadeRule;
-		}
-		if(!this.cascadeRule && persistenceConfig.cascadeRule) {
-			this.cascadeRule = persistenceConfig.cascadeRule;
 		}
 	}
 

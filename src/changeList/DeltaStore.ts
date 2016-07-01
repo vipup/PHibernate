@@ -51,7 +51,7 @@ export class DeltaStore implements IDeltaStore {
 		entityProxy:EntityProxy
 	):Promise<E> {
 		let changeListConfig = entityConfig.changeListConfig;
-		let changeRecord = entityProxy.getChangeRecord();
+		let changeRecord = entityProxy.__recordState__.getChangeRecord();
 		if (this.batchChanges) {
 			let changeListName = this.getChangeListName(changeListConfig);
 			let batchedChangeQueue = this.batchedChangeMap[changeListName];

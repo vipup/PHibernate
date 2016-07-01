@@ -1,14 +1,14 @@
-import {Query, QTask, IQTask, Task, ITask} from "../core/metadata/decorators";
-import {IQEntity, IQueryOperation, QueryOperation, OperationType} from "querydsl-typescript/lib/index";
+import {Query, Task, ITask} from "../core/metadata/decorators";
+import {IQueryOperation, QueryOperation, OperationType} from "querydsl-typescript/lib/index";
 import {Observable} from "rxjs/Observable";
 /**
  * Created by Papa on 6/11/2016.
  */
 
-
 export function like(
 	like:string | RegExp
 ):IQueryOperation {
+	
 	let instance = QueryOperation.getDefinedInstance(OperationType.LIKE, like);
 
 	return <QueryOperation>instance;
@@ -17,6 +17,7 @@ export function like(
 export function greaterThan(
 	greaterThan:number
 ):IQueryOperation {
+
 	let instance = QueryOperation.getDefinedInstance(OperationType.GREATER_THAN, greaterThan);
 
 	return <QueryOperation>instance;
@@ -27,7 +28,6 @@ export class DateUtils {
 	static getNowTimeStamp():string {
 		return new Date().toJSON();
 	}
-
 
 	iQuery(
 		test:any

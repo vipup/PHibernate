@@ -2,6 +2,7 @@
  * Created by Papa on 4/17/2016.
  */
 import { IQEntity, IQRelation, QEntity, QRelation, IEntity, QStringField, QNumberField, QDateField, IQStringField, IQNumberField, IQDateField, IDateOperation, IStringOperation, INumberOperation, JSONStringOperation, JSONNumberOperation, JSONDateOperation } from "querydsl-typescript/lib/index";
+import { ManyToOneElements, OneToManyElements } from "../../config/JPAApi";
 export declare const PH_PRIMARY_KEY: string;
 export declare const PH_FOREIGN_KEYS: string;
 export declare const PH_MAPPED_BY: string;
@@ -31,6 +32,26 @@ export declare function Entity(entityConfiguration?: EntityConfiguration): (cons
  */
 export declare function ForeignKey(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
 export declare function MappedBy(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
+/**
+ * Specifies a single-valued association to another entity class that has many-to-one multiplicity.
+ *
+ * http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToOne.html
+ *
+ * @param elements
+ * @returns {function(any, string)}
+ * @constructor
+ */
+export declare function ManyToOne(elements: ManyToOneElements): (targetObject: any, propertyKey: string) => void;
+/**
+ * Specifies a many-valued association with one-to-many multiplicity.
+ *
+ * http://docs.oracle.com/javaee/7/api/javax/persistence/OneToMany.html
+ *
+ * @param elements
+ * @returns {function(any, string)}
+ * @constructor
+ */
+export declare function OneToMany(elements: OneToManyElements): (targetObject: any, propertyKey: string) => void;
 export interface RepositoryConfiguration {
 }
 export declare function Repository(repositoryConfiguration?: RepositoryConfiguration): (constructor: Function) => void;

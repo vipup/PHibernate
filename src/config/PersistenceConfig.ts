@@ -13,13 +13,11 @@ import {IQEntity} from "querydsl-typescript/lib/index";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/index";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
 import {EntityUtils} from "../shared/EntityUtils";
-import {CascadeRule} from "./Rules";
 
 export interface PHPersistenceConfig {
 	appName:string;
 	deltaStores?:{[name:string]:PHDeltaStoreConfig};
 	default?:{
-		cascadeRule:CascadeRule;
 		changeList:PHChangeListConfig;
 		entity:PHEntityConfig;
 	};
@@ -31,7 +29,6 @@ export interface PHPersistenceConfig {
 
 export interface IPersistenceConfig {
 
-	cascadeRule:CascadeRule;
 	changeListConfigMap:{[changeListName:string]:IChangeListConfig};
 	deltaStoreConfigMap:{[deltaStoreName:string]:IDeltaStoreConfig};
 	entityConfigMap:{[className:string]:IEntityConfig};
@@ -90,7 +87,6 @@ export class PersistenceConfig implements IPersistenceConfig {
 		};
 	}
 
-	cascadeRule:CascadeRule;
 	changeListConfigMap:{[changeListName:string]:IChangeListConfig} = {};
 	deltaStoreConfigMap:{[className:string]:IDeltaStoreConfig} = {};
 	entityConfigMap:{[className:string]:IEntityConfig} = {};
@@ -118,7 +114,6 @@ export class PersistenceConfig implements IPersistenceConfig {
 		if (config.default) {
 			defaultPhChangeListConfig = config.default.changeList;
 			defaultPhEntityConfig = config.default.entity;
-			this.cascadeRule = config.default.cascadeRule;
 		}
 		if (config.changeLists) {
 			for (let changeListName in config.changeLists) {

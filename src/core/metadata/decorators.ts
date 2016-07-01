@@ -9,6 +9,7 @@ import {
 	JSONNumberOperation, JSONDateOperation
 } from "querydsl-typescript/lib/index";
 import {PH} from "../../config/PH";
+import {ManyToOneElements, OneToManyElements} from "../../config/JPAApi";
 
 export const PH_PRIMARY_KEY = '__primaryKey__';
 export const PH_FOREIGN_KEYS = '__foreignKeys__';
@@ -90,6 +91,48 @@ export function MappedBy(
 		mappedBy[propertyKey] = foreignKeyFieldName;
 
 	}
+}
+
+/**
+ * Specifies a single-valued association to another entity class that has many-to-one multiplicity.
+ *
+ * http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToOne.html
+ *
+ * @param elements
+ * @returns {function(any, string)}
+ * @constructor
+ */
+export function ManyToOne(
+	elements:ManyToOneElements
+) {
+	return function (
+		targetObject:any,
+		propertyKey:string
+	) {
+
+	}
+
+}
+
+/**
+ * Specifies a many-valued association with one-to-many multiplicity.
+ *
+ * http://docs.oracle.com/javaee/7/api/javax/persistence/OneToMany.html
+ *
+ * @param elements
+ * @returns {function(any, string)}
+ * @constructor
+ */
+export function OneToMany(
+	elements:OneToManyElements
+) {
+	return function (
+		targetObject:any,
+		propertyKey:string
+	) {
+
+	}
+
 }
 
 export interface RepositoryConfiguration {

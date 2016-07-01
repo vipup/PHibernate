@@ -9,6 +9,7 @@ import {PH} from "../../config/PH";
 import {Subject} from 'rxjs/Subject';
 import {PH_PRIMARY_KEY} from "../../core/metadata/decorators";
 import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
+import {PlatformUtils} from "../../shared/PlatformUtils";
 
 declare function require(moduleName:string):any;
 
@@ -39,9 +40,10 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	):Promise<E> {
 		let className = EntityUtils.getObjectClassName(entity);
 		let nowTimeStamp = DateUtils.getNowTimeStamp();
+		let macAddress = PlatformUtils.getMacAddress();
 
 		let record:PouchDbRecord = <any>entity;
-		record._id = `${className}_${nowTimeStamp}`;
+		record._id = `${className}_${nowTimeStamp}_${macAddress}`;
 		let updateRecord = await this.localDB.put(record);
 		record._rev = updateRecord.rev;
 

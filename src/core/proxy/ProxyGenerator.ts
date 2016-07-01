@@ -1,5 +1,6 @@
 import {EntityProxyClass, EntityProxy, EntityField} from "./Proxies";
 import {FieldType, RelationType} from "querydsl-typescript";
+import {RecordState} from "../../store/RecordState";
 
 /**
  * Created by Papa on 5/15/2016.
@@ -16,21 +17,23 @@ export class ProxyGenerator {
 		let propertyWrapper:EntityField = {
 			get: function () {
 				let proxy = ProxyGenerator.setupProxy(this);
-				if (proxy.__data__.__initialized__[propertyName]) {
-					return proxy.__data__.__current__[propertyName];
+				let state = proxy.__recordState__;
+				if (state.data.initialized[propertyName]) {
+					return state.data.current[propertyName];
 				} else {
-					proxy.__data__.__accessed__[propertyName] = true;
+					state.data.accessed[propertyName] = true;
 					return ProxyGenerator.getDefaultFieldValue(fieldType);
 				}
 			},
 			set: function (value) {
 				let proxy = ProxyGenerator.setupProxy(this);
-				let currentValue = proxy.__data__.__current__[propertyName];
+				let state = proxy.__recordState__;
+				let currentValue = state.data.current[propertyName];
 				if (currentValue === value) {
 					return;
 				}
-				proxy.__isDirty__ = true;
-				proxy.__data__.__current__[propertyName] = value;
+				state.isDirty = true;
+				state.data.current[propertyName] = value;
 			}
 		};
 		let proxiedClass:EntityProxyClass = <EntityProxyClass>Class;
@@ -50,21 +53,23 @@ export class ProxyGenerator {
 		let propertyWrapper:EntityField = {
 			get: function () {
 				let proxy = ProxyGenerator.setupProxy(this);
-				if (proxy.__data__.__initialized__[propertyName]) {
-					return proxy.__data__.__current__[propertyName];
+				let state = proxy.__recordState__;
+				if (state.data.initialized[propertyName]) {
+					return state.data.current[propertyName];
 				} else {
-					proxy.__data__.__accessed__[propertyName] = true;
+					state.data.accessed[propertyName] = true;
 					return ProxyGenerator.getDefaultRelationValue(relationType, RelatedEntityClass);
 				}
 			},
 			set: function (value) {
 				let proxy = ProxyGenerator.setupProxy(this);
-				let currentValue = proxy.__data__.__current__[propertyName];
+				let state = proxy.__recordState__;
+				let currentValue = state.data.current[propertyName];
 				if (currentValue === value) {
 					return;
 				}
-				proxy.__isDirty__ = true;
-				proxy.__data__.__current__[propertyName] = value;
+				state.isDirty = true;
+				state.data.current[propertyName] = value;
 			}
 		};
 		let proxiedClass:EntityProxyClass = <EntityProxyClass>Class;
@@ -113,19 +118,16 @@ export class ProxyGenerator {
 		entity:any
 	):EntityProxy {
 		let proxy = <EntityProxy>entity;
+		let state = proxy.__recordState__;
 
-		if (proxy.__proxied__) {
+		if (state) {
+			state.proxied = true;
 			return proxy;
 		}
 
-		proxy.__data__ = {
-			__accessed__: {},
-			__current__: {},
-			__initialized__: {},
-			__original__: {}
-		};
-
-		proxy.__proxied__ = true;
+		state = new RecordState();
+		state.proxied = true;
+		proxy.__recordState__ = state;
 
 		return proxy;
 	}
