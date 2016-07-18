@@ -217,7 +217,7 @@ export class EntityManager implements IEntityManager {
 			if(entity[propertyName]) {
 				switch(relationRecord.relationType) {
 					case RelationType.MANY_TO_ONE:
-						let foreignKeyField = relationRecord.foreignKey;
+						// FIXME: work here next
 						break;
 					default:
 						// Nothing to do for One-to-Many, no foreign key in this entity

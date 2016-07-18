@@ -4,8 +4,8 @@
 import { IQEntity, IQRelation, QEntity, QRelation, IEntity, QStringField, QNumberField, QDateField, IQStringField, IQNumberField, IQDateField, IDateOperation, IStringOperation, INumberOperation, JSONStringOperation, JSONNumberOperation, JSONDateOperation } from "querydsl-typescript/lib/index";
 import { ManyToOneElements, OneToManyElements } from "../../config/JPAApi";
 export declare const PH_PRIMARY_KEY: string;
-export declare const PH_FOREIGN_KEYS: string;
-export declare const PH_MAPPED_BY: string;
+export declare const PH_MANY_TO_ONE: string;
+export declare const PH_ONE_TO_MANY: string;
 /**
  * Annotates Id fields of Entities.
  *
@@ -24,15 +24,6 @@ export interface EntityConfiguration {
  */
 export declare function Entity(entityConfiguration?: EntityConfiguration): (constructor: Function) => void;
 /**
- * Annotates collections of Entities in other entities.
- *
- * @param foreignKeyFieldName
- * @returns {function(any, string)}
- * @constructor
- */
-export declare function ForeignKey(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
-export declare function MappedBy(foreignKeyFieldName: string): (targetObject: any, propertyKey: string) => void;
-/**
  * Specifies a single-valued association to another entity class that has many-to-one multiplicity.
  *
  * http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToOne.html
@@ -41,7 +32,7 @@ export declare function MappedBy(foreignKeyFieldName: string): (targetObject: an
  * @returns {function(any, string)}
  * @constructor
  */
-export declare function ManyToOne(elements: ManyToOneElements): (targetObject: any, propertyKey: string) => void;
+export declare function ManyToOne(elements?: ManyToOneElements): (targetObject: any, propertyKey: string) => void;
 /**
  * Specifies a many-valued association with one-to-many multiplicity.
  *
@@ -51,7 +42,7 @@ export declare function ManyToOne(elements: ManyToOneElements): (targetObject: a
  * @returns {function(any, string)}
  * @constructor
  */
-export declare function OneToMany(elements: OneToManyElements): (targetObject: any, propertyKey: string) => void;
+export declare function OneToMany(elements?: OneToManyElements): (targetObject: any, propertyKey: string) => void;
 export interface RepositoryConfiguration {
 }
 export declare function Repository(repositoryConfiguration?: RepositoryConfiguration): (constructor: Function) => void;

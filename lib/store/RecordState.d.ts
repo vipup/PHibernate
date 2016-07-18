@@ -30,17 +30,31 @@ export declare class RecordStateData implements IRecordStateData {
         [fieldName: string]: any;
     };
 }
+export declare enum CurrentState {
+    CREATED = 0,
+    DELETED = 1,
+    UPDATED = 2,
+}
 export interface IRecordState {
     data: IRecordStateData;
     initialized: boolean;
     isDirty: boolean;
     proxied: boolean;
+    create(): void;
+    delete(): void;
     getChangeRecord(): ChangeRecord;
+    update(): void;
+    toJSON(): any;
 }
 export declare class RecordState implements IRecordState {
+    currentState: CurrentState;
     data: RecordStateData;
     initialized: boolean;
     isDirty: boolean;
     proxied: boolean;
+    create(): void;
+    delete(): void;
     getChangeRecord(): ChangeRecord;
+    toJSON(): any;
+    update(): void;
 }

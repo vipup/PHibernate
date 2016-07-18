@@ -4,8 +4,9 @@ import {
 	StringOperation
 } from "querydsl-typescript/lib/index";
 import {EntityUtils} from "../shared/EntityUtils";
-import {PH_MAPPED_BY, PH_FOREIGN_KEYS} from "../core/metadata/decorators";
+import {PH_MANY_TO_ONE, PH_ONE_TO_MANY} from "../core/metadata/decorators";
 import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
+import {ManyToOneElements, OneToManyElements} from "./JPAApi";
 /**
  * Created by Papa on 6/24/2016.
  */
@@ -40,35 +41,33 @@ export class PH {
 			entityRelationPropertyMap = {};
 			PH.entitiesRelationPropertyMap[entityName] = entityRelationPropertyMap;
 		}
-		let mappedBy:{[propertyName:string]:string} = entityConstructor[PH_MAPPED_BY];
-		let foreignKeys:{[propertyName:string]:string} = entityConstructor[PH_FOREIGN_KEYS];
+		let manyToOneConfigs:{[propertyName:string]:ManyToOneElements} = entityConstructor[PH_MANY_TO_ONE];
+		let oneToManyConfigs:{[propertyName:string]:OneToManyElements} = entityConstructor[PH_ONE_TO_MANY];
 
 		relations.forEach((
 			relation:IQRelation<any, any, any>
 		) => {
-			let relationRecord:RelationRecord;
 			let propertyName = relation.propertyName;
 			let relationClassName = EntityUtils.getClassName(relation.relationEntityConstructor);
+
+			let decoratorElements = {};
+
 			switch (relation.relationType) {
 				case RelationType.MANY_TO_ONE:
-					relationRecord = {
-						entityName: relationClassName,
-						foreignKey: relation.relationPropertyName,
-						mappedBy: null,
-						propertyName: propertyName,
-						relationType: relation.relationType
-					};
+					decoratorElements[PH_MANY_TO_ONE] = manyToOneConfigs[propertyName];
 					break;
 				case RelationType.ONE_TO_MANY:
-					relationRecord = {
-						entityName: relationClassName,
-						foreignKey: null,
-						mappedBy: relation.relationPropertyName,
-						propertyName: propertyName,
-						relationType: relation.relationType
-					};
+					decoratorElements[PH_ONE_TO_MANY] = oneToManyConfigs[propertyName];
 					break;
 			}
+			
+			let relationRecord:RelationRecord = {
+				entityName: relationClassName,
+				decoratorElements: decoratorElements,
+				propertyName: propertyName,
+				relationType: relation.relationType
+			};
+
 			entityRelationPropertyMap[propertyName] = relationRecord;
 		});
 

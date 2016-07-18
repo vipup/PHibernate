@@ -10,6 +10,7 @@ import {Subject} from 'rxjs/Subject';
 import {PH_PRIMARY_KEY} from "../../core/metadata/decorators";
 import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
 import {PlatformUtils} from "../../shared/PlatformUtils";
+import {EntityProxy} from "../../core/proxy/Proxies";
 
 declare function require(moduleName:string):any;
 
@@ -42,6 +43,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 		let nowTimeStamp = DateUtils.getNowTimeStamp();
 		let macAddress = PlatformUtils.getMacAddress();
 
+		let proxy = <EntityProxy><any>entity;
 		let record:PouchDbRecord = <any>entity;
 		record._id = `${className}_${nowTimeStamp}_${macAddress}`;
 		let updateRecord = await this.localDB.put(record);
@@ -156,13 +158,12 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 		let objectSelector = childQuery.selector['$and'];
 		let relationRecord:RelationRecord = PH.entitiesRelationPropertyMap[entityName][propertyName];
 		let childEntityConstructor = PH.qEntityMap[relationRecord.entityName].__entityConstructor__;
-		let mappedByPropertyName = relationRecord.mappedBy;
 
 		let parentEntitiesByForeignKey:{[foreignKey:string]:any[]} = {};
 		let foreignKeys = parentResults.map((
 			entity
 		) => {
-			let foreignKeyValue = entity[relationRecord.foreignKey];
+			let foreignKeyValue = entity[relationRecord.propertyName];
 			let parentEntitiesForForeignKey:any[] = parentEntitiesByForeignKey[foreignKeyValue];
 			if (!parentEntitiesForForeignKey) {
 				parentEntitiesForForeignKey = [];

@@ -8,9 +8,9 @@
 import {
 	Entity,
 	EntityConfiguration,
-	ForeignKey,
 	Id,
-	MappedBy,
+	ManyToOne,
+	OneToMany,
 	Query,
 	Repository,
 	RepositoryConfiguration
@@ -31,9 +31,9 @@ export {
 	EntityField,
 	EntityProxy,
 	EntityProxyClass,
-	ForeignKey,
 	Id,
-	MappedBy,
+	ManyToOne,
+	OneToMany,
 	IRepository,
 	QRepository,
 	Query,

@@ -12,8 +12,9 @@ import {PH} from "../../config/PH";
 import {ManyToOneElements, OneToManyElements} from "../../config/JPAApi";
 
 export const PH_PRIMARY_KEY = '__primaryKey__';
-export const PH_FOREIGN_KEYS = '__foreignKeys__';
-export const PH_MAPPED_BY = '__mappedBy__';
+export const PH_MANY_TO_ONE = '__ph_many_to_one__';
+export const PH_ONE_TO_MANY = '__ph_one_to_many__';
+
 
 /**
  * Annotates Id fields of Entities.
@@ -54,46 +55,6 @@ export function Entity(
 }
 
 /**
- * Annotates collections of Entities in other entities.
- *
- * @param foreignKeyFieldName
- * @returns {function(any, string)}
- * @constructor
- */
-export function ForeignKey(
-	foreignKeyFieldName:string
-) {
-	return function (
-		targetObject:any,
-		propertyKey:string
-	) {
-		let foreignKeys = targetObject[PH_FOREIGN_KEYS];
-		if(!foreignKeys) {
-			foreignKeys = {};
-			targetObject[PH_FOREIGN_KEYS] = foreignKeys;
-		}
-		foreignKeys[propertyKey] = foreignKeyFieldName;
-	}
-}
-
-export function MappedBy(
-	foreignKeyFieldName:string
-) {
-	return function (
-		targetObject:any,
-		propertyKey:string
-	) {
-		let mappedBy = targetObject[PH_MAPPED_BY];
-		if(!mappedBy) {
-			mappedBy = {};
-			targetObject[PH_MAPPED_BY] = mappedBy;
-		}
-		mappedBy[propertyKey] = foreignKeyFieldName;
-
-	}
-}
-
-/**
  * Specifies a single-valued association to another entity class that has many-to-one multiplicity.
  *
  * http://docs.oracle.com/javaee/7/api/javax/persistence/ManyToOne.html
@@ -103,13 +64,18 @@ export function MappedBy(
  * @constructor
  */
 export function ManyToOne(
-	elements:ManyToOneElements
+	elements?:ManyToOneElements
 ) {
 	return function (
 		targetObject:any,
 		propertyKey:string
 	) {
-
+		let manyToOne = targetObject[PH_MANY_TO_ONE];
+		if(!manyToOne) {
+			manyToOne = {};
+			targetObject[PH_MANY_TO_ONE] = manyToOne;
+		}
+		manyToOne[propertyKey] = elements;
 	}
 
 }
@@ -124,13 +90,18 @@ export function ManyToOne(
  * @constructor
  */
 export function OneToMany(
-	elements:OneToManyElements
+	elements?:OneToManyElements
 ) {
 	return function (
 		targetObject:any,
 		propertyKey:string
 	) {
-
+		let oneToMany = targetObject[PH_ONE_TO_MANY];
+		if(!oneToMany) {
+			oneToMany = {};
+			targetObject[PH_ONE_TO_MANY] = oneToMany;
+		}
+		oneToMany[propertyKey] = elements;
 	}
 
 }
@@ -183,7 +154,7 @@ export class Task {
 
 	description:string;
 
-	@ForeignKey('goalId')
+	@ManyToOne()
 	goal:Goal;
 
 	@Id()
@@ -193,7 +164,7 @@ export class Task {
 
 	nextTaskId:number;
 
-	@MappedBy('nextTaskId')
+	@OneToMany()
 	prerequisiteTasks:Task[];
 
 }
@@ -238,8 +209,8 @@ extends QEntity<QTask> implements IQTask
 	name = new QStringField<QTask>(this, QTask, 'Task', 'name');
 
 	// Relations
-	goal = new QRelation<QGoal, Goal, QTask>(this, QTask, RelationType.MANY_TO_ONE, 'goal', 'goalId', Goal, QGoal);
-	prerequisiteTasks = new QRelation<QTask, Task, QTask>(this, QTask, RelationType.ONE_TO_MANY, 'prerequisiteTasks', 'nextTaskId', Task, QTask);
+	goal = new QRelation<QGoal, Goal, QTask>(this, QTask, RelationType.MANY_TO_ONE, 'goal', Goal, QGoal);
+	prerequisiteTasks = new QRelation<QTask, Task, QTask>(this, QTask, RelationType.ONE_TO_MANY, 'prerequisiteTasks', Task, QTask);
 
 	constructor(
 		isTemplate:boolean = false
@@ -260,6 +231,8 @@ export class Goal {
 	goalId:number;
 	name:string;
 	dueDate:Date;
+
+	@OneToMany()
 	tasks:Task[];
 }
 
@@ -304,7 +277,7 @@ extends QEntity<QGoal> implements IQGoal
 	dueDate = new QDateField<QGoal>(this, QGoal, 'Goal', 'dueDate');
 
 	// Relations
-	tasks = new QRelation<QTask, Task, QGoal>(this, QGoal, RelationType.ONE_TO_MANY, 'tasks', 'goal', Task, QTask);
+	tasks = new QRelation<QTask, Task, QGoal>(this, QGoal, RelationType.ONE_TO_MANY, 'tasks', Task, QTask);
 
 	constructor(
 		isTemplate:boolean = false

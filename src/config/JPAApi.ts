@@ -8,7 +8,7 @@ export enum CascadeType {
 	MERGE, // Cascade merge operation
 	PERSIST, // Cascade persist operation
 	REFRESH, // Cascade refresh operation
-	REMOVE, // Cascade remove operation
+	REMOVE // Cascade remove operation
 }
 
 export enum FetchType {
