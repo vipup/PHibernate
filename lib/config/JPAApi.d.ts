@@ -14,13 +14,13 @@ export declare enum FetchType {
     LAZY = 1,
 }
 export interface ManyToOneElements {
-    cascade: CascadeType;
-    fetch: FetchType;
-    optional: boolean;
+    cascade?: CascadeType;
+    fetch?: FetchType;
+    optional?: boolean;
 }
 export interface OneToManyElements {
-    cascade: CascadeType;
-    fetch: FetchType;
+    cascade?: CascadeType;
+    fetch?: FetchType;
     mappedBy: string;
-    orphanRemoval: boolean;
+    orphanRemoval?: boolean;
 }

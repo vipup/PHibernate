@@ -5,6 +5,7 @@
  * Created by Papa on 4/23/2016.
  */
 
+import {CascadeType, FetchType, ManyToOneElements, OneToManyElements} from "./config/JPAApi"
 import {
 	Entity,
 	EntityConfiguration,
@@ -26,14 +27,18 @@ import {ProxyGenerator} from "./core/proxy/ProxyGenerator";
 import {PH} from "./config/PH";
 
 export {
+	CascadeType,
 	Entity,
 	EntityConfiguration,
 	EntityField,
 	EntityProxy,
 	EntityProxyClass,
+	FetchType,
 	Id,
 	ManyToOne,
+	ManyToOneElements,
 	OneToMany,
+	OneToManyElements,
 	IRepository,
 	QRepository,
 	Query,
