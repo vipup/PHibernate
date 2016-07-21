@@ -7,10 +7,11 @@ import {PouchDbRecord} from "./PouchDbModel";
 import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {Subject} from 'rxjs/Subject';
-import {PH_PRIMARY_KEY} from "../../core/metadata/decorators";
+import {PH_PRIMARY_KEY, PH_ONE_TO_MANY} from "../../core/metadata/decorators";
 import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {EntityProxy} from "../../core/proxy/Proxies";
+import {OneToManyElements} from "../../config/JPAApi";
 
 declare function require(moduleName:string):any;
 
@@ -202,7 +203,8 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 		let objectSelector = childQuery.selector['$and'];
 		let relationRecord:RelationRecord = PH.entitiesRelationPropertyMap[entityName][propertyName];
 		let childEntityConstructor = PH.qEntityMap[relationRecord.entityName].__entityConstructor__;
-		let mappedByPropertyName = relationRecord.mappedBy;
+		let oneToManyElements:OneToManyElements = relationRecord.decoratorElements[PH_ONE_TO_MANY][propertyName];
+		let mappedByPropertyName = oneToManyElements.mappedBy;
 		let parentEntitiesByPrimaryKey:{[foreignKey:string]:any} = {};
 
 		let ids = parentResults.map((
