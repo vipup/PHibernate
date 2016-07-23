@@ -122,16 +122,17 @@ export function Repository(
 /**
  * Annotates query function pointers (variables).
  *
- * @param queryDefinition
+ * @param selectDefinition
+ * @param fromWhereDefinition
  * @returns {function(any, string)}
  * @constructor
  */
 export function Query<IE extends IEntity, IParams>(
 	entityClass:any,
-	queryDefinition:IE | {(q, params:IParams):IE},
+	selectDefinition:IE | {(select:any):IE},
+	fromWhereDefinition:IE | {(q:PH, params:IParams):IE},
   paramsFactory:{():IParams}
 ) {
-
 
 	return function (target, propertyKey:string) {
 		Object.defineProperty(target, propertyKey, {
