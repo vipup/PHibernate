@@ -42,12 +42,13 @@ export class DateUtils {
 		*/
 	}
 
-
+/*
 	@Query<ITask, any>(Task, (q, strVal, numVal) => ({
 			description: q.strOp.like(strVal),
 			taskId: q.numOp.greaterThan(numVal)
 		}), this.iQuery)
 	test:Observable<Task>;
+*/
 
 	//
 

@@ -2,6 +2,7 @@
  * Created by Papa on 4/17/2016.
  */
 import { IQEntity, IQRelation, QEntity, QRelation, IEntity, QStringField, QNumberField, QDateField, IQStringField, IQNumberField, IQDateField, IDateOperation, IStringOperation, INumberOperation, JSONStringOperation, JSONNumberOperation, JSONDateOperation } from "querydsl-typescript/lib/index";
+import { PH } from "../../config/PH";
 import { ManyToOneElements, OneToManyElements } from "../../config/JPAApi";
 export declare const PH_PRIMARY_KEY: string;
 export declare const PH_MANY_TO_ONE: string;
@@ -49,12 +50,15 @@ export declare function Repository(repositoryConfiguration?: RepositoryConfigura
 /**
  * Annotates query function pointers (variables).
  *
- * @param queryDefinition
+ * @param selectDefinition
+ * @param fromWhereDefinition
  * @returns {function(any, string)}
  * @constructor
  */
-export declare function Query<IE extends IEntity, IParams>(entityClass: any, queryDefinition: IE | {
-    (q, params: IParams): IE;
+export declare function Query<IE extends IEntity, IParams>(entityClass: any, selectDefinition: IE | {
+    (select: any): IE;
+}, fromWhereDefinition: IE | {
+    (q: PH, params: IParams): IE;
 }, paramsFactory: {
     (): IParams;
 }): (target: any, propertyKey: string) => void;
