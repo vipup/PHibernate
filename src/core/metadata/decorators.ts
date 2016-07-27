@@ -14,6 +14,8 @@ import {ManyToOneElements, OneToManyElements} from "../../config/JPAApi";
 export const PH_PRIMARY_KEY = '__primaryKey__';
 export const PH_MANY_TO_ONE = '__ph_many_to_one__';
 export const PH_ONE_TO_MANY = '__ph_one_to_many__';
+export const PH_VISIBLE_FOR = '__ph_visible_for__';
+export const PH_EDITABLE_FOR = '__ph_editable_for__';
 
 
 /**
@@ -106,6 +108,54 @@ export function OneToMany(
 
 }
 
+export interface AccessControlElements {
+	roles: string[]
+}
+
+export interface VisibleForElements extends AccessControlElements {
+
+}
+
+export function VisibleFor(
+	elements:VisibleForElements
+) {
+
+	return function (
+		targetObject:any,
+		propertyKey:string
+	) {
+		let visibleForMap = targetObject[PH_VISIBLE_FOR];
+		if(!visibleForMap) {
+			visibleForMap = {};
+			targetObject[PH_VISIBLE_FOR] = visibleForMap;
+		}
+		visibleForMap[propertyKey] = elements;
+	}
+
+}
+
+export interface EditableForElements extends AccessControlElements {
+
+}
+
+export function EditableFor(
+	elements:EditableForElements
+) {
+
+	return function (
+		targetObject:any,
+		propertyKey:string
+	) {
+		let editableForMap = targetObject[PH_EDITABLE_FOR];
+		if(!editableForMap) {
+			editableForMap = {};
+			targetObject[PH_EDITABLE_FOR] = editableForMap;
+		}
+		editableForMap[propertyKey] = elements;
+	}
+
+}
+
 export interface RepositoryConfiguration {
 
 }
@@ -146,150 +196,3 @@ export function Query<IE extends IEntity, IParams>(
 	}
 
 }
-
-let goal:IGoal = {
-};
-
-
-export class Task {
-
-	description:string;
-
-	@ManyToOne()
-	goal:Goal;
-
-	@Id()
-	taskId:number;
-
-	name:string;
-
-	nextTaskId:number;
-
-	@OneToMany()
-	prerequisiteTasks:Task[];
-
-}
-
-//Entity Query
-export interface ITask
-extends IEntity
-{
-	// Properties
-	description?: IQStringField<any> | IStringOperation | JSONStringOperation | string;
-	taskId?: IQNumberField<any> | INumberOperation | JSONNumberOperation | number;
-	name?: IQStringField<any> | IStringOperation | JSONStringOperation | string;
-
-	// Relations
-	goal?: IQRelation<IQGoal, Goal, IQTask> | IQGoal
-	prerequisiteTasks?: IQRelation<IQTask, Task, IQTask> | IQTask
-
-}
-
-export interface IQTask
-extends ITask, IQEntity {
-}
-
-// Entity Query Implementation
-export class QTask
-extends QEntity<QTask> implements IQTask
-{
-	static q = new QTask(true);
-
-	// Static Field accessors
-	static description = QTask.q.description;
-	static taskId = QTask.q.taskId;
-	static name = QTask.q.name;
-
-	// Static Relation accessors
-	static goal = QTask.q.goal;
-	static prerequisiteTasks = QTask.q.prerequisiteTasks;
-
-	// Fields
-	description = new QStringField<QTask>(this, QTask, 'Task', 'description');
-	taskId = new QNumberField<QTask>(this, QTask, 'Task', 'taskId');
-	name = new QStringField<QTask>(this, QTask, 'Task', 'name');
-
-	// Relations
-	goal = new QRelation<QGoal, Goal, QTask>(this, QTask, RelationType.MANY_TO_ONE, 'goal', Goal, QGoal);
-	prerequisiteTasks = new QRelation<QTask, Task, QTask>(this, QTask, RelationType.ONE_TO_MANY, 'prerequisiteTasks', Task, QTask);
-
-	constructor(
-		isTemplate:boolean = false
-	) {
-		super(Task, 'Task', isTemplate);
-	}
-
-	toJSON():any {
-		throw 'Not Implemented';
-	}
-
-}
-
-PH.addQEntity(Task, QTask.q);
-
-export class Goal {
-	description:string;
-	goalId:number;
-	name:string;
-	dueDate:Date;
-
-	@OneToMany()
-	tasks:Task[];
-}
-
-//Entity Query
-export interface IGoal
-extends IEntity
-{
-	// Properties
-	description?: IQStringField<any> | IStringOperation | JSONStringOperation | string;
-	goalId?: IQNumberField<any> | INumberOperation | JSONNumberOperation | number;
-	name?: IQStringField<any> | IStringOperation | JSONStringOperation | string;
-	dueDate?: IQDateField<any> | IDateOperation | JSONDateOperation | Date;
-
-	// Relations
-	tasks?: IQRelation<IQTask, Task, IQGoal> | IQTask
-
-}
-
-export interface IQGoal
-extends IGoal, IQEntity {
-}
-
-// Entity Query Implementation
-export class QGoal
-extends QEntity<QGoal> implements IQGoal
-{
-	static q = new QGoal(true);
-
-	// Static Field accessors
-	static description = QGoal.q.description;
-	static goalId = QGoal.q.goalId;
-	static name = QGoal.q.name;
-	static dueDate = QGoal.q.dueDate;
-
-	// Static Relation accessors
-	static tasks = QGoal.q.tasks;
-
-	// Fields
-	description = new QStringField<QGoal>(this, QGoal, 'Goal', 'description');
-	goalId = new QNumberField<QGoal>(this, QGoal, 'Goal', 'goalId');
-	name = new QStringField<QGoal>(this, QGoal, 'Goal', 'name');
-	dueDate = new QDateField<QGoal>(this, QGoal, 'Goal', 'dueDate');
-
-	// Relations
-	tasks = new QRelation<QTask, Task, QGoal>(this, QGoal, RelationType.ONE_TO_MANY, 'tasks', Task, QTask);
-
-	constructor(
-		isTemplate:boolean = false
-	) {
-		super(Goal, 'Goal', isTemplate);
-	}
-
-	toJSON():any {
-		throw 'Not Implemented';
-	}
-
-}
-
-PH.addQEntity(Goal, QGoal.q);
