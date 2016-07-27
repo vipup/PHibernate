@@ -1,4 +1,3 @@
-import {Query, Task, ITask} from "../core/metadata/decorators";
 import {IQueryOperation, QueryOperation, OperationType} from "querydsl-typescript/lib/index";
 import {Observable} from "rxjs/Observable";
 /**
