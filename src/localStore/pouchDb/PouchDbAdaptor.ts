@@ -1,6 +1,6 @@
 import {LocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {PouchDbStore, PouchDbStoreSetupInfo, PouchDbStoreShareInfo} from "./PouchDbApi";
-import {IQEntity, PHQuery, PouchDbQuery, QEntity, IEntity, RelationType} from "querydsl-typescript/lib/index";
+import {IQEntity, PHQuery, PouchDbQuery, RelationRecord, RelationType} from "querydsl-typescript";
 import {EntityUtils} from "../../shared/EntityUtils";
 import {DateUtils} from "../../shared/DateUtils";
 import {PouchDbRecord} from "./PouchDbModel";
@@ -8,7 +8,6 @@ import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {Subject} from 'rxjs/Subject';
 import {PH_PRIMARY_KEY, PH_ONE_TO_MANY} from "../../core/metadata/decorators";
-import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {EntityProxy} from "../../core/proxy/Proxies";
 import {OneToManyElements} from "../../config/JPAApi";

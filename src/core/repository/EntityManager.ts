@@ -8,13 +8,11 @@ import {getLocalStoreAdaptor} from "../../localStore/LocalStore";
 import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
 import {EntityProxy} from "../proxy/Proxies";
-import {QEntity, IEntity, PHQuery, RelationType} from "querydsl-typescript/lib/index";
+import {QEntity, IEntity, PHQuery, RelationRecord, RelationType} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
-import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
 import {EntityUtils} from "../../shared/EntityUtils";
 import {CascadeType} from "../../config/JPAApi";
-import {IEntityConfig} from "../../config/EntityConfig";
 
 export interface IEntityManager {
 

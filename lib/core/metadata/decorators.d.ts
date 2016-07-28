@@ -1,9 +1,9 @@
 /**
  * Created by Papa on 4/17/2016.
  */
-import { IEntity } from "querydsl-typescript/lib/index";
+import { IEntity } from "querydsl-typescript";
 import { PH } from "../../config/PH";
-import { ManyToOneElements, OneToManyElements } from "../../config/JPAApi";
+import { AccessType, GenerationType, ManyToOneElements, OneToManyElements } from "../../config/JPAApi";
 export declare const PH_PRIMARY_KEY: string;
 export declare const PH_MANY_TO_ONE: string;
 export declare const PH_ONE_TO_MANY: string;
@@ -26,6 +26,88 @@ export interface EntityConfiguration {
  * @constructor
  */
 export declare function Entity(entityConfiguration?: EntityConfiguration): (constructor: Function) => void;
+export interface TableConfiguration {
+    name: string;
+}
+/**
+ * Annotates tables.
+ *
+ * @param tableConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function Table(tableConfiguration?: TableConfiguration): (constructor: Function) => void;
+/**
+ * Annotates tables.
+ *
+ * @param tableConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function MappedSuperclass(): (constructor: Function) => void;
+export interface SequenceGeneratorConfiguration {
+    name: string;
+    sequenceName: string;
+}
+/**
+ * Annotates tables.
+ *
+ * @param tableConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function SequenceGenerator(sequenceGeneratorConfiguration?: SequenceGeneratorConfiguration): (constructor: Function) => void;
+export interface ColumnConfiguration {
+    name: string;
+}
+/**
+ * Annotates columns.
+ *
+ * @param columnConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function Column(columnConfiguration?: ColumnConfiguration): (targetObject: any, propertyKey: string) => void;
+export interface GeneratedValueConfiguration {
+    generator: string;
+    strategy: GenerationType;
+}
+/**
+ * Annotates columns.
+ *
+ * @param generatedValueConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function GeneratedValue(generatedValueConfiguration?: GeneratedValueConfiguration): (targetObject: any, propertyKey: string) => void;
+/**
+ * Annotates columns.
+ *
+ * @param generatedValueConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function Access(accessType: AccessType): (targetObject: any, propertyKey: string) => void;
+export interface JoinColumnConfiguration {
+    name: string;
+    nullable: boolean;
+}
+/**
+ * Annotates columns.
+ *
+ * @param columnConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function JoinColumn(joinColumnConfiguration?: JoinColumnConfiguration): (targetObject: any, propertyKey: string) => void;
+/**
+ * Annotates columns.
+ *
+ * @param generatedValueConfiguration
+ * @returns {function(Function)}
+ * @constructor
+ */
+export declare function Transient(): (targetObject: any, propertyKey: string) => void;
 /**
  * Specifies a single-valued association to another entity class that has many-to-one multiplicity.
  *

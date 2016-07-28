@@ -1,11 +1,10 @@
 import {
 	QEntity, IQField, IQRelation, IBooleanOperation,
 	BooleanOperation, RelationType, IDateOperation, DateOperation, INumberOperation, NumberOperation, IStringOperation,
-	StringOperation
-} from "querydsl-typescript/lib/index";
+	RelationRecord, StringOperation
+} from "querydsl-typescript";
 import {EntityUtils} from "../shared/EntityUtils";
 import {PH_MANY_TO_ONE, PH_ONE_TO_MANY} from "../core/metadata/decorators";
-import {RelationRecord} from "querydsl-typescript/lib/core/entity/Relation";
 import {ManyToOneElements, OneToManyElements} from "./JPAApi";
 /**
  * Created by Papa on 6/24/2016.

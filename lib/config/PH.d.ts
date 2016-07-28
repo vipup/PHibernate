@@ -1,5 +1,4 @@
-import { QEntity, IBooleanOperation, IDateOperation, INumberOperation, IStringOperation } from "querydsl-typescript/lib/index";
-import { RelationRecord } from "querydsl-typescript/lib/core/entity/Relation";
+import { QEntity, IBooleanOperation, IDateOperation, INumberOperation, IStringOperation, RelationRecord } from "querydsl-typescript";
 /**
  * Created by Papa on 6/24/2016.
  */

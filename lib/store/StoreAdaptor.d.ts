@@ -1,4 +1,4 @@
-import { PHQuery } from "querydsl-typescript/lib/index";
+import { PHQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 /**
  * Created by Papa on 6/10/2016.

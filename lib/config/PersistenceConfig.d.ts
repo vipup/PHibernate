@@ -5,7 +5,7 @@ import { IEntityConfig, PHEntityConfig } from "./EntityConfig";
 import { ILocalStoreConfig, PHLocalStoreConfig } from "./LocalStoreConfig";
 import { IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig, IOfflineDeltaStoreConfig } from "./ChangeListConfig";
 import { PHDeltaStoreConfig, IDeltaStoreConfig } from "./DeltaStoreConfig";
-import { IQEntity } from "querydsl-typescript/lib/index";
+import { IQEntity } from "querydsl-typescript";
 import { DistributionStrategy, PlatformType } from "delta-store/lib/index";
 import { LocalStoreType } from "../localStore/LocalStoreApi";
 export interface PHPersistenceConfig {

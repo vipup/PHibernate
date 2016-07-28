@@ -9,7 +9,7 @@ import {
 	IOfflineDeltaStoreConfig, OfflineDeltaStoreConfig
 } from "./ChangeListConfig";
 import {PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig} from "./DeltaStoreConfig";
-import {IQEntity} from "querydsl-typescript/lib/index";
+import {IQEntity} from "querydsl-typescript";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/index";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
 import {EntityUtils} from "../shared/EntityUtils";

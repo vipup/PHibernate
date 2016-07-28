@@ -4,7 +4,7 @@
 import { IDeltaStore } from "../../changeList/DeltaStore";
 import { IPersistenceConfig } from "../../config/PersistenceConfig";
 import { LocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
-import { IEntity, PHQuery } from "querydsl-typescript/lib/index";
+import { IEntity, PHQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { CascadeType } from "../../config/JPAApi";
 export interface IEntityManager {

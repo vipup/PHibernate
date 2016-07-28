@@ -2,12 +2,7 @@
  * Created by Papa on 4/17/2016.
  */
 
-import {
-    IQEntity, IQRelation, QEntity, QRelation,
-    RelationType, IEntity, QStringField, QNumberField, QDateField, IQStringField,
-    IQNumberField, IQDateField, IDateOperation, IStringOperation, INumberOperation, JSONStringOperation,
-    JSONNumberOperation, JSONDateOperation
-} from "querydsl-typescript/lib/index";
+import {IEntity} from "querydsl-typescript";
 import {PH} from "../../config/PH";
 import {AccessType, GenerationType, ManyToOneElements, OneToManyElements} from "../../config/JPAApi";
 

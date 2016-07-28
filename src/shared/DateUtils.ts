@@ -1,5 +1,4 @@
-import {IQueryOperation, QueryOperation, OperationType} from "querydsl-typescript/lib/index";
-import {Observable} from "rxjs/Observable";
+import {IQueryOperation, QueryOperation, OperationType} from "querydsl-typescript";
 /**
  * Created by Papa on 6/11/2016.
  */

@@ -1,4 +1,4 @@
-import { IQueryOperation } from "querydsl-typescript/lib/index";
+import { IQueryOperation } from "querydsl-typescript";
 /**
  * Created by Papa on 6/11/2016.
  */

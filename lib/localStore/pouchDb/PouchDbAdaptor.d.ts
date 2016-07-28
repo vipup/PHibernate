@@ -1,6 +1,6 @@
 import { LocalStoreAdaptor } from "../LocalStoreAdaptor";
 import { PouchDbStoreSetupInfo } from "./PouchDbApi";
-import { PHQuery, PouchDbQuery } from "querydsl-typescript/lib/index";
+import { PHQuery, PouchDbQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 /**
  * Created by Papa on 5/28/2016.
