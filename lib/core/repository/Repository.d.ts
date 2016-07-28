@@ -1,7 +1,6 @@
 /**
  * Created by Papa on 4/21/2016.
  */
-import "es6-shim";
 import { IOperation, IQEntity } from "querydsl-typescript";
 import { QueryState } from "../query/QueryState";
 export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE, R>> {
