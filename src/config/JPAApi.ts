@@ -16,6 +16,18 @@ export enum FetchType {
 	LAZY // Defines that data can be lazily fetched.
 }
 
+export enum GenerationType {
+	TABLE,
+	SEQUENCE,
+	IDENTITY,
+	AUTO
+}
+
+export enum AccessType {
+	FIELD,
+	PROPERTY
+}
+
 
 export interface ManyToOneElements {
 	cascade?:CascadeType;
@@ -26,6 +38,6 @@ export interface ManyToOneElements {
 export interface OneToManyElements {
 	cascade?:CascadeType;
 	fetch?:FetchType;
-	mappedBy:string;
+	mappedBy?:string;
 	orphanRemoval?:boolean;
 }
