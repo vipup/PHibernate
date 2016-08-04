@@ -6,7 +6,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
     </list>
     <ignored path="PHibernate.iws" />
@@ -631,7 +630,7 @@
       <workItem from="1469458790331" duration="3914000" />
       <workItem from="1469710013850" duration="663000" />
       <workItem from="1469757449447" duration="1367000" />
-      <workItem from="1470277394308" duration="1313000" />
+      <workItem from="1470277394308" duration="3061000" />
     </task>
     <servers />
   </component>
@@ -662,7 +661,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="338268000" />
+    <option name="totallyTimeSpent" value="340016000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1924" height="1084" extended-state="0" />
