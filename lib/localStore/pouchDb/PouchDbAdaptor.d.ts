@@ -2,6 +2,7 @@ import { LocalStoreAdaptor } from "../LocalStoreAdaptor";
 import { PouchDbStoreSetupInfo } from "./PouchDbApi";
 import { PHQuery, PouchDbQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
+import { Subject } from 'rxjs/Subject';
 /**
  * Created by Papa on 5/28/2016.
  */
@@ -12,10 +13,10 @@ export declare class PouchDbAdaptor implements LocalStoreAdaptor {
     delete<E>(entity: E): Promise<E>;
     searchOne<E>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery): Observable<E>;
+    }, phQuery: PHQuery, subject?: Subject<E>): Observable<E>;
     search<E>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery): Observable<E[]>;
+    }, phQuery: PHQuery, subject?: Subject<E[]>): Observable<E[]>;
     find<E>(entityConstructor: {
         new (): E;
     }, phQuery: PHQuery): Promise<E[]>;

@@ -1,16 +1,14 @@
 import {
-	QEntity, IQField, IQRelation, IBooleanOperation,
+	IEntity, QEntity, IQField, IQRelation, IBooleanOperation,
 	BooleanOperation, RelationType, IDateOperation, DateOperation, INumberOperation, NumberOperation, IStringOperation,
 	RelationRecord, StringOperation
 } from "querydsl-typescript";
 import {EntityUtils} from "../shared/EntityUtils";
 import {PH_MANY_TO_ONE, PH_ONE_TO_MANY} from "../core/metadata/decorators";
 import {ManyToOneElements, OneToManyElements} from "./JPAApi";
-import {IEntity} from "../../app/core/model/entity/Entity";
-import {Subject} from "rxjs/Subject";
 import {PHPersistenceConfig, PersistenceConfig} from "./PersistenceConfig";
 import {EntityManager} from "../core/repository/EntityManager";
-import {Observable} from "rxjs/Observable";
+import {QuerySubject, QueryOneSubject} from "../core/query/QuerySubject";
 /**
  * Created by Papa on 6/24/2016.
  */
@@ -64,7 +62,7 @@ export class PH {
 					decoratorElements[PH_ONE_TO_MANY] = oneToManyConfigs[propertyName];
 					break;
 			}
-			
+
 			let relationRecord:RelationRecord = {
 				entityName: relationClassName,
 				decoratorElements: decoratorElements,
@@ -118,20 +116,44 @@ export class PH {
 		PH.entityManager = new EntityManager(persistenceConfig);
 	}
 
-	static search<E, IE extends IEntity>(
-		entityClass:{new ():E},
-	  iEntity:IE,
-		subject:Subject<E[]>
-	):Observable<E[]> {
-		return PH.entityManager.search(entityClass, iEntity, subject);
+	static getFindSubject<E, IE extends IEntity>(
+		entityClass:{new ():E}
+	):QuerySubject<E, IE> {
+		let subscription;
+		let querySubject = new QuerySubject<E, IE>(entityClass, () => {
+			if(querySubject.resultsSubject.observers.length < 1) {
+				subscription.unsubscribe();
+			}
+		});
+
+		subscription = querySubject.querySubject.subscribe(( //
+			iEntity:IEntity //
+		) => {
+			PH.entityManager.search(entityClass, iEntity, querySubject.resultsSubject);
+		});
+
+
+		return querySubject;
 	}
 
-	static searchOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE,
-		subject:Subject<E>
-	):Observable<E> {
-		return PH.entityManager.searchOne(entityClass, iEntity, subject);
+	static getFindOneSubject<E, IE extends IEntity>(
+		entityClass:{new ():E}
+	):QueryOneSubject<E, IE> {
+		let subscription;
+		let querySubject = new QueryOneSubject<E, IE>(entityClass, () => {
+			if(querySubject.resultsSubject.observers.length < 1) {
+				subscription.unsubscribe();
+			}
+		});
+
+		subscription = querySubject.querySubject.subscribe(( //
+			iEntity:IEntity //
+		) => {
+			PH.entityManager.searchOne(entityClass, iEntity, querySubject.resultsSubject);
+		});
+
+
+		return querySubject;
 	}
 
 }

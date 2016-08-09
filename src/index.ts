@@ -12,7 +12,6 @@ import {
 	Id,
 	ManyToOne,
 	OneToMany,
-	Query,
 	Repository,
 	RepositoryConfiguration
 } from "./core/metadata/decorators";
@@ -41,7 +40,6 @@ export {
 	OneToManyElements,
 	IRepository,
 	QRepository,
-	Query,
 	QueryState,
 	PH,
 	PHChangeListConfig,

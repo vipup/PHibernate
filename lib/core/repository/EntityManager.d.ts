@@ -7,6 +7,7 @@ import { LocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
 import { IEntity, PHQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { CascadeType } from "../../config/JPAApi";
+import { Subject } from "rxjs/Subject";
 export interface IEntityManager {
     goOffline(): void;
     goOnline(): Promise<any>;
@@ -24,10 +25,10 @@ export interface IEntityManager {
     save<E>(entity: E, cascade?: CascadeType): Promise<E>;
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, iEntity: IE): Observable<E[]>;
+    }, iEntity: IE, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, iEntity: IE): Observable<E>;
+    }, iEntity: IE, subject?: Subject<E>): Observable<E>;
     update<E>(entity: E, cascade?: CascadeType): Promise<E>;
 }
 export declare class EntityManager implements IEntityManager {
@@ -52,8 +53,12 @@ export declare class EntityManager implements IEntityManager {
     private persistEntity<E>(entity, operation, cascadeRule?);
     private ensureId<E>(entity);
     private setForeignKeys<E>(entity, cascadeRule?);
-    search<IE extends IEntity>(entityClass: any, iEntity: IE): Observable<any[]>;
-    searchOne<IE extends IEntity>(entityClass: any, iEntity: IE): Observable<any>;
+    search<E, IE extends IEntity>(entityClass: {
+        new (): E;
+    }, iEntity: IE, subject?: Subject<E[]>): Observable<E[]>;
+    searchOne<E, IE extends IEntity>(entityClass: {
+        new (): E;
+    }, iEntity: IE, subject?: Subject<E>): Observable<E>;
     find<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE): Promise<E[]>;

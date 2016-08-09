@@ -1,8 +1,3 @@
-/**
- * Created by Papa on 4/17/2016.
- */
-import { IEntity } from "querydsl-typescript";
-import { PH } from "../../config/PH";
 import { AccessType, GenerationType, ManyToOneElements, OneToManyElements } from "../../config/JPAApi";
 export declare const PH_PRIMARY_KEY: string;
 export declare const PH_MANY_TO_ONE: string;
@@ -140,18 +135,3 @@ export declare function EditableFor(elements: EditableForElements): (targetObjec
 export interface RepositoryConfiguration {
 }
 export declare function Repository(repositoryConfiguration?: RepositoryConfiguration): (constructor: Function) => void;
-/**
- * Annotates query function pointers (variables).
- *
- * @param selectDefinition
- * @param fromWhereDefinition
- * @returns {function(any, string)}
- * @constructor
- */
-export declare function Query<IE extends IEntity, IParams>(entityClass: any, selectDefinition: IE | {
-    (select: any): IE;
-}, fromWhereDefinition: IE | {
-    (q: PH, params: IParams): IE;
-}, paramsFactory: {
-    (): IParams;
-}): (target: any, propertyKey: string) => void;
