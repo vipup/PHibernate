@@ -13,6 +13,7 @@ import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {EntityUtils} from "../../shared/EntityUtils";
 import {CascadeType} from "../../config/JPAApi";
+import {Subject} from "rxjs/Subject";
 
 export interface IEntityManager {
 
@@ -50,12 +51,14 @@ export interface IEntityManager {
 
 	search<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		iEntity:IE
+		iEntity:IE,
+		subject?:Subject<E[]>
 	):Observable<E[]>;
 
 	searchOne<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		iEntity:IE
+		iEntity:IE,
+		subject?:Subject<E>
 	):Observable<E>;
 
 	update<E>(
@@ -224,38 +227,43 @@ export class EntityManager implements IEntityManager {
 		}
 	}
 
-	search<IE extends IEntity>(
-		entityClass:any, iEntity:IE
-	):Observable<any[]> {
+	search<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		iEntity:IE,
+		subject?:Subject<E[]>
+	):Observable<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		let phQuery = this.getPHQuery(qEntity, iEntity);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return localStore.search(entityClass, phQuery);
+				return localStore.search(entityClass, phQuery, subject);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;
 	}
 
-	searchOne<IE extends IEntity>(
-		entityClass:any, iEntity:IE
-	):Observable<any> {
+	searchOne<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		iEntity:IE,
+		subject?:Subject<E>
+	):Observable<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		let phQuery = this.getPHQuery(qEntity, iEntity);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return localStore.searchOne(entityClass, phQuery);
+				return localStore.searchOne(entityClass, phQuery, subject);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;
 	}
 
 	async find<E, IE extends IEntity>(
-		entityClass:{new (): E}, iEntity:IE
+		entityClass:{new (): E},
+		iEntity:IE
 	):Promise<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
@@ -270,7 +278,8 @@ export class EntityManager implements IEntityManager {
 	}
 
 	async findOne<E, IE extends IEntity>(
-		entityClass:{new (): E}, iEntity:IE
+		entityClass:{new (): E},
+		iEntity:IE
 	):Promise<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);

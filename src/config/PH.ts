@@ -6,6 +6,11 @@ import {
 import {EntityUtils} from "../shared/EntityUtils";
 import {PH_MANY_TO_ONE, PH_ONE_TO_MANY} from "../core/metadata/decorators";
 import {ManyToOneElements, OneToManyElements} from "./JPAApi";
+import {IEntity} from "../../app/core/model/entity/Entity";
+import {Subject} from "rxjs/Subject";
+import {PHPersistenceConfig, PersistenceConfig} from "./PersistenceConfig";
+import {EntityManager} from "../core/repository/EntityManager";
+import {Observable} from "rxjs/Observable";
 /**
  * Created by Papa on 6/24/2016.
  */
@@ -101,5 +106,32 @@ export class PH {
 	stringOperation:IStringOperation = new StringOperation(null);
 	strOp = this.stringOperation;
 	s = this.strOp;
+
+
+	static entityManager:EntityManager;
+
+	static init(
+		phConfig:PHPersistenceConfig
+	) {
+		let persistenceConfig = new PersistenceConfig(phConfig);
+
+		PH.entityManager = new EntityManager(persistenceConfig);
+	}
+
+	static search<E, IE extends IEntity>(
+		entityClass:{new ():E},
+	  iEntity:IE,
+		subject:Subject<E[]>
+	):Observable<E[]> {
+		return PH.entityManager.search(entityClass, iEntity, subject);
+	}
+
+	static searchOne<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		iEntity:IE,
+		subject:Subject<E>
+	):Observable<E> {
+		return PH.entityManager.searchOne(entityClass, iEntity, subject);
+	}
 
 }

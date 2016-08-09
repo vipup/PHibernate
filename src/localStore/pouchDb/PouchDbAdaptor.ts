@@ -63,22 +63,22 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 
 	searchOne<E>(
 		entityClass:{new ():E},
-		phQuery:PHQuery
+		phQuery:PHQuery,
+		subject:Subject<E> = new Subject<E>()
 	):Observable<E> {
-		let subject = new Subject<E>();
 		this.findOne(entityClass, phQuery).then((
 			entity:E
 		) => {
-
+			subject.next(entity);
 		});
 		return subject;
 	}
 
 	search<E>(
 		entityClass:{new ():E},
-		phQuery:PHQuery
+		phQuery:PHQuery,
+	  subject:Subject<E[]> = new Subject<E[]>()
 	):Observable<E[]> {
-		let subject = new Subject<E[]>();
 		this.find(entityClass, phQuery).then((
 			entities:E[]
 		) => {

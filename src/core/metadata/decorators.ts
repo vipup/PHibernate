@@ -265,29 +265,3 @@ export function Repository(repositoryConfiguration?:RepositoryConfiguration) {
     }
 
 }
-
-/**
- * Annotates query function pointers (variables).
- *
- * @param selectDefinition
- * @param fromWhereDefinition
- * @returns {function(any, string)}
- * @constructor
- */
-export function Query<IE extends IEntity, IParams>(entityClass:any,
-                                                   selectDefinition:IE | {(select:any):IE},
-                                                   fromWhereDefinition:IE | {(q:PH, params:IParams):IE},
-                                                   paramsFactory:{():IParams}) {
-
-    return function (target, propertyKey:string) {
-        Object.defineProperty(target, propertyKey, {
-            get: function () {
-                throw `Not implemented yet`;
-            },
-            set: function (val) {
-                throw `Cannot override '${propertyKey}' @Query annotated reference, please define a parameter function.`;
-            }
-        });
-    }
-
-}

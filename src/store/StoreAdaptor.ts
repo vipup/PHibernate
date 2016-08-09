@@ -1,5 +1,6 @@
 import {PHQuery} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
+import {Subject} from "rxjs/Subject";
 
 /**
  * Created by Papa on 6/10/2016.
@@ -39,12 +40,14 @@ export interface StoreAdaptor {
 
 	search<E>(
 		entityClass:{new ():E},
-		phQuery:PHQuery
+		phQuery:PHQuery,
+	  subject?:Subject<E[]>
 	):Observable<E[]>;
 
 	searchOne<E>(
 		entityClass:{new ():E},
-		phQuery:PHQuery
+		phQuery:PHQuery,
+		subject?:Subject<E>
 	):Observable<E>;
 
 	update<E>(
