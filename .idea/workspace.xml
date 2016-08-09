@@ -6,119 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/DeltaStore.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/DeltaStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/DeltaStore.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/OfflineStore.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/OfflineStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/OfflineStore.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbChangeRecordIterator.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbChangeRecordIterator.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbChangeRecordIterator.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbRepositoryApi.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbRepositoryApi.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbRepositoryApi.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbSharingAdaptor.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbSharingAdaptor.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbSharingAdaptor.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbSharingModel.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbSharingModel.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/changeList/offline/pouchDb/OfflinePouchDbSharingModel.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/ChangeListConfig.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/ChangeListConfig.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/ChangeListConfig.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/DeltaStoreConfig.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/DeltaStoreConfig.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/DeltaStoreConfig.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/JPAApi.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/JPAApi.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/JPAApi.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/LocalStoreConfig.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/LocalStoreConfig.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/LocalStoreConfig.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/PH.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/PH.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/PH.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/Rules.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/Rules.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/config/Rules.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/proxy/Proxies.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/proxy/Proxies.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/proxy/Proxies.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/DSLParser.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/DSLParser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/DSLParser.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/MethodNameParser.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/MethodNameParser.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/MethodNameParser.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManagerInitializer.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManagerInitializer.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManagerInitializer.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/ProxyGenerator.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/ProxyGenerator.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/ProxyGenerator.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/index.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/index.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/index.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStore.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStore.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStore.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreAdaptor.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreAdaptor.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreAdaptor.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbApi.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbApi.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbApi.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbModel.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbModel.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbModel.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/DateUtils.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/DateUtils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/DateUtils.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/EntityUtils.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/EntityUtils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/EntityUtils.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/PlatformUtils.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/PlatformUtils.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/shared/PlatformUtils.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/store/RecordState.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/store/RecordState.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/store/RecordState.js.map" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/store/StoreAdaptor.d.ts" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/store/StoreAdaptor.js" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/lib/store/StoreAdaptor.js.map" afterPath="" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/config/PH.ts" afterPath="$PROJECT_DIR$/src/config/PH.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/query/QuerySubject.ts" afterPath="$PROJECT_DIR$/src/core/query/QuerySubject.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/index.ts" afterPath="$PROJECT_DIR$/src/index.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -839,7 +728,7 @@
       <workItem from="1469458790331" duration="3914000" />
       <workItem from="1469710013850" duration="663000" />
       <workItem from="1469757449447" duration="1367000" />
-      <workItem from="1470277394308" duration="14260000" />
+      <workItem from="1470277394308" duration="15346000" />
     </task>
     <servers />
   </component>
@@ -870,7 +759,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="351215000" />
+    <option name="totallyTimeSpent" value="352301000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
