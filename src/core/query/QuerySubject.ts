@@ -1,5 +1,5 @@
 import {Subject} from "rxjs";
-import {IEntity} from "querydsl-typescript";
+import {IEntity, IEntityQuery} from "querydsl-typescript";
 import {Subscribable} from "rxjs/Observable";
 import {Subscription, ISubscription, TeardownLogic} from "rxjs/Subscription";
 import {PartialObserver} from "rxjs/Observer";
@@ -9,7 +9,7 @@ import {PartialObserver} from "rxjs/Observer";
 
 export class QuerySubject<E, IE extends IEntity> implements Subscribable<E[]> {
 
-  querySubject: Subject<IE> = new Subject<IE>();
+  querySubject: Subject<IEntityQuery<IE>> = new Subject<IEntityQuery<IE>>();
   resultsSubject: Subject<E[]> = new Subject<E[]>();
 
   constructor(
@@ -18,8 +18,8 @@ export class QuerySubject<E, IE extends IEntity> implements Subscribable<E[]> {
     ) {
   }
 
-  next(ie: IE) {
-    this.querySubject.next(ie);
+  next(ieq: IEntityQuery<IE>) {
+    this.querySubject.next(ieq);
   }
 
   subscribe(observerOrNext?: PartialObserver<E[]> | ((value: E[]) => void), error?: (error: any) => void, complete?: () => void): ISubscription {
@@ -33,7 +33,7 @@ export class QuerySubject<E, IE extends IEntity> implements Subscribable<E[]> {
 
 export class QueryOneSubject<E, IE extends IEntity> implements Subscribable<E> {
 
-  querySubject: Subject<IE> = new Subject<IE>();
+  querySubject: Subject<IEntityQuery<IE>> = new Subject<IEntityQuery<IE>>();
   resultsSubject: Subject<E> = new Subject<E>();
 
   constructor(
@@ -42,8 +42,8 @@ export class QueryOneSubject<E, IE extends IEntity> implements Subscribable<E> {
   ) {
   }
 
-  next(ie: IE) {
-    this.querySubject.next(ie);
+  next(ieq: IEntityQuery<IE>) {
+    this.querySubject.next(ieq);
   }
 
   subscribe(observerOrNext?: PartialObserver<E> | ((value: E) => void), error?: (error: any) => void, complete?: () => void): ISubscription {

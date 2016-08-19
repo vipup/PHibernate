@@ -1,5 +1,5 @@
 import {
-	IEntity, QEntity, IQField, IQRelation, IBooleanOperation,
+	IEntity, QEntity, IEntityQuery, IQField, IQRelation, IBooleanOperation,
 	BooleanOperation, RelationType, IDateOperation, DateOperation, INumberOperation, NumberOperation, IStringOperation,
 	RelationRecord, StringOperation
 } from "querydsl-typescript";
@@ -85,27 +85,6 @@ export class PH {
 		});
 	}
 
-	static queryOperators:PH = new PH();
-	static qOps:PH = PH.queryOperators;
-	static q:PH = PH.qOps;
-
-	booleanOperation:IBooleanOperation = new BooleanOperation(null);
-	boolOp = this.booleanOperation;
-	b = this.boolOp;
-
-	dateOperation:IDateOperation = new DateOperation(null);
-	dateOp = this.dateOperation;
-	d = this.dateOp;
-
-	numberOperation:INumberOperation = new NumberOperation(null);
-	numOp = this.numberOperation;
-	n = this.numOp;
-
-	stringOperation:IStringOperation = new StringOperation(null);
-	strOp = this.stringOperation;
-	s = this.strOp;
-
-
 	static entityManager:EntityManager;
 
 	static init(
@@ -127,9 +106,9 @@ export class PH {
 		});
 
 		subscription = querySubject.querySubject.subscribe(( //
-			iEntity:IEntity //
+			iEntityQuery:IEntityQuery<IE> //
 		) => {
-			PH.entityManager.search(entityClass, iEntity, querySubject.resultsSubject);
+			PH.entityManager.search(entityClass, iEntityQuery, querySubject.resultsSubject);
 		});
 
 
@@ -147,9 +126,9 @@ export class PH {
 		});
 
 		subscription = querySubject.querySubject.subscribe(( //
-			iEntity:IEntity //
+			iEntityQuery:IEntityQuery<IE> //
 		) => {
-			PH.entityManager.searchOne(entityClass, iEntity, querySubject.resultsSubject);
+			PH.entityManager.searchOne(entityClass, iEntityQuery, querySubject.resultsSubject);
 		});
 
 

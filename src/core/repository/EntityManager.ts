@@ -8,7 +8,7 @@ import {getLocalStoreAdaptor} from "../../localStore/LocalStore";
 import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
 import {EntityProxy} from "../proxy/Proxies";
-import {QEntity, IEntity, PHQuery, RelationRecord, RelationType} from "querydsl-typescript";
+import {QEntity, IEntity, IEntityQuery, PHQuery, RelationRecord, RelationType} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {EntityUtils} from "../../shared/EntityUtils";
@@ -229,12 +229,12 @@ export class EntityManager implements IEntityManager {
 
 	search<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		iEntity:IE,
+		iEntityQuery:IEntityQuery<IE>,
 		subject?:Subject<E[]>
 	):Observable<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
-		let phQuery = this.getPHQuery(qEntity, iEntity);
+		let phQuery = this.getPHQuery(qEntity, iEntityQuery);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
@@ -246,12 +246,12 @@ export class EntityManager implements IEntityManager {
 
 	searchOne<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		iEntity:IE,
+		iEntityQuery:IEntityQuery<IE>,
 		subject?:Subject<E>
 	):Observable<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
-		let phQuery = this.getPHQuery(qEntity, iEntity);
+		let phQuery = this.getPHQuery(qEntity, iEntityQuery);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
@@ -295,12 +295,12 @@ export class EntityManager implements IEntityManager {
 
 	getPHQuery<E, IE extends IEntity>(
 		qEntity:any,
-		iEntity:IE
+		iEntityQuery:IEntityQuery<IE>
 	):PHQuery {
 		let qEntityMap:{[entityName:string]:QEntity<any>} = PH.qEntityMap;
 		let entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}} = PH.entitiesRelationPropertyMap;
 		let entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}} = PH.entitiesPropertyTypeMap;
-		let phQuery:PHQuery = new PHQuery(iEntity, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+		let phQuery:PHQuery = new PHQuery(iEntityQuery, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
 
 		return phQuery;
 	}
