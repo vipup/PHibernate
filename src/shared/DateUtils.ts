@@ -1,25 +1,6 @@
-import {IQueryOperation, QueryOperation, OperationType} from "querydsl-typescript";
 /**
  * Created by Papa on 6/11/2016.
  */
-
-export function like(
-	like:string | RegExp
-):IQueryOperation {
-	
-	let instance = QueryOperation.getDefinedInstance(OperationType.LIKE, like);
-
-	return <QueryOperation>instance;
-}
-
-export function greaterThan(
-	greaterThan:number
-):IQueryOperation {
-
-	let instance = QueryOperation.getDefinedInstance(OperationType.GREATER_THAN, greaterThan);
-
-	return <QueryOperation>instance;
-}
 
 export class DateUtils {
 

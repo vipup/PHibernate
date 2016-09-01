@@ -9,76 +9,82 @@ import {PartialObserver} from "rxjs/Observer";
 
 export class QuerySubject<E, IE extends IEntity> implements Subscribable<E[]> {
 
-  querySubject: Subject<IEntityQuery<IE>> = new Subject<IEntityQuery<IE>>();
-  resultsSubject: Subject<E[]> = new Subject<E[]>();
+	querySubject: Subject<IEntityQuery<IE>> = new Subject<IEntityQuery<IE>>();
+	resultsSubject: Subject<E[]> = new Subject<E[]>();
 
-  constructor(
-    e: {new (): E},
-    private resultsUnsubscribeCallback: () => void
-    ) {
-  }
+	constructor(
+		e: {new (): E},
+		private resultsUnsubscribeCallback: () => void
+	) {
+	}
 
-  next(ieq: IEntityQuery<IE>) {
-    this.querySubject.next(ieq);
-  }
+	next(ieq: IEntityQuery<IE>) {
+		this.querySubject.next(ieq);
+	}
 
-  subscribe(observerOrNext?: PartialObserver<E[]> | ((value: E[]) => void), error?: (error: any) => void, complete?: () => void): ISubscription {
-    let subscription = this.resultsSubject.subscribe(observerOrNext);
-    let resultsSubscription = new ResultsSubscription(subscription, this.resultsUnsubscribeCallback);
+	subscribe(
+		observerOrNext?: PartialObserver<E[]> | ((value: E[]) => void), error?: (error: any) => void,
+		complete?: () => void
+	): ISubscription {
+		let subscription = this.resultsSubject.subscribe(observerOrNext);
+		let resultsSubscription = new ResultsSubscription(subscription, this.resultsUnsubscribeCallback);
 
-    return resultsSubscription;
-  }
+		return resultsSubscription;
+	}
 
 }
 
 export class QueryOneSubject<E, IE extends IEntity> implements Subscribable<E> {
 
-  querySubject: Subject<IEntityQuery<IE>> = new Subject<IEntityQuery<IE>>();
-  resultsSubject: Subject<E> = new Subject<E>();
+	querySubject: Subject<IEntityQuery<IE>> = new Subject<IEntityQuery<IE>>();
+	resultsSubject: Subject<E> = new Subject<E>();
 
-  constructor(
-    e: {new (): E},
-    private resultsUnsubscribeCallback: () => void
-  ) {
-  }
+	constructor(
+		e: {new (): E},
+		private resultsUnsubscribeCallback: () => void
+	) {
+	}
 
-  next(ieq: IEntityQuery<IE>) {
-    this.querySubject.next(ieq);
-  }
+	next(ieq: IEntityQuery<IE>) {
+		this.querySubject.next(ieq);
+	}
 
-  subscribe(observerOrNext?: PartialObserver<E> | ((value: E) => void), error?: (error: any) => void, complete?: () => void): ISubscription {
-    let subscription = this.resultsSubject.subscribe(observerOrNext);
-    let resultsSubscription = new ResultsSubscription(subscription, this.resultsUnsubscribeCallback);
+	subscribe(observerOrNext?: PartialObserver<E> | ((value: E) => void), error?: (error: any) => void, complete?: () => void): ISubscription {
+		let subscription = this.resultsSubject.subscribe(observerOrNext);
+		let resultsSubscription = new ResultsSubscription(subscription, this.resultsUnsubscribeCallback);
 
-    return resultsSubscription;
-  }
+		return resultsSubscription;
+	}
 
 }
 
 export class ResultsSubscription implements Subscription {
 
-  constructor(
-    public subscription: Subscription,
-    private onUnsubscribe: ()=>void
-  ) {
+	constructor(
+		public subscription: Subscription,
+		private onUnsubscribe: ()=>void
+	) {
 
-  }
+	}
 
-  unsubscribe(): void {
-    this.subscription.unsubscribe();
-    this.onUnsubscribe();
-  }
+	unsubscribe(): void {
+		this.subscription.unsubscribe();
+		this.onUnsubscribe();
+	}
 
-  get isUnsubscribed(): boolean {
-    return this.subscription.isUnsubscribed;
-  }
+	get closed(): boolean {
+		return this.subscription.closed;
+	}
+	set closed(newClosed: boolean) {
+		this.subscription.closed = newClosed;
+	}
 
-  add(teardown: TeardownLogic): Subscription {
-    return this.subscription.add(teardown);
-  }
+	add(teardown: TeardownLogic): Subscription {
+		return this.subscription.add(teardown);
+	}
 
-  remove(sub: Subscription): void {
-    this.subscription.remove(sub);
-  }
+	remove(sub: Subscription): void {
+		this.subscription.remove(sub);
+	}
 
 }

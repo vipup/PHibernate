@@ -1,4 +1,4 @@
-import { PHQuery } from "querydsl-typescript";
+import { IEntity, PHQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 /**
@@ -10,19 +10,19 @@ export interface StoreSetupInfo {
 export interface StoreAdaptor {
     create<E>(entity: E): Promise<E>;
     delete<E>(entity: E): Promise<E>;
-    find<E>(entityClass: {
+    find<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery): Promise<E[]>;
-    findOne<E>(entityClass: {
+    }, phQuery: PHQuery<IE>): Promise<E[]>;
+    findOne<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery): Promise<E>;
+    }, phQuery: PHQuery<IE>): Promise<E>;
     initialize(setupInfo: StoreSetupInfo): Promise<any>;
     save<E>(entity: E): Promise<E>;
-    search<E>(entityClass: {
+    search<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery, subject?: Subject<E[]>): Observable<E[]>;
-    searchOne<E>(entityClass: {
+    }, phQuery: PHQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
+    searchOne<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery, subject?: Subject<E>): Observable<E>;
+    }, phQuery: PHQuery<IE>, subject?: Subject<E>): Observable<E>;
     update<E>(entity: E): Promise<E>;
 }

@@ -12,18 +12,22 @@ export interface LocalStoreSetupInfo {
 }
 
 export enum LocalStoreType {
-	POUCH_DB
+	POUCH_DB,
+	SQLITE
 }
 
 export namespace localStore.type {
 	export const POUCH_DB = 'POUCH_DB';
+	export const WEB_SQL = 'WEB_SQL';
 
 	export function getName(
 		localStoreType:LocalStoreType
 	):string {
 		switch(localStoreType) {
+			case LocalStoreType.SQLITE:
+				return WEB_SQL;
 			case LocalStoreType.POUCH_DB:
-				return POUCH_DB;
+				throw `PouchDb is not currently supported`;
 			default:
 				throw `Unsupported Local Store Type: ${localStoreType}`;
 		}
@@ -33,8 +37,10 @@ export namespace localStore.type {
 		localStoreTypeName:string
 	):LocalStoreType {
 		switch (localStoreTypeName) {
+			case WEB_SQL:
+				return LocalStoreType.SQLITE;
 			case POUCH_DB:
-				return LocalStoreType.POUCH_DB;
+				throw `PouchDb is not currently supported`;
 			default:
 				throw `Unsupported Local Store Type name: ${localStoreTypeName}`;
 		}

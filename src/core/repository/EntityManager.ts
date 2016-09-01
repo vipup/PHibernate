@@ -8,11 +8,13 @@ import {getLocalStoreAdaptor} from "../../localStore/LocalStore";
 import {LocalStoreAdaptor} from "../../localStore/LocalStoreAdaptor";
 import {getOfflineSharingAdaptor} from "../../changeList/OfflineStore";
 import {EntityProxy} from "../proxy/Proxies";
-import {QEntity, IEntity, IEntityQuery, PHQuery, RelationRecord, RelationType} from "querydsl-typescript";
+import {
+	QEntity, IEntity, IEntityQuery, RelationRecord, RelationType, CascadeType,
+	PHGraphQuery, PHRawSQLQuery, PHSQLQuery
+} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {EntityUtils} from "../../shared/EntityUtils";
-import {CascadeType} from "../../config/JPAApi";
 import {Subject} from "rxjs/Subject";
 
 export interface IEntityManager {
@@ -229,12 +231,12 @@ export class EntityManager implements IEntityManager {
 
 	search<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		iEntityQuery:IEntityQuery<IE>,
+		phRawQuery:PHRawSQLQuery<IE>,
 		subject?:Subject<E[]>
 	):Observable<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
-		let phQuery = this.getPHQuery(qEntity, iEntityQuery);
+		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
@@ -246,12 +248,12 @@ export class EntityManager implements IEntityManager {
 
 	searchOne<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		iEntityQuery:IEntityQuery<IE>,
+		phRawQuery:PHRawSQLQuery<IE>,
 		subject?:Subject<E>
 	):Observable<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
-		let phQuery = this.getPHQuery(qEntity, iEntityQuery);
+		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
@@ -263,11 +265,11 @@ export class EntityManager implements IEntityManager {
 
 	async find<E, IE extends IEntity>(
 		entityClass:{new (): E},
-		iEntity:IE
+		phRawQuery:PHRawSQLQuery<IE>
 	):Promise<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
-		let phQuery = this.getPHQuery(qEntity, iEntity);
+		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
@@ -279,11 +281,11 @@ export class EntityManager implements IEntityManager {
 
 	async findOne<E, IE extends IEntity>(
 		entityClass:{new (): E},
-		iEntity:IE
+		phRawQuery:PHRawSQLQuery<IE>
 	):Promise<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
-		let phQuery = this.getPHQuery(qEntity, iEntity);
+		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
@@ -293,16 +295,16 @@ export class EntityManager implements IEntityManager {
 		throw `Entity is not setup with a LocalStore`;
 	}
 
-	getPHQuery<E, IE extends IEntity>(
+	getPHSQLQuery<E, IE extends IEntity>(
 		qEntity:any,
-		iEntityQuery:IEntityQuery<IE>
-	):PHQuery {
+		phRawQuery:PHRawSQLQuery<IE>
+	):PHSQLQuery<IE> {
 		let qEntityMap:{[entityName:string]:QEntity<any>} = PH.qEntityMap;
 		let entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}} = PH.entitiesRelationPropertyMap;
 		let entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}} = PH.entitiesPropertyTypeMap;
-		let phQuery:PHQuery = new PHQuery(iEntityQuery, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+		let phSqlQuery:PHSQLQuery<IE> = new PHSQLQuery(phRawQuery, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
 
-		return phQuery;
+		return phSqlQuery;
 	}
 
 }

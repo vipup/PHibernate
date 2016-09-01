@@ -1,4 +1,4 @@
-import {PHQuery} from "querydsl-typescript";
+import {IEntity, PHQuery} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 
@@ -20,14 +20,14 @@ export interface StoreAdaptor {
 		entity:E
 	):Promise<E>;
 
-	find<E>(
+	find<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		phQuery:PHQuery
+		phQuery:PHQuery<IE>
 	):Promise<E[]>;
 
-	findOne<E>(
+	findOne<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		phQuery:PHQuery
+		phQuery:PHQuery<IE>
 	):Promise<E>;
 
 	initialize(
@@ -38,15 +38,15 @@ export interface StoreAdaptor {
 		entity:E
 	):Promise<E>;
 
-	search<E>(
+	search<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		phQuery:PHQuery,
+		phQuery:PHQuery<IE>,
 	  subject?:Subject<E[]>
 	):Observable<E[]>;
 
-	searchOne<E>(
+	searchOne<E, IE extends IEntity>(
 		entityClass:{new ():E},
-		phQuery:PHQuery,
+		phQuery:PHQuery<IE>,
 		subject?:Subject<E>
 	):Observable<E>;
 

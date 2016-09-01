@@ -10,9 +10,11 @@ export interface LocalStoreSetupInfo {
 }
 export declare enum LocalStoreType {
     POUCH_DB = 0,
+    SQLITE = 1,
 }
 export declare namespace localStore.type {
     const POUCH_DB: string;
+    const WEB_SQL: string;
     function getName(localStoreType: LocalStoreType): string;
     function getValue(localStoreTypeName: string): LocalStoreType;
 }

@@ -4,9 +4,8 @@
 import { IDeltaStore } from "../../changeList/DeltaStore";
 import { IPersistenceConfig } from "../../config/PersistenceConfig";
 import { LocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
-import { IEntity, PHQuery } from "querydsl-typescript";
+import { IEntity, CascadeType, PHRawSQLQuery, PHSQLQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
-import { CascadeType } from "../../config/JPAApi";
 import { Subject } from "rxjs/Subject";
 export interface IEntityManager {
     goOffline(): void;
@@ -55,15 +54,15 @@ export declare class EntityManager implements IEntityManager {
     private setForeignKeys<E>(entity, cascadeRule?);
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, iEntity: IE, subject?: Subject<E[]>): Observable<E[]>;
+    }, phRawQuery: PHRawSQLQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, iEntity: IE, subject?: Subject<E>): Observable<E>;
+    }, phRawQuery: PHRawSQLQuery<IE>, subject?: Subject<E>): Observable<E>;
     find<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, iEntity: IE): Promise<E[]>;
+    }, phRawQuery: PHRawSQLQuery<IE>): Promise<E[]>;
     findOne<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, iEntity: IE): Promise<E>;
-    getPHQuery<E, IE extends IEntity>(qEntity: any, iEntity: IE): PHQuery;
+    }, phRawQuery: PHRawSQLQuery<IE>): Promise<E>;
+    getPHSQLQuery<E, IE extends IEntity>(qEntity: any, phRawQuery: PHRawSQLQuery<IE>): PHSQLQuery<IE>;
 }

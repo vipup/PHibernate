@@ -1,7 +1,7 @@
 /**
  * Created by Papa on 4/21/2016.
  */
-import {IOperation, IQEntity} from "querydsl-typescript";
+import {IOperation, IQEntity, JSONBaseOperation} from "querydsl-typescript";
 import {QueryState} from "../query/QueryState";
 
 export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE, R>> {
@@ -9,11 +9,11 @@ export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE
 	selectAll():R;
 
 	where( //
-		...operations:IOperation[] //
+		...operations:IOperation<any, JSONBaseOperation>[] //
 	):R;
 
 	select(
-		...fields:IOperation[] //
+		...fields:IOperation<any, JSONBaseOperation>[] //
 	):R;
 
 	getQ():QE;
@@ -44,7 +44,7 @@ implements IRepository<E, QE, R> {
 	}
 
 	where( //
-		...operations:IOperation[] //
+		...operations:IOperation<any, JSONBaseOperation>[] //
 	):R {
 		let q = this.getQ();
 		// q.and.apply(q, operations);

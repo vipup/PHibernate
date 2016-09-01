@@ -1,6 +1,6 @@
 import { LocalStoreAdaptor } from "../LocalStoreAdaptor";
 import { PouchDbStoreSetupInfo } from "./PouchDbApi";
-import { PHQuery, PouchDbQuery } from "querydsl-typescript";
+import { PHGraphQuery, IEntity, PouchDbGraphQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from 'rxjs/Subject';
 /**
@@ -11,23 +11,23 @@ export declare class PouchDbAdaptor implements LocalStoreAdaptor {
     initialize(setupInfo: PouchDbStoreSetupInfo): Promise<any>;
     create<E>(entity: E): Promise<E>;
     delete<E>(entity: E): Promise<E>;
-    searchOne<E>(entityClass: {
+    searchOne<IE extends IEntity, E>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery, subject?: Subject<E>): Observable<E>;
-    search<E>(entityClass: {
+    }, phQuery: PHGraphQuery<IE>, subject?: Subject<E>): Observable<E>;
+    search<IE extends IEntity, E>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery, subject?: Subject<E[]>): Observable<E[]>;
-    find<E>(entityConstructor: {
+    }, phQuery: PHGraphQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
+    find<IE extends IEntity, E>(entityConstructor: {
         new (): E;
-    }, phQuery: PHQuery): Promise<E[]>;
-    processQuery<E>(entityConstructor: {
+    }, phQuery: PHGraphQuery<IE>): Promise<E[]>;
+    processQuery<IE extends IEntity, E>(entityConstructor: {
         new (): E;
-    }, pouchDbQuery: PouchDbQuery): Promise<E[]>;
+    }, pouchDbQuery: PouchDbGraphQuery<IE>): Promise<E[]>;
     loadManyToOneRelation(childQuery: any, entityName: string, parentResults: any, propertyName: string): Promise<any[]>;
     loadOneToManyRelation(childQuery: any, entityName: string, parentResults: any, propertyName: string): Promise<any[]>;
-    findOne<E>(entityClass: {
+    findOne<IE extends IEntity, E>(entityClass: {
         new (): E;
-    }, phQuery: PHQuery): Promise<E>;
+    }, phQuery: PHGraphQuery<IE>): Promise<E>;
     save<E>(entity: E): Promise<E>;
     update<E>(entity: E): Promise<E>;
 }

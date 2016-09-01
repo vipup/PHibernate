@@ -1,11 +1,8 @@
 import {
-	IEntity, QEntity, IEntityQuery, IQField, IQRelation, IBooleanOperation,
-	BooleanOperation, RelationType, IDateOperation, DateOperation, INumberOperation, NumberOperation, IStringOperation,
-	RelationRecord, StringOperation
+	IEntity, QEntity, IEntityQuery, IQField, IQRelation,
+	RelationRecord, EntityMetadata, JSONBaseOperation, IOperation
 } from "querydsl-typescript";
 import {EntityUtils} from "../shared/EntityUtils";
-import {PH_MANY_TO_ONE, PH_ONE_TO_MANY} from "../core/metadata/decorators";
-import {ManyToOneElements, OneToManyElements} from "./JPAApi";
 import {PHPersistenceConfig, PersistenceConfig} from "./PersistenceConfig";
 import {EntityManager} from "../core/repository/EntityManager";
 import {QuerySubject, QueryOneSubject} from "../core/query/QuerySubject";
@@ -15,26 +12,26 @@ import {QuerySubject, QueryOneSubject} from "../core/query/QuerySubject";
 
 export class PH {
 
-	static qEntityMap:{[entityName:string]:QEntity<any>} = {};
-	static entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}} = {};
-	static entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}} = {};
+	static qEntityMap: {[entityName: string]: QEntity<any>} = {};
+	static entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}} = {};
+	static entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}} = {};
 
 	static getQEntityFromEntityClass(
-		entityClass:any
-	):QEntity<any> {
-		let enityClassName = EntityUtils.getClassName(entityClass);
-		let qEntity = PH.qEntityMap[enityClassName];
+		entityClass: any
+	): QEntity<any> {
+		let entityClassName = EntityUtils.getClassName(entityClass);
+		let qEntity = PH.qEntityMap[entityClassName];
 
 		return qEntity;
 	}
 
 	static addQEntity(
-		entityConstructor:{new ():any},
-		qEntity:QEntity<any>
+		entityConstructor: {new (): any},
+		qEntity: QEntity<any>
 	) {
 		let entityName = qEntity.__entityName__;
-		let fields = qEntity.__entityFields__;
-		let relations = qEntity.__entityRelations__;
+		let fields = qEntity.__entityFieldMap__;
+		let relations = qEntity.__entityRelationMap__;
 
 		PH.qEntityMap[entityName] = qEntity;
 
@@ -43,52 +40,37 @@ export class PH {
 			entityRelationPropertyMap = {};
 			PH.entitiesRelationPropertyMap[entityName] = entityRelationPropertyMap;
 		}
-		let manyToOneConfigs:{[propertyName:string]:ManyToOneElements} = entityConstructor[PH_MANY_TO_ONE];
-		let oneToManyConfigs:{[propertyName:string]:OneToManyElements} = entityConstructor[PH_ONE_TO_MANY];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>entityConstructor;
 
-		relations.forEach((
-			relation:IQRelation<any, any, any>
-		) => {
+		for (let relationPropertyName in relations) {
+			let relation: IQRelation<any, any, any> = relations[relationPropertyName];
 			let propertyName = relation.propertyName;
 			let relationClassName = EntityUtils.getClassName(relation.relationEntityConstructor);
 
-			let decoratorElements = {};
-
-			switch (relation.relationType) {
-				case RelationType.MANY_TO_ONE:
-					decoratorElements[PH_MANY_TO_ONE] = manyToOneConfigs[propertyName];
-					break;
-				case RelationType.ONE_TO_MANY:
-					decoratorElements[PH_ONE_TO_MANY] = oneToManyConfigs[propertyName];
-					break;
-			}
-
-			let relationRecord:RelationRecord = {
+			let relationRecord: RelationRecord = {
 				entityName: relationClassName,
-				decoratorElements: decoratorElements,
 				propertyName: propertyName,
 				relationType: relation.relationType
 			};
 
 			entityRelationPropertyMap[propertyName] = relationRecord;
-		});
+		}
 
 		let entityPropertyTypeMap = PH.entitiesPropertyTypeMap[entityName];
 		if (entityPropertyTypeMap) {
 			entityPropertyTypeMap = {};
 			PH.entitiesPropertyTypeMap[entityName] = entityPropertyTypeMap;
 		}
-		fields.forEach((
-			field:IQField<any>
-		) => {
+		for (let fieldPropertyName in fields) {
+			let field: IQField<any, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>> = fields[fieldPropertyName];
 			entityPropertyTypeMap[field.fieldName] = true;
-		});
+		}
 	}
 
-	static entityManager:EntityManager;
+	static entityManager: EntityManager;
 
 	static init(
-		phConfig:PHPersistenceConfig
+		phConfig: PHPersistenceConfig
 	) {
 		let persistenceConfig = new PersistenceConfig(phConfig);
 
@@ -96,17 +78,17 @@ export class PH {
 	}
 
 	static getFindSubject<E, IE extends IEntity>(
-		entityClass:{new ():E}
-	):QuerySubject<E, IE> {
+		entityClass: {new (): E}
+	): QuerySubject<E, IE> {
 		let subscription;
 		let querySubject = new QuerySubject<E, IE>(entityClass, () => {
-			if(querySubject.resultsSubject.observers.length < 1) {
+			if (querySubject.resultsSubject.observers.length < 1) {
 				subscription.unsubscribe();
 			}
 		});
 
 		subscription = querySubject.querySubject.subscribe(( //
-			iEntityQuery:IEntityQuery<IE> //
+			iEntityQuery: IEntityQuery<IE> //
 		) => {
 			PH.entityManager.search(entityClass, iEntityQuery, querySubject.resultsSubject);
 		});
@@ -116,17 +98,17 @@ export class PH {
 	}
 
 	static getFindOneSubject<E, IE extends IEntity>(
-		entityClass:{new ():E}
-	):QueryOneSubject<E, IE> {
+		entityClass: {new (): E}
+	): QueryOneSubject<E, IE> {
 		let subscription;
 		let querySubject = new QueryOneSubject<E, IE>(entityClass, () => {
-			if(querySubject.resultsSubject.observers.length < 1) {
+			if (querySubject.resultsSubject.observers.length < 1) {
 				subscription.unsubscribe();
 			}
 		});
 
 		subscription = querySubject.querySubject.subscribe(( //
-			iEntityQuery:IEntityQuery<IE> //
+			iEntityQuery: IEntityQuery<IE> //
 		) => {
 			PH.entityManager.searchOne(entityClass, iEntityQuery, querySubject.resultsSubject);
 		});

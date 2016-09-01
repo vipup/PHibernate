@@ -1,5 +1,5 @@
 import { Subject } from "rxjs";
-import { IEntity } from "querydsl-typescript";
+import { IEntity, IEntityQuery } from "querydsl-typescript";
 import { Subscribable } from "rxjs/Observable";
 import { Subscription, ISubscription, TeardownLogic } from "rxjs/Subscription";
 import { PartialObserver } from "rxjs/Observer";
@@ -8,22 +8,22 @@ import { PartialObserver } from "rxjs/Observer";
  */
 export declare class QuerySubject<E, IE extends IEntity> implements Subscribable<E[]> {
     private resultsUnsubscribeCallback;
-    querySubject: Subject<IE>;
+    querySubject: Subject<IEntityQuery<IE>>;
     resultsSubject: Subject<E[]>;
     constructor(e: {
         new (): E;
     }, resultsUnsubscribeCallback: () => void);
-    next(ie: IE): void;
+    next(ieq: IEntityQuery<IE>): void;
     subscribe(observerOrNext?: PartialObserver<E[]> | ((value: E[]) => void), error?: (error: any) => void, complete?: () => void): ISubscription;
 }
 export declare class QueryOneSubject<E, IE extends IEntity> implements Subscribable<E> {
     private resultsUnsubscribeCallback;
-    querySubject: Subject<IE>;
+    querySubject: Subject<IEntityQuery<IE>>;
     resultsSubject: Subject<E>;
     constructor(e: {
         new (): E;
     }, resultsUnsubscribeCallback: () => void);
-    next(ie: IE): void;
+    next(ieq: IEntityQuery<IE>): void;
     subscribe(observerOrNext?: PartialObserver<E> | ((value: E) => void), error?: (error: any) => void, complete?: () => void): ISubscription;
 }
 export declare class ResultsSubscription implements Subscription {
@@ -31,7 +31,7 @@ export declare class ResultsSubscription implements Subscription {
     private onUnsubscribe;
     constructor(subscription: Subscription, onUnsubscribe: () => void);
     unsubscribe(): void;
-    readonly isUnsubscribed: boolean;
+    closed: boolean;
     add(teardown: TeardownLogic): Subscription;
     remove(sub: Subscription): void;
 }

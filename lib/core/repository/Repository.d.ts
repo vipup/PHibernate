@@ -1,12 +1,12 @@
 /**
  * Created by Papa on 4/21/2016.
  */
-import { IOperation, IQEntity } from "querydsl-typescript";
+import { IOperation, IQEntity, JSONBaseOperation } from "querydsl-typescript";
 import { QueryState } from "../query/QueryState";
 export interface IRepository<E, QE extends IQEntity, R extends IRepository<E, QE, R>> {
     selectAll(): R;
-    where(...operations: IOperation[]): R;
-    select(...fields: IOperation[]): R;
+    where(...operations: IOperation<any, JSONBaseOperation>[]): R;
+    select(...fields: IOperation<any, JSONBaseOperation>[]): R;
     getQ(): QE;
     include<OQE extends IQEntity>(otherQ: OQE): R;
     execute(): Promise<E[]>;
@@ -16,7 +16,7 @@ export declare abstract class QRepository<E, QE extends IQEntity, R extends IRep
     currentQueryState: QueryState<QE>;
     abstract getQ(): QE;
     selectAll(): R;
-    where(...operations: IOperation[]): R;
+    where(...operations: IOperation<any, JSONBaseOperation>[]): R;
     select(): R;
     whereOther<OQE extends IQEntity>(otherQ: OQE): R;
     include<OQE extends IQEntity>(otherQ: OQE): R;
