@@ -15,10 +15,12 @@ export interface StoreAdaptor {
 	wrapInTransaction(callback: ()=>void);
 
 	create<E>(
+		entityClass:{new (): E},
 		entity:E
 	):Promise<E>;
 
 	delete<E>(
+		entityClass:{new (): E},
 		entity:E
 	):Promise<E>;
 
@@ -37,6 +39,7 @@ export interface StoreAdaptor {
 	):Promise<any>;
 
 	save<E>(
+		entityClass:{new (): E},
 		entity:E
 	):Promise<E>;
 
@@ -53,6 +56,7 @@ export interface StoreAdaptor {
 	):Observable<E>;
 
 	update<E>(
+		entityClass:{new (): E},
 		entity:E
 	):Promise<E>;
 

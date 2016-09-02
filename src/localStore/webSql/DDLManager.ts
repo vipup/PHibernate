@@ -1,5 +1,6 @@
 import {PH} from "../../config/PH";
 import {EntityMetadata} from "querydsl-typescript";
+import {MetadataUtils} from "../../core/metadata/MetadataUtils";
 /**
  * Created by Papa on 8/31/2016.
  */
@@ -19,15 +20,7 @@ export class DDLManager {
 		let columnNames: string[] = [];
 		let columnName: string;
 		for (let propertyName in entityPropertyTypeMap) {
-			if (columnMap[propertyName]) {
-				columnName = columnMap[propertyName].name;
-				if (!columnName) {
-					throw `Found @Column but not @Column.name for '${entityName}.${propertyName}'.`;
-				}
-			} else {
-				this.warn(`Did not find @Column for '${entityName}.${propertyName}'. Using property name.`);
-				columnName = propertyName;
-			}
+			columnName = MetadataUtils.getPropertyColumnName(propertyName, entityMetadata);
 			columnNames.push(columnName);
 		}
 		for (let propertyName in entityRelationMap) {

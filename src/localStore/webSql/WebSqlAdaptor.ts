@@ -9,8 +9,8 @@ import {DDLManager} from "./DDLManager";
  * Created by Papa on 8/30/2016.
  */
 
-const DB_NAME: string = 'appStorage';
-const win: any = window;
+const DB_NAME:string = 'appStorage';
+const win:any = window;
 
 export class WebSqlAdaptor implements LocalStoreAdaptor {
 
@@ -18,11 +18,11 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	static BACKUP_LIBRARY = 1;
 	static BACKUP_DOCUMENTS = 0;
 
-	private _db: any;
+	private _db:any;
 
 	private currentTransaction;
 
-	private getBackupLocation(dbFlag: number): number {
+	private getBackupLocation(dbFlag:number):number {
 		switch (dbFlag) {
 			case WebSqlAdaptor.BACKUP_LOCAL:
 				return 2;
@@ -36,9 +36,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	initialize(
-		setupInfo: LocalStoreSetupInfo
-	): Promise<any> {
-		let dbOptions: any = {
+		setupInfo:LocalStoreSetupInfo
+	):Promise<any> {
+		let dbOptions:any = {
 			name: DB_NAME,
 			backupFlag: WebSqlAdaptor.BACKUP_LOCAL,
 			existingDatabase: false
@@ -66,7 +66,7 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	wrapInTransaction(callback: ()=> Promise<any>): Promise<any> {
+	wrapInTransaction(callback:()=> Promise<any>):Promise<any> {
 		let result;
 		if (this.currentTransaction) {
 			result = callback();
@@ -83,9 +83,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 						if (!(result instanceof Promise)) {
 							throw `A method with @Transactional decorator must return a promise`;
 						}
-						result.catch((error: any) => {
+						result.catch((error:any) => {
 							reject(error);
-						}).then((value: any)=> {
+						}).then((value:any)=> {
 							this.currentTransaction = null;
 							resolve(value);
 						});
@@ -97,7 +97,28 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	handleError(error: any) {
+	query(query:string, params = []):Promise<any> {
+		return new Promise((resolve, reject) => {
+			try {
+				if (this.currentTransaction) {
+					this.currentTransaction.executeSql(query, params,
+						(tx, res) => resolve({tx: this.currentTransaction, res: res}),
+						(tx, err) => reject({tx: this.currentTransaction, err: err}));
+				} else {
+					this._db.transaction((tx) => {
+							tx.executeSql(query, params,
+								(tx, res) => resolve({tx: tx, res: res}),
+								(tx, err) => reject({tx: tx, err: err}));
+						},
+						(err) => reject({err: err}));
+				}
+			} catch (err) {
+				reject({err: err});
+			}
+		});
+	}
+
+	handleError(error:any) {
 		throw error;
 	}
 
@@ -133,60 +154,87 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 
 	}
 
-	create<E>(
-		entity: E
-	): Promise<E> {
+	async create<E>(
+		entityClass:{new (): E},
+		entity:E
+	):Promise<E> {
+			let entityName = entityClass.name;
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let columnMap = entityMetadata.columnMap;
+		let joinColumnMap = entityMetadata.joinColumns;
+		let entityPropertyTypeMap = PH.entitiesPropertyTypeMap[entityName];
+		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
+
+		if(!entityMetadata.idProperty) {
+			throw `@Id is not defined for entity: ${entityName}`;
+		}
+
+		if(entity[entityMetadata.idProperty]) {
+			throw `Cannot create entity: ${entityName}, id is already defined to be: ${entityMetadata.idProperty}`;
+		}
+
+		for(let propertyName in entity) {
+			let entityProperty = entityPropertyTypeMap[propertyName];
+			if(entityProperty) {
+
+			}
+		}
+
 		let sql = `INSERT INTO A VALUES (?, ?), ['a', 2]`;
 		return null;
 	}
 
-	delete<E>(
-		entity: E
-	): Promise<E> {
+	async delete<E>(
+		entityClass:{new (): E},
+		entity:E
+	):Promise<E> {
 		let sql = `DELETE FROM A where b = ?`;
 		return null;
 	}
 
-	find<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>
-	): Promise<E[]> {
+	async find<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>
+	):Promise<E[]> {
 		return null;
 	}
 
-	findOne<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>
-	): Promise<E> {
+	async findOne<E, IE extends IEntity>(
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>
+	):Promise<E> {
 		return null;
 
 	}
 
-	save<E>(
-		entity: E
-	): Promise<E> {
+	async save<E>(
+		entityClass:{new (): E},
+		entity:E
+	):Promise<E> {
 		return null;
 	}
 
 	search<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>,
-		subject?: Subject<E[]>
-	): Observable<E[]> {
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>,
+		subject?:Subject<E[]>
+	):Observable<E[]> {
 		return null;
 	}
 
 	searchOne<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>,
-		subject?: Subject<E>
-	): Observable<E> {
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>,
+		subject?:Subject<E>
+	):Observable<E> {
 		return null;
 	}
 
-	update<E>(
-		entity: E
-	): Promise<E> {
+	async update<E>(
+		entityClass:{new (): E},
+		entity:E
+	):Promise<E> {
 		let sql = `UPDATE A SET b = ?  WHERE c = ?`;
 		return null;
 	}

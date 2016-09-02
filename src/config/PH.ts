@@ -10,6 +10,16 @@ import {QuerySubject, QueryOneSubject} from "../core/query/QuerySubject";
  * Created by Papa on 6/24/2016.
  */
 
+class A {
+	b:string;
+}
+
+var c:A = {
+	b: 'd'
+};
+
+console.log(c.b);
+
 export class PH {
 
 	static qEntityMap: {[entityName: string]: QEntity<any>} = {};

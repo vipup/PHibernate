@@ -29,6 +29,11 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 
 	localDB: pouchDB.IPouchDB;
 
+
+	wrapInTransaction(callback: ()=>void) {
+		throw `Not implemented`;
+	}
+
 	async initialize(
 		setupInfo: PouchDbStoreSetupInfo
 	): Promise<any> {
@@ -43,6 +48,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async create<E>(
+		entityClass:{new (): E},
 		entity: E
 	): Promise<E> {
 		let className = EntityUtils.getObjectClassName(entity);
@@ -59,6 +65,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async delete<E>(
+		entityClass:{new (): E},
 		entity: E
 	): Promise<E> {
 		let record: PouchDbRecord = <any>entity;
@@ -258,17 +265,19 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async save<E>(
+		entityClass:{new (): E},
 		entity: E
 	): Promise<E> {
 		let record: PouchDbRecord = <any>entity;
 		if (record._id && record._rev) {
-			return await this.update(entity);
+			return await this.update(entityClass, entity);
 		} else {
-			return await this.create(entity);
+			return await this.create(entityClass, entity);
 		}
 	}
 
 	async update<E>(
+		entityClass:{new (): E},
 		entity: E
 	): Promise<E> {
 		let record: PouchDbRecord = <any>entity;

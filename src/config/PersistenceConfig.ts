@@ -39,7 +39,7 @@ export interface IPersistenceConfig {
 	offlineDeltaStore:IOfflineDeltaStoreConfig;
 
 	getEntityConfig(
-		entity:any
+		entityClass:{new (): any}
 	):IEntityConfig;
 
 	getEntityConfigFromQ<IQE extends IQEntity>(
@@ -164,10 +164,12 @@ export class PersistenceConfig implements IPersistenceConfig {
 	}
 
 	getEntityConfig(
-		entity:any
+		entityClass:{new (): any}
 	):IEntityConfig {
-		let className = EntityUtils.getObjectClassName(entity);
-		let constructor = entity.constructor;
+		// let className = EntityUtils.getObjectClassName(entity);
+		// let constructor = entity.constructor;
+		let className = entityClass.name;
+		let constructor = entityClass;
 
 		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
 	}
