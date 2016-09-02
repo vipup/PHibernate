@@ -8,8 +8,8 @@ export const PH_VISIBLE_FOR = '__ph_visible_for__';
 export const PH_EDITABLE_FOR = '__ph_editable_for__';
 
 export interface SequenceGeneratorConfiguration {
-	name:string;
-	sequenceName:string;
+	name: string;
+	sequenceName: string;
 }
 
 /**
@@ -19,14 +19,14 @@ export interface SequenceGeneratorConfiguration {
  * @returns {function(Function)}
  * @constructor
  */
-export function SequenceGenerator(sequenceGeneratorConfiguration?:SequenceGeneratorConfiguration) {
-	return function (constructor:Function) {
+export function SequenceGenerator(sequenceGeneratorConfiguration?: SequenceGeneratorConfiguration) {
+	return function (constructor: Function) {
 	}
 }
 
 export interface GeneratedValueConfiguration {
-	generator:string;
-	strategy:GenerationType;
+	generator: string;
+	strategy: GenerationType;
 }
 
 /**
@@ -36,10 +36,10 @@ export interface GeneratedValueConfiguration {
  * @returns {function(Function)}
  * @constructor
  */
-export function GeneratedValue(generatedValueConfiguration?:GeneratedValueConfiguration) {
+export function GeneratedValue(generatedValueConfiguration?: GeneratedValueConfiguration) {
 	return function (
-		targetObject:any,
-		propertyKey:string
+		targetObject: any,
+		propertyKey: string
 	) {
 	}
 }
@@ -52,19 +52,19 @@ export function GeneratedValue(generatedValueConfiguration?:GeneratedValueConfig
  * @returns {function(Function)}
  * @constructor
  */
-export function Access(accessType:AccessType) {
+export function Access(accessType: AccessType) {
 	return function (
-		targetObject:any,
-		propertyKey:string
+		targetObject: any,
+		propertyKey: string
 	) {
 	}
 }
 export interface AccessControlElements {
-	roles:string[]
+	roles: string[]
 }
 
 export function Transactional() {
-	return function (target:Function, methodName:string, methodDescriptor:any) {
+	return function (target: Function, methodName: string, methodDescriptor: any) {
 		// save a reference to the original method
 		// this way we keep the values currently in the
 		// descriptor and don't overwrite what another
@@ -72,7 +72,7 @@ export function Transactional() {
 		var originalMethod = methodDescriptor.value;
 
 		//editing the descriptor/value parameter
-		methodDescriptor.value = function (...args:any[]) {
+		methodDescriptor.value = function (...args: any[]) {
 			/**
 			 var result;
 			 PH.entityManager.getLocalStore().wrapInTransaction(() => {
@@ -81,14 +81,38 @@ export function Transactional() {
 			});
 			 return result;*/
 
-			return new Promise((resolve, reject) => {
+			/**
+			 return new Promise((resolve, reject) => {
 				PH.entityManager.getLocalStore().wrapInTransaction(() => {
 					// note usage of originalMethod here
 					var promise = originalMethod.apply(this, args);
 					promise.then(resolve, reject);
 				});
+			});*/
+			/**
+			 let result;
+			 PH.entityManager.getLocalStore().wrapInTransaction(() => {
+				// note usage of originalMethod here
+				result = originalMethod.apply(this, args);
+
+				return result;
 			});
-		}
+			 if (result instanceof Promise) {
+				return new Promise((resolve, reject) => {
+					result.then(resolve, reject);
+				});
+			} else {
+				return result;
+			}
+			 */
+			return PH.entityManager.getLocalStore().wrapInTransaction(() => {
+				// note usage of originalMethod here
+				let result = originalMethod.apply(this, args);
+
+				return result;
+			});
+
+		};
 
 		// return edited descriptor as opposed to overwriting
 		// the descriptor by returning a new descriptor
@@ -100,11 +124,11 @@ export interface VisibleForElements extends AccessControlElements {
 
 }
 
-export function VisibleFor(elements:VisibleForElements) {
+export function VisibleFor(elements: VisibleForElements) {
 
 	return function (
-		targetObject:any,
-		propertyKey:string
+		targetObject: any,
+		propertyKey: string
 	) {
 		let visibleForMap = targetObject[PH_VISIBLE_FOR];
 		if (!visibleForMap) {
@@ -120,11 +144,11 @@ export interface EditableForElements extends AccessControlElements {
 
 }
 
-export function EditableFor(elements:EditableForElements) {
+export function EditableFor(elements: EditableForElements) {
 
 	return function (
-		targetObject:any,
-		propertyKey:string
+		targetObject: any,
+		propertyKey: string
 	) {
 		let editableForMap = targetObject[PH_EDITABLE_FOR];
 		if (!editableForMap) {
@@ -140,9 +164,9 @@ export interface RepositoryConfiguration {
 
 }
 
-export function Repository(repositoryConfiguration?:RepositoryConfiguration) {
+export function Repository(repositoryConfiguration?: RepositoryConfiguration) {
 
-	return function (constructor:Function) {
+	return function (constructor: Function) {
 	}
 
 }
