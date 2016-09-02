@@ -9,8 +9,8 @@ import {DDLManager} from "./DDLManager";
  * Created by Papa on 8/30/2016.
  */
 
-const DB_NAME: string = 'appStorage';
-const win: any = window;
+const DB_NAME:string = 'appStorage';
+const win:any = window;
 
 export class WebSqlAdaptor implements LocalStoreAdaptor {
 
@@ -18,9 +18,11 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	static BACKUP_LIBRARY = 1;
 	static BACKUP_DOCUMENTS = 0;
 
-	private _db: any;
+	private _db:any;
 
-	private getBackupLocation(dbFlag: number): number {
+	private currentTransaction;
+
+	private getBackupLocation(dbFlag:number):number {
 		switch (dbFlag) {
 			case WebSqlAdaptor.BACKUP_LOCAL:
 				return 2;
@@ -34,9 +36,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	initialize(
-		setupInfo: LocalStoreSetupInfo
-	): Promise<any> {
-		let dbOptions: any = {
+		setupInfo:LocalStoreSetupInfo
+	):Promise<any> {
+		let dbOptions:any = {
 			name: DB_NAME,
 			backupFlag: WebSqlAdaptor.BACKUP_LOCAL,
 			existingDatabase: false
@@ -62,6 +64,35 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 				reject({err: err});
 			}
 		});
+	}
+
+	wrapInTransaction(callback:()=> Promise<any>):void {
+		if (this.currentTransaction) {
+			callback().then();
+			return;
+		}
+		try {
+			this._db.transaction((tx) => {
+					this.currentTransaction = tx;
+					let savedError:any;
+					callback().catch((error:any) => {
+						savedError = error;
+					}).then(()=> {
+						this.currentTransaction = null;
+						if (savedError) {
+							throw savedError;
+						}
+					});
+
+				},
+				(err) => this.handleError(err));
+		} catch (err) {
+			throw err;
+		}
+	}
+
+	handleError(error:any) {
+
 	}
 
 	initTable(
@@ -97,59 +128,59 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	create<E>(
-		entity: E
-	): Promise<E> {
+		entity:E
+	):Promise<E> {
 		let sql = `INSERT INTO A VALUES (?, ?), ['a', 2]`;
 		return null;
 	}
 
 	delete<E>(
-		entity: E
-	): Promise<E> {
+		entity:E
+	):Promise<E> {
 		let sql = `DELETE FROM A where b = ?`;
 		return null;
 	}
 
 	find<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>
-	): Promise<E[]> {
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>
+	):Promise<E[]> {
 		return null;
 	}
 
 	findOne<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>
-	): Promise<E> {
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>
+	):Promise<E> {
 		return null;
 
 	}
 
 	save<E>(
-		entity: E
-	): Promise<E> {
+		entity:E
+	):Promise<E> {
 		return null;
 	}
 
 	search<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>,
-		subject?: Subject<E[]>
-	): Observable<E[]> {
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>,
+		subject?:Subject<E[]>
+	):Observable<E[]> {
 		return null;
 	}
 
 	searchOne<E, IE extends IEntity>(
-		entityClass: {new (): E},
-		phQuery: PHQuery<IE>,
-		subject?: Subject<E>
-	): Observable<E> {
+		entityClass:{new ():E},
+		phQuery:PHQuery<IE>,
+		subject?:Subject<E>
+	):Observable<E> {
 		return null;
 	}
 
 	update<E>(
-		entity: E
-	): Promise<E> {
+		entity:E
+	):Promise<E> {
 		let sql = `UPDATE A SET b = ?  WHERE c = ?`;
 		return null;
 	}

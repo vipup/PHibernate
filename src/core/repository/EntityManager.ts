@@ -75,6 +75,7 @@ export class EntityManager implements IEntityManager {
 	online:boolean;
 	offlineDeltaStore:IDeltaStore;
 	localStoreMap:{[localStoreTypeName:string]:LocalStoreAdaptor} = {};
+	defaultLocalStore:LocalStoreAdaptor;
 
 	constructor(
 		public config:IPersistenceConfig
@@ -93,12 +94,32 @@ export class EntityManager implements IEntityManager {
 		}
 		if (config.hasLocalStores) {
 			for (let localStoreName in config.localStoreConfigMap) {
+				if(this.defaultLocalStore) {
+					throw `Unsupported Feature: More than one Local Store defined.`;
+				}
 				let localStoreConfig = config.localStoreConfigMap[localStoreName];
 				let localStoreAdaptor = getLocalStoreAdaptor(localStoreConfig.setupInfo.type);
 				this.localStoreMap[localStoreName] = localStoreAdaptor;
+				this.defaultLocalStore = localStoreAdaptor;
 			}
 		}
 
+	}
+
+	getLocalStore(localStoreTypeName?:string) {
+		let localStore:LocalStoreAdaptor;
+		if(localStoreTypeName) {
+			localStore = this.localStoreMap[localStoreTypeName];
+			if(!localStore) {
+				throw `LocalStore '${localStoreTypeName}' is not setup.`;
+			}
+		} else {
+			if(!this.defaultLocalStore) {
+				throw `Default LocalStore is not setup.`;
+			}
+			localStore = this.defaultLocalStore;
+		}
+		return localStore;
 	}
 
 	async initialize():Promise<any> {

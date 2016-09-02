@@ -12,6 +12,8 @@ export interface StoreSetupInfo {
 
 export interface StoreAdaptor {
 
+	wrapInTransaction(callback: ()=>void);
+
 	create<E>(
 		entity:E
 	):Promise<E>;
