@@ -13,7 +13,7 @@ export class DDLManager {
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 		let columnMap = entityMetadata.columnMap;
-		let joinColumnMap = entityMetadata.joinColumns;
+		let joinColumnMap = entityMetadata.joinColumnMap;
 		let entityPropertyTypeMap = PH.entitiesPropertyTypeMap[entityName];
 		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
 

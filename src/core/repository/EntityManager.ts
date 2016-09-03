@@ -102,7 +102,7 @@ export class EntityManager implements IEntityManager {
 					throw `Unsupported Feature: More than one Local Store defined.`;
 				}
 				let localStoreConfig = config.localStoreConfigMap[localStoreName];
-				let localStoreAdaptor = getLocalStoreAdaptor(localStoreConfig.setupInfo.type);
+				let localStoreAdaptor = getLocalStoreAdaptor(localStoreConfig.setupInfo.type, localStoreConfig.setupInfo.idGeneration);
 				this.localStoreMap[localStoreName] = localStoreAdaptor;
 				this.defaultLocalStore = localStoreAdaptor;
 			}

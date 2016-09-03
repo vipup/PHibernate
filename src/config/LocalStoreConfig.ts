@@ -2,43 +2,61 @@
  * Created by Papa on 5/28/2016.
  */
 import {LocalStoreType, localStore, LocalStoreSetupInfo} from "../localStore/LocalStoreApi";
+import {IdGeneration} from "../localStore/IdGenerator";
 
 export interface PHLocalStoreConfig {
-	type:LocalStoreType | string;
+	type: LocalStoreType | string;
+	idGeneration: IdGeneration
 }
 
 export interface ILocalStoreConfig {
-	setupInfo:LocalStoreSetupInfo;
+	setupInfo: LocalStoreSetupInfo;
 }
 
 export interface IPouchDbLocalStoreConfig extends ILocalStoreConfig {
 }
 
-export class PouchDbLocalStoreConfig implements IPouchDbLocalStoreConfig {
+export class PouchDbLocalStoreConfig extends CommonLocalStoreConfig implements IPouchDbLocalStoreConfig {
 
-	setupInfo:LocalStoreSetupInfo;
+}
+
+export interface ISqLiteCordovaLocalStoreConfig extends ILocalStoreConfig {
+}
+
+export class SqLiteCordovaLocalStoreConfig extends CommonLocalStoreConfig implements SqLiteCordovaLocalStoreConfig {
+
+}
+
+export class CommonLocalStoreConfig implements ILocalStoreConfig {
+
+	setupInfo: LocalStoreSetupInfo;
 
 	constructor(
-		localStoreName:string,
-		type:LocalStoreType
+		localStoreName: string,
+		type: LocalStoreType,
+		idGeneration: IdGeneration
 	) {
 
 		this.setupInfo = {
 			name: localStoreName,
-			type: type
+			type: type,
+			idGeneration: idGeneration
 		};
 	}
 }
 
 export function createLocalStoreConfig(
-	localStoreName:string,
-	config:PHLocalStoreConfig
-):ILocalStoreConfig {
+	localStoreName: string,
+	config: PHLocalStoreConfig
+): ILocalStoreConfig {
 	if (!config.type) {
 		throw `Local Store Type is not specified`;
 	}
+	if (!config.idGeneration) {
+		throw `Id Generation startegy is not specified`;
+	}
 
-	let type:LocalStoreType;
+	let type: LocalStoreType;
 
 	if (typeof config.type === "string") {
 		type = localStore.type.getValue(<string>config.type);
@@ -49,8 +67,11 @@ export function createLocalStoreConfig(
 	}
 
 	switch (type) {
+		case LocalStoreType.SQLITE_CORDOVA:
+			return new SqLiteCordovaLocalStoreConfig(localStoreName, <LocalStoreType>config.type, config.idGeneration);
 		case LocalStoreType.POUCH_DB:
-			return new PouchDbLocalStoreConfig(localStoreName, <LocalStoreType>config.type);
+			throw `PouchDb is not currently supported`;
+		// return new PouchDbLocalStoreConfig(localStoreName, <LocalStoreType>config.type);
 		default:
 			throw `Unsupported LocalStoreType: ${type}`;
 	}

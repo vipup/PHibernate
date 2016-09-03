@@ -4,7 +4,7 @@
 
 export class PlatformUtils {
 
-	static getMacAddress():string {
+	static getDeviceAddress():string {
 		return 'all';
 	}
 

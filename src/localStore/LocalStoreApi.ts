@@ -1,3 +1,4 @@
+import {IdGeneration} from "./IdGenerator";
 /**
  * Created by Papa on 5/28/2016.
  */
@@ -9,11 +10,12 @@ export interface LocalStoreShareInfo {
 export interface LocalStoreSetupInfo {
 	name:string;
 	type:LocalStoreType;
+	idGeneration:IdGeneration;
 }
 
 export enum LocalStoreType {
 	POUCH_DB,
-	SQLITE
+	SQLITE_CORDOVA
 }
 
 export namespace localStore.type {
@@ -24,7 +26,7 @@ export namespace localStore.type {
 		localStoreType:LocalStoreType
 	):string {
 		switch(localStoreType) {
-			case LocalStoreType.SQLITE:
+			case LocalStoreType.SQLITE_CORDOVA:
 				return WEB_SQL;
 			case LocalStoreType.POUCH_DB:
 				throw `PouchDb is not currently supported`;
@@ -38,7 +40,7 @@ export namespace localStore.type {
 	):LocalStoreType {
 		switch (localStoreTypeName) {
 			case WEB_SQL:
-				return LocalStoreType.SQLITE;
+				return LocalStoreType.SQLITE_CORDOVA;
 			case POUCH_DB:
 				throw `PouchDb is not currently supported`;
 			default:

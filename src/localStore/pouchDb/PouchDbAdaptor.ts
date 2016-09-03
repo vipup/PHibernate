@@ -53,7 +53,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	): Promise<E> {
 		let className = EntityUtils.getObjectClassName(entity);
 		let nowTimeStamp = DateUtils.getNowTimeStamp();
-		let macAddress = PlatformUtils.getMacAddress();
+		let macAddress = PlatformUtils.getDeviceAddress();
 
 		let proxy = <EntityProxy><any>entity;
 		let record: PouchDbRecord = <any>entity;

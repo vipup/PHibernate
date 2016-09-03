@@ -5,6 +5,7 @@
 import {PHPersistenceConfig} from "../src/config/PersistenceConfig";
 import {LocalStoreType} from "../src/config/LocalStoreConfig";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/SharingAdaptor";
+import {IdGeneration} from "../src/localStore/IdGenerator";
 
 export var PERSISTENCE_CONFIG:PHPersistenceConfig = {
 	appName: "DefaultApp",
@@ -31,10 +32,11 @@ export var PERSISTENCE_CONFIG:PHPersistenceConfig = {
 	},
 	localStores: {
 		"DefaultLocalStore": {
-			platform: LocalStoreType.POUCH_DB
+			platform: LocalStoreType.SQLITE_CORDOVA,
+			idGeneration: IdGeneration.USER_TIMESTAMP
 		}
 	},
 	offlineDeltaStore: {
-		type: LocalStoreType.POUCH_DB
+		type: LocalStoreType.SQLITE_CORDOVA
 	}
 };

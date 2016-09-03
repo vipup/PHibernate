@@ -13,6 +13,7 @@ import {IQEntity} from "querydsl-typescript";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/index";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
 import {EntityUtils} from "../shared/EntityUtils";
+import {IdGeneration} from "../localStore/IdGenerator";
 
 export interface PHPersistenceConfig {
 	appName:string;
@@ -53,8 +54,9 @@ export class PersistenceConfig implements IPersistenceConfig {
 		appName:string = 'DefaultApp',
 		distributionStrategy:DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
 		deltaStorePlatform:PlatformType = PlatformType.GOOGLE,
-		localStoreType:LocalStoreType = LocalStoreType.POUCH_DB,
-		offlineDeltaStoreType:LocalStoreType = LocalStoreType.POUCH_DB
+		localStoreType:LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
+		offlineDeltaStoreType:LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
+	  idGeneration:IdGeneration = IdGeneration.USER_TIMESTAMP
 	):PHPersistenceConfig {
 		return {
 			appName: appName,
@@ -78,7 +80,8 @@ export class PersistenceConfig implements IPersistenceConfig {
 			},
 			localStores: {
 				"DefaultLocalStore": {
-					type: localStoreType
+					type: localStoreType,
+					idGeneration: idGeneration
 				}
 			},
 			offlineDeltaStore: {

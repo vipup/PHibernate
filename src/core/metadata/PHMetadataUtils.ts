@@ -5,23 +5,44 @@ import {PH} from "../../config/PH";
 import {IQEntity, EntityMetadata} from "querydsl-typescript";
 import {MetadataUtils} from "./MetadataUtils";
 
+/**
+ * Provides an entry point into MetadataUtils when what is available is the QEntity
+ */
 export class PHMetadataUtils {
 
 	static getPropertyColumnName<IQE extends IQEntity>(
-		propertyName:string,
-		qEntity:IQE
-	):string {
+		propertyName: string,
+		qEntity: IQE
+	): string {
 		let entityName = qEntity.__entityName__;
 		let entityPropertyTypeMap = PH.entitiesPropertyTypeMap[entityName];
 
 		let entityProperty = entityPropertyTypeMap[propertyName];
-		if(!entityProperty) {
-			throw `Could not find Q property configuration for property ${entityProperty}, on Q${entityName}`;
+		if (!entityProperty) {
+			return null;
 		}
 
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
 		return MetadataUtils.getPropertyColumnName(propertyName, entityMetadata);
+	}
+
+	static getJoinColumnName<IQE extends IQEntity>(
+		propertyName: string,
+		qEntity: IQE
+	): string {
+		let entityName = qEntity.__entityName__;
+		let entityRelationPropertyTypeMap = PH.entitiesRelationPropertyMap[entityName];
+
+		let relationRecord = entityRelationPropertyTypeMap[propertyName];
+		if (!relationRecord) {
+			return null;
+		}
+
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+
+		return MetadataUtils.getPropertyColumnName(propertyName, entityMetadata);
+
 	}
 }
 
@@ -32,9 +53,9 @@ export class NameMetadataUtils {
 
 
 	static getPropertyColumnName(
-		propertyName:string,
-		entityName:string
-	):string {
+		propertyName: string,
+		entityName: string
+	): string {
 		let qEntity = PH.qEntityMap[entityName];
 
 		if (!qEntity) {
@@ -51,9 +72,9 @@ export class NameMetadataUtils {
 export class EntityMetadataUtils {
 
 	static getPropertyColumnName(
-		propertyName:string,
-		entityClass:{new ():any}
-	):string {
+		propertyName: string,
+		entityClass: {new (): any}
+	): string {
 		let entityName = entityClass.name;
 
 		return NameMetadataUtils.getPropertyColumnName(propertyName, entityName);

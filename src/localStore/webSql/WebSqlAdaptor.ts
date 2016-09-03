@@ -4,13 +4,15 @@ import {IEntity, PHQuery, EntityMetadata} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
 import {PH} from "../../config/PH";
 import {DDLManager} from "./DDLManager";
+import {IdGenerator, IdGeneration, getIdGenerator} from "../IdGenerator";
+import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 
 /**
  * Created by Papa on 8/30/2016.
  */
 
-const DB_NAME:string = 'appStorage';
-const win:any = window;
+const DB_NAME: string = 'appStorage';
+const win: any = window;
 
 export class WebSqlAdaptor implements LocalStoreAdaptor {
 
@@ -18,11 +20,16 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	static BACKUP_LIBRARY = 1;
 	static BACKUP_DOCUMENTS = 0;
 
-	private _db:any;
+	private _db: any;
 
 	private currentTransaction;
+	private idGenerator: IdGenerator;
 
-	private getBackupLocation(dbFlag:number):number {
+	constructor(idGeneration: IdGeneration) {
+		this.idGenerator = getIdGenerator(idGeneration);
+	}
+
+	private getBackupLocation(dbFlag: number): number {
 		switch (dbFlag) {
 			case WebSqlAdaptor.BACKUP_LOCAL:
 				return 2;
@@ -36,9 +43,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	initialize(
-		setupInfo:LocalStoreSetupInfo
-	):Promise<any> {
-		let dbOptions:any = {
+		setupInfo: LocalStoreSetupInfo
+	): Promise<any> {
+		let dbOptions: any = {
 			name: DB_NAME,
 			backupFlag: WebSqlAdaptor.BACKUP_LOCAL,
 			existingDatabase: false
@@ -66,7 +73,7 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	wrapInTransaction(callback:()=> Promise<any>):Promise<any> {
+	wrapInTransaction(callback: ()=> Promise<any>): Promise<any> {
 		let result;
 		if (this.currentTransaction) {
 			result = callback();
@@ -83,9 +90,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 						if (!(result instanceof Promise)) {
 							throw `A method with @Transactional decorator must return a promise`;
 						}
-						result.catch((error:any) => {
+						result.catch((error: any) => {
 							reject(error);
-						}).then((value:any)=> {
+						}).then((value: any)=> {
 							this.currentTransaction = null;
 							resolve(value);
 						});
@@ -97,7 +104,7 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	query(query:string, params = []):Promise<any> {
+	query(query: string, params = []): Promise<any> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (this.currentTransaction) {
@@ -118,7 +125,7 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	handleError(error:any) {
+	handleError(error: any) {
 		throw error;
 	}
 
@@ -155,88 +162,103 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	async create<E>(
-		entityClass:{new (): E},
-		entity:E
-	):Promise<E> {
-			let entityName = entityClass.name;
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
+		let entityName = entityClass.name;
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 		let columnMap = entityMetadata.columnMap;
-		let joinColumnMap = entityMetadata.joinColumns;
+		let joinColumnMap = entityMetadata.joinColumnMap;
 		let entityPropertyTypeMap = PH.entitiesPropertyTypeMap[entityName];
 		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
 
-		if(!entityMetadata.idProperty) {
+		if (!entityMetadata.idProperty) {
 			throw `@Id is not defined for entity: ${entityName}`;
 		}
 
-		if(entity[entityMetadata.idProperty]) {
+		if (entity[entityMetadata.idProperty]) {
 			throw `Cannot create entity: ${entityName}, id is already defined to be: ${entityMetadata.idProperty}`;
 		}
 
-		for(let propertyName in entity) {
-			let entityProperty = entityPropertyTypeMap[propertyName];
-			if(entityProperty) {
+		entity[entityMetadata.idProperty] = this.idGenerator.generateId(entityClass);
 
+		let columnNames:string[];
+		let values: any[];
+
+		for (let propertyName in entity) {
+			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
+			if (columnName) {
+				columnNames.push(columnName);
+				values.push(entity[propertyName]);
 			}
+			columnName = PHMetadataUtils.getJoinColumnName(propertyName, qEntity);
+			if (columnName) {
+				//
+			}
+			this.warn('did not find column or join information for property, ignoring');
 		}
 
-		let sql = `INSERT INTO A VALUES (?, ?), ['a', 2]`;
+		let sql = `INSERT INTO A () VALUES (?, ?), ['a', 2]`;
 		return null;
 	}
 
 	async delete<E>(
-		entityClass:{new (): E},
-		entity:E
-	):Promise<E> {
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
 		let sql = `DELETE FROM A where b = ?`;
 		return null;
 	}
 
 	async find<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		phQuery:PHQuery<IE>
-	):Promise<E[]> {
+		entityClass: {new (): E},
+		phQuery: PHQuery<IE>
+	): Promise<E[]> {
 		return null;
 	}
 
 	async findOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		phQuery:PHQuery<IE>
-	):Promise<E> {
+		entityClass: {new (): E},
+		phQuery: PHQuery<IE>
+	): Promise<E> {
 		return null;
 
 	}
 
 	async save<E>(
-		entityClass:{new (): E},
-		entity:E
-	):Promise<E> {
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
 		return null;
 	}
 
 	search<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		phQuery:PHQuery<IE>,
-		subject?:Subject<E[]>
-	):Observable<E[]> {
+		entityClass: {new (): E},
+		phQuery: PHQuery<IE>,
+		subject?: Subject<E[]>
+	): Observable<E[]> {
 		return null;
 	}
 
 	searchOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		phQuery:PHQuery<IE>,
-		subject?:Subject<E>
-	):Observable<E> {
+		entityClass: {new (): E},
+		phQuery: PHQuery<IE>,
+		subject?: Subject<E>
+	): Observable<E> {
 		return null;
 	}
 
 	async update<E>(
-		entityClass:{new (): E},
-		entity:E
-	):Promise<E> {
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
 		let sql = `UPDATE A SET b = ?  WHERE c = ?`;
 		return null;
+	}
+
+	warn(message: string) {
+		console.log(message);
 	}
 
 }

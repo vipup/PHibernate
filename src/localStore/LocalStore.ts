@@ -2,20 +2,22 @@ import {LocalStoreType} from "./LocalStoreApi";
 import {PouchDbAdaptor} from "./pouchDb/PouchDbAdaptor";
 import {LocalStoreAdaptor} from "./LocalStoreAdaptor";
 import {WebSqlAdaptor} from "./webSql/WebSqlAdaptor";
+import {IdGeneration} from "./IdGenerator";
 /**
  * Created by Papa on 5/28/2016.
  */
 
 var SQLITE_ADAPTOR;
 export function getLocalStoreAdaptor(
-	localStoreType:LocalStoreType
+	localStoreType:LocalStoreType,
+  idGeneration:IdGeneration
 ):LocalStoreAdaptor {
 	switch (localStoreType) {
 		case LocalStoreType.POUCH_DB:
 			throw `PouchDb is not curently supported`;
-		case LocalStoreType.SQLITE:
+		case LocalStoreType.SQLITE_CORDOVA:
 			if (!SQLITE_ADAPTOR) {
-				SQLITE_ADAPTOR = getSQLiteAdaptor();
+				SQLITE_ADAPTOR = getSQLiteAdaptor(idGeneration);
 			}
 			return SQLITE_ADAPTOR;
 		default:
@@ -23,6 +25,6 @@ export function getLocalStoreAdaptor(
 	}
 }
 
-export function getSQLiteAdaptor():LocalStoreAdaptor {
-	return new WebSqlAdaptor();
+export function getSQLiteAdaptor(idGeneration:IdGeneration):LocalStoreAdaptor {
+	return new WebSqlAdaptor(idGeneration);
 }
