@@ -15,22 +15,22 @@ export interface StoreAdaptor {
 	wrapInTransaction(callback: ()=>void);
 
 	create<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity:E
 	):Promise<E>;
 
 	delete<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity:E
 	):Promise<E>;
 
 	find<E, IE extends IEntity>(
-		entityClass:{new ():E},
+		entityName:string,
 		phQuery:PHQuery<IE>
 	):Promise<E[]>;
 
 	findOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
+		entityName:string,
 		phQuery:PHQuery<IE>
 	):Promise<E>;
 
@@ -39,24 +39,24 @@ export interface StoreAdaptor {
 	):Promise<any>;
 
 	save<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity:E
 	):Promise<E>;
 
 	search<E, IE extends IEntity>(
-		entityClass:{new ():E},
+		entityName:string,
 		phQuery:PHQuery<IE>,
 	  subject?:Subject<E[]>
 	):Observable<E[]>;
 
 	searchOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
+		entityName:string,
 		phQuery:PHQuery<IE>,
 		subject?:Subject<E>
 	):Observable<E>;
 
 	update<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity:E
 	):Promise<E>;
 
