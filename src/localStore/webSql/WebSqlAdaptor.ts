@@ -434,8 +434,8 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		 *    Makes the mental model more complex
 		 * @type {QEntity<any>}
 		 */
-			let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
 
 		if (!entityMetadata.idProperty) {
@@ -448,9 +448,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 
 		entity[entityMetadata.idProperty] = this.idGenerator.generateId(<any>entityMetadata);
 
-		let columnNames: string[] = [];
-		let values: any[] = [];
-		let cascadeRecords: CascadeRecord[] = [];
+		let columnNames:string[] = [];
+		let values:any[] = [];
+		let cascadeRecords:CascadeRecord[] = [];
 		for (let propertyName in entity) {
 			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
 			if (columnName) {
@@ -503,18 +503,16 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 					}
 					break;
 			}
-
-			let sql = `UPDATE A SET b = ?  WHERE c = ?`;
-			return null;
 		}
 
-		warn(
-			message
-	:
-		string
-	)
-		{
-			console.log(message);
-		}
-
+		let sql = `UPDATE A SET b = ?  WHERE c = ?`;
+		return null;
 	}
+
+	warn(
+		message:string
+	) {
+		console.log(message);
+	}
+
+}

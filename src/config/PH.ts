@@ -6,29 +6,28 @@ import {EntityUtils} from "../shared/EntityUtils";
 import {PHPersistenceConfig, PersistenceConfig} from "./PersistenceConfig";
 import {EntityManager} from "../core/repository/EntityManager";
 import {QuerySubject, QueryOneSubject} from "../core/query/QuerySubject";
+import {UpdateCache} from "../core/repository/UpdateCache";
 /**
  * Created by Papa on 6/24/2016.
  */
 
-class A {
-	b:string;
-}
-
-var c:A = {
-	b: 'd'
-};
-
-console.log(c.b);
-
 export class PH {
 
-	static qEntityMap: {[entityName: string]: QEntity<any>} = {};
-	static entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}} = {};
-	static entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}} = {};
+	static qEntityMap:{[entityName:string]:QEntity<any>} = {};
+	static entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}} = {};
+	static entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}} = {};
+
+	static startPersistenceContext():void {
+		UpdateCache.initCache();
+	}
+
+	static endPeristenceContext():void {
+		UpdateCache.dropCache();
+	}
 
 	static getQEntityFromEntityClass(
-		entityClass: any
-	): QEntity<any> {
+		entityClass:any
+	):QEntity<any> {
 		let entityClassName = EntityUtils.getClassName(entityClass);
 		let qEntity = PH.qEntityMap[entityClassName];
 
@@ -36,8 +35,8 @@ export class PH {
 	}
 
 	static addQEntity(
-		entityConstructor: {new (): any},
-		qEntity: QEntity<any>
+		entityConstructor:{new ():any},
+		qEntity:QEntity<any>
 	) {
 		let entityName = qEntity.__entityName__;
 		let fields = qEntity.__entityFieldMap__;
@@ -50,14 +49,14 @@ export class PH {
 			entityRelationPropertyMap = {};
 			PH.entitiesRelationPropertyMap[entityName] = entityRelationPropertyMap;
 		}
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>entityConstructor;
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>entityConstructor;
 
 		for (let relationPropertyName in relations) {
-			let relation: IQRelation<any, any, any> = relations[relationPropertyName];
+			let relation:IQRelation<any, any, any> = relations[relationPropertyName];
 			let propertyName = relation.propertyName;
 			let relationClassName = EntityUtils.getClassName(relation.relationEntityConstructor);
 
-			let relationRecord: RelationRecord = {
+			let relationRecord:RelationRecord = {
 				entityName: relationClassName,
 				propertyName: propertyName,
 				relationType: relation.relationType
@@ -72,15 +71,15 @@ export class PH {
 			PH.entitiesPropertyTypeMap[entityName] = entityPropertyTypeMap;
 		}
 		for (let fieldPropertyName in fields) {
-			let field: IQField<any, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>> = fields[fieldPropertyName];
+			let field:IQField<any, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>> = fields[fieldPropertyName];
 			entityPropertyTypeMap[field.fieldName] = true;
 		}
 	}
 
-	static entityManager: EntityManager;
+	static entityManager:EntityManager;
 
 	static init(
-		phConfig: PHPersistenceConfig
+		phConfig:PHPersistenceConfig
 	) {
 		let persistenceConfig = new PersistenceConfig(phConfig);
 
@@ -88,8 +87,8 @@ export class PH {
 	}
 
 	static getFindSubject<E, IE extends IEntity>(
-		entityClass: {new (): E}
-	): QuerySubject<E, IE> {
+		entityClass:{new ():E}
+	):QuerySubject<E, IE> {
 		let subscription;
 		let querySubject = new QuerySubject<E, IE>(entityClass, () => {
 			if (querySubject.resultsSubject.observers.length < 1) {
@@ -98,7 +97,7 @@ export class PH {
 		});
 
 		subscription = querySubject.querySubject.subscribe(( //
-			iEntityQuery: IEntityQuery<IE> //
+			iEntityQuery:IEntityQuery<IE> //
 		) => {
 			PH.entityManager.search(entityClass, iEntityQuery, querySubject.resultsSubject);
 		});
@@ -108,8 +107,8 @@ export class PH {
 	}
 
 	static getFindOneSubject<E, IE extends IEntity>(
-		entityClass: {new (): E}
-	): QueryOneSubject<E, IE> {
+		entityClass:{new ():E}
+	):QueryOneSubject<E, IE> {
 		let subscription;
 		let querySubject = new QueryOneSubject<E, IE>(entityClass, () => {
 			if (querySubject.resultsSubject.observers.length < 1) {
@@ -118,7 +117,7 @@ export class PH {
 		});
 
 		subscription = querySubject.querySubject.subscribe(( //
-			iEntityQuery: IEntityQuery<IE> //
+			iEntityQuery:IEntityQuery<IE> //
 		) => {
 			PH.entityManager.searchOne(entityClass, iEntityQuery, querySubject.resultsSubject);
 		});
