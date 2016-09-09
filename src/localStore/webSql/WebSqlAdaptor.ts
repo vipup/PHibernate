@@ -1,11 +1,12 @@
 import {LocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {LocalStoreSetupInfo} from "../LocalStoreApi";
-import {IEntity, PHQuery, EntityMetadata, RelationType, CascadeType} from "querydsl-typescript";
+import {IEntity, PHQuery, EntityMetadata, QEntity} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
 import {PH} from "../../config/PH";
 import {DDLManager} from "./DDLManager";
-import {IdGenerator, IdGeneration, getIdGenerator} from "../IdGenerator";
-import {PHMetadataUtils, NameMetadataUtils} from "../../core/metadata/PHMetadataUtils";
+import {IdGeneration} from "../IdGenerator";
+import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
+import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
 
 /**
  * Created by Papa on 8/30/2016.
@@ -14,18 +15,7 @@ import {PHMetadataUtils, NameMetadataUtils} from "../../core/metadata/PHMetadata
 const DB_NAME: string = 'appStorage';
 const win: any = window;
 
-interface CascadeRecord {
-	entityName: string;
-	mappedBy: string;
-	manyEntity: any;
-}
-
-interface RemovalRecord {
-	array: any[];
-	index: number;
-}
-
-export class WebSqlAdaptor implements LocalStoreAdaptor {
+export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 
 	static BACKUP_LOCAL = 2;
 	static BACKUP_LIBRARY = 1;
@@ -34,10 +24,9 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 	private _db: any;
 
 	private currentTransaction;
-	private idGenerator: IdGenerator;
 
 	constructor(idGeneration: IdGeneration) {
-		this.idGenerator = getIdGenerator(idGeneration);
+		super(idGeneration);
 	}
 
 	private getBackupLocation(dbFlag: number): number {
@@ -175,81 +164,13 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 
 	}
 
-	async create<E>(
-		entityName: string,
-		entity: E
-	): Promise<void> {
-		let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
-		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
-
-		if (!entityMetadata.idProperty) {
-			throw `@Id is not defined for entity: ${entityName}`;
-		}
-
-		if (entity[entityMetadata.idProperty]) {
-			throw `Cannot create entity: ${entityName}, id is already defined to be: ${entityMetadata.idProperty}`;
-		}
-
-		entity[entityMetadata.idProperty] = this.idGenerator.generateId(<any>entityMetadata);
-
-		let columnNames: string[] = [];
-		let values: any[] = [];
-		let cascadeRecords: CascadeRecord[] = [];
-		for (let propertyName in entity) {
-			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
-			if (columnName) {
-				columnNames.push(columnName);
-				values.push(entity[propertyName]);
-				continue;
-			}
-			let nonPropertyValue = entity[propertyName];
-			if (!nonPropertyValue) {
-				continue;
-			}
-			// If it's not an object/array, don't process it (must be a transient field)
-			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
-				continue;
-			}
-			columnName = PHMetadataUtils.getJoinColumnName(propertyName, qEntity);
-			// if there is no entity data on in, don't process it (transient field)
-			if (!columnName) {
-				return;
-			}
-			let entityRelation = entityRelationMap[propertyName];
-			switch (entityRelation.relationType) {
-				case RelationType.MANY_TO_ONE:
-					// get the parent object's id
-					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
-					if (!parentObjectIdValue) {
-						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
-					}
-					columnNames.push(columnName);
-					values.push(parentObjectIdValue);
-					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
-					continue;
-				case RelationType.ONE_TO_MANY:
-					if (!(nonPropertyValue instanceof Array)) {
-						throw `@OneToMany relation must be an array`;
-					}
-					let oneToManyConfig = PHMetadataUtils.getOneToManyConfig(propertyName, qEntity);
-					let cascadeType = oneToManyConfig.cascade;
-					switch (cascadeType) {
-						case CascadeType.ALL:
-						case CascadeType.PERSIST:
-							// Save for cascade operation
-							for (let manyEntity in nonPropertyValue) {
-								cascadeRecords.push({
-									entityName: entityRelation.entityName,
-									mappedBy: oneToManyConfig.mappedBy,
-									manyEntity: manyEntity
-								});
-							}
-					}
-					break;
-			}
-		}
-
+	protected async createNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[],
+		cascadeRecords: CascadeRecord[]
+	) {
+		let nativeValues = values.map((value) => this.convertValueIn(value));
 		let valuesBindString = values.map(() => '?').join(', ');
 		let tableName = PHMetadataUtils.getTableName(qEntity);
 		let sql = `INSERT INTO ${tableName} (${columnNames.join(', ')}) VALUES (${valuesBindString})`;
@@ -258,7 +179,7 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 			if (!this.currentTransaction) {
 				startTransaction = true;
 			}
-			await this.query(sql, values, startTransaction);
+			await this.query(sql, nativeValues, startTransaction);
 			for (let i = 0; i < cascadeRecords.length; i++) {
 				let cascadeRecord = cascadeRecords[i];
 				await this.create(cascadeRecord.entityName, cascadeRecord.manyEntity);
@@ -267,87 +188,18 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 				this.currentTransaction = null;
 			}
 		} else {
-			await this.query(sql, values);
+			await this.query(sql, nativeValues);
 		}
 	}
 
-	async delete<E>(
-		entityName: string,
-		entity: E,
+	protected async deleteNative(
+		qEntity: QEntity<any>,
+		entity: any,
+		idValue: number | string,
+		cascadeRecords: CascadeRecord[],
 		startNewTransaction: boolean = false
-	): Promise<void> {
-		let qEntity = PH.qEntityMap[entityName];
+	) {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
-		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
-
-		if (!entityMetadata.idProperty) {
-			throw `@Id is not defined for entity: ${entityName}`;
-		}
-
-		let idValue = entity[entityMetadata.idProperty];
-		if (!idValue) {
-			throw `Cannot delete entity: ${entityName}, id is not set.`;
-		}
-
-		let cascadeRecords: CascadeRecord[] = [];
-		let removalRecords: RemovalRecord[] = [];
-		for (let propertyName in entity) {
-			let entityRelation = entityRelationMap[propertyName];
-			// Only check relationships
-			if (!entityRelation) {
-				continue;
-			}
-			let nonPropertyValue = entity[propertyName];
-			// skip blank relations
-			if (!nonPropertyValue) {
-				continue;
-			}
-			// If it's not an object/array it's invalid
-			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
-				throw `Entity relation ${entityName}.${propertyName} is not an object or an array`;
-			}
-			switch (entityRelation.relationType) {
-				case RelationType.MANY_TO_ONE:
-					// get the parent object's related OneToMany
-					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
-					let relatedOneToMany = NameMetadataUtils.getRelatedOneToManyConfig(propertyName, entityRelation.entityName);
-					if (!relatedOneToMany || !relatedOneToMany.config.orphanRemoval) {
-						continue;
-					}
-					let relatedObject = entity[propertyName];
-					let relatedObjectManyReference = relatedObject[relatedOneToMany.propertyName];
-					for (let i = 0; i < relatedObjectManyReference.length; i++) {
-						if (relatedObjectManyReference[i] === entity) {
-							removalRecords.push({
-								array: relatedObjectManyReference,
-								index: i
-							});
-							break;
-						}
-					}
-					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
-					continue;
-				case RelationType.ONE_TO_MANY:
-					if (!(nonPropertyValue instanceof Array)) {
-						throw `@OneToMany relation must be an array`;
-					}
-					let oneToManyConfig = PHMetadataUtils.getOneToManyConfig(propertyName, qEntity);
-					let cascadeType = oneToManyConfig.cascade;
-					switch (cascadeType) {
-						case CascadeType.ALL:
-						case CascadeType.REMOVE:
-							// Save for cascade operation
-							for (let manyEntity in nonPropertyValue) {
-								cascadeRecords.push({
-									entityName: entityRelation.entityName,
-									mappedBy: oneToManyConfig.mappedBy,
-									manyEntity: manyEntity
-								});
-							}
-					}
-					break;
-			}
-		}
 
 		let startTransaction = startNewTransaction;
 		let transactionExists = !!this.currentTransaction;
@@ -370,10 +222,73 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		if (startTransaction && !transactionExists && !startNewTransaction) {
 			this.currentTransaction = null;
 		}
+	}
 
-		removalRecords.forEach((removalRecord) => {
-			removalRecord.array.splice(removalRecord.index, 1);
-		});
+	private convertValueIn(
+		value: any
+	): number | string {
+		switch (typeof value) {
+			case 'boolean':
+				return value ? 1 : 0;
+			case 'number':
+			case 'string':
+				return value;
+			case 'undefined':
+				return null;
+			case 'object':
+				if (!value) {
+					return null;
+				} else if (value instanceof Date) {
+					return value.getTime();
+				} else {
+					throw `Unexpected non-date object ${value}`;
+				}
+			default:
+				throw `Unexpected typeof value: ${typeof value}`;
+		}
+	}
+
+	protected async updateNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[],
+		idProperty: string,
+		idValue: number | string,
+		cascadeRecords: CascadeRecord[]
+	) {
+		let setFragments: string[];
+		let nativeValues = values.map((value) => this.convertValueIn(value));
+		for (var i = 0; i < columnNames.length; i++) {
+			setFragments.push(`${columnNames[i]} = ?`);
+		}
+		let tableName = PHMetadataUtils.getTableName(qEntity);
+		let sql = `UPDATE ${tableName} SET ${setFragments.join(', ')}  WHERE ${idProperty} = ?`;
+		nativeValues.push(idValue);
+		if (cascadeRecords.length) {
+			let startTransaction = false;
+			if (!this.currentTransaction) {
+				startTransaction = true;
+			}
+			await this.query(sql, values, startTransaction);
+			for (let i = 0; i < cascadeRecords.length; i++) {
+				let cascadeRecord = cascadeRecords[i];
+				switch (cascadeRecord.cascadeType) {
+					case "create":
+						await this.create(cascadeRecord.entityName, cascadeRecord.manyEntity);
+						break;
+					case "update":
+						await this.update(cascadeRecord.entityName, cascadeRecord.manyEntity);
+						break;
+					case "remove":
+						throw `Cascading removes from an update are not supported`;
+				}
+			}
+			if (startTransaction) {
+				this.currentTransaction = null;
+			}
+		} else {
+			await this.query(sql, values);
+		}
 	}
 
 	async find < E, IE extends IEntity >(
@@ -414,103 +329,8 @@ export class WebSqlAdaptor implements LocalStoreAdaptor {
 		return null;
 	}
 
-	async update<E>(
-		entityName: string,
-		entity: E
-	): Promise<void> {
-		/**
-		 * On an update operation, can a nested create contain an update?
-		 * Via:
-		 *  OneToMany:
-		 *    In theory yes, but without a session there is no way to tell
-		 *  ManyToOne:
-		 *    Cascades do not travel across ManyToOne
-		 *
-		 *  => Should session be implemented?
-		 *  PROS:
-		 *    Allows for nested update statements
-		 *  CONS:
-		 *    Don't have the time(? How much work is it?)
-		 *    Makes the mental model more complex
-		 * @type {QEntity<any>}
-		 */
-		let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
-		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
-
-		if (!entityMetadata.idProperty) {
-			throw `@Id is not defined for entity: ${entityName}`;
-		}
-
-		if (entity[entityMetadata.idProperty]) {
-			throw `Cannot create entity: ${entityName}, id is already defined to be: ${entityMetadata.idProperty}`;
-		}
-
-		entity[entityMetadata.idProperty] = this.idGenerator.generateId(<any>entityMetadata);
-
-		let columnNames:string[] = [];
-		let values:any[] = [];
-		let cascadeRecords:CascadeRecord[] = [];
-		for (let propertyName in entity) {
-			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
-			if (columnName) {
-				columnNames.push(columnName);
-				values.push(entity[propertyName]);
-				continue;
-			}
-			let nonPropertyValue = entity[propertyName];
-			if (!nonPropertyValue) {
-				continue;
-			}
-			// If it's not an object/array, don't process it (must be a transient field)
-			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
-				continue;
-			}
-			columnName = PHMetadataUtils.getJoinColumnName(propertyName, qEntity);
-			// if there is no entity data on in, don't process it (transient field)
-			if (!columnName) {
-				return;
-			}
-			let entityRelation = entityRelationMap[propertyName];
-			switch (entityRelation.relationType) {
-				case RelationType.MANY_TO_ONE:
-					// get the parent object's id
-					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
-					if (!parentObjectIdValue) {
-						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
-					}
-					columnNames.push(columnName);
-					values.push(parentObjectIdValue);
-					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
-					continue;
-				case RelationType.ONE_TO_MANY:
-					if (!(nonPropertyValue instanceof Array)) {
-						throw `@OneToMany relation must be an array`;
-					}
-					let oneToManyConfig = PHMetadataUtils.getOneToManyConfig(propertyName, qEntity);
-					let cascadeType = oneToManyConfig.cascade;
-					switch (cascadeType) {
-						case CascadeType.ALL:
-						case CascadeType.PERSIST:
-							// Save for cascade operation
-							for (let manyEntity in nonPropertyValue) {
-								cascadeRecords.push({
-									entityName: entityRelation.entityName,
-									mappedBy: oneToManyConfig.mappedBy,
-									manyEntity: manyEntity
-								});
-							}
-					}
-					break;
-			}
-		}
-
-		let sql = `UPDATE A SET b = ?  WHERE c = ?`;
-		return null;
-	}
-
 	warn(
-		message:string
+		message: string
 	) {
 		console.log(message);
 	}

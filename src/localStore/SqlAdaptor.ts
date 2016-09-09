@@ -1,0 +1,403 @@
+import {PH} from "../config/PH";
+import {EntityMetadata, RelationType, CascadeType, IEntity, PHQuery, QEntity, QDateField} from "querydsl-typescript";
+import {PHMetadataUtils, NameMetadataUtils} from "../core/metadata/PHMetadataUtils";
+import {Observable, Subject} from "rxjs";
+import {IdGenerator, IdGeneration, getIdGenerator} from "./IdGenerator";
+import {UpdateCache} from "../core/repository/UpdateCache";
+/**
+ * Created by Papa on 9/9/2016.
+ */
+
+export interface CascadeRecord {
+	entityName: string;
+	mappedBy: string;
+	manyEntity: any;
+	cascadeType: 'create' | 'remove' | 'update';
+}
+
+export interface RemovalRecord {
+	array: any[];
+	index: number;
+}
+
+export abstract class SqlAdaptor {
+
+	protected idGenerator: IdGenerator;
+
+	constructor(idGeneration: IdGeneration) {
+		this.idGenerator = getIdGenerator(idGeneration);
+	}
+
+	async create<E>(
+		entityName: string,
+		entity: E
+	): Promise<void> {
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
+
+		if (!entityMetadata.idProperty) {
+			throw `@Id is not defined for entity: ${entityName}`;
+		}
+
+		if (entity[entityMetadata.idProperty]) {
+			throw `Cannot create entity: ${entityName}, id is already defined to be: ${entityMetadata.idProperty}`;
+		}
+
+		entity[entityMetadata.idProperty] = this.idGenerator.generateId(<any>entityMetadata);
+
+		let columnNames: string[] = [];
+		let values: any[] = [];
+		let cascadeRecords: CascadeRecord[] = [];
+		for (let propertyName in entity) {
+			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
+			if (columnName) {
+				columnNames.push(columnName);
+				values.push(entity[propertyName]);
+				continue;
+			}
+			let nonPropertyValue = entity[propertyName];
+			// If there is no value then it doesn't have to be created
+			if (!nonPropertyValue && nonPropertyValue !== '' && nonPropertyValue !== 0) {
+				continue;
+			}
+			columnName = PHMetadataUtils.getJoinColumnName(propertyName, qEntity);
+			// if there is no entity data on in, don't process it (transient field)
+			if (!columnName) {
+				return;
+			}
+			// If it's not an object/array
+			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
+				throw `Unexpected value in relation property: ${propertyName}, of entity ${entityName}`;
+			}
+			let entityRelation = entityRelationMap[propertyName];
+			switch (entityRelation.relationType) {
+				case RelationType.MANY_TO_ONE:
+					if (nonPropertyValue instanceof Array) {
+						throw `@ManyToOne relation cannot be an array`;
+					}
+					// get the parent object's id
+					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
+					if (!parentObjectIdValue) {
+						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
+					}
+					columnNames.push(columnName);
+					values.push(parentObjectIdValue);
+					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
+					continue;
+				case RelationType.ONE_TO_MANY:
+					if (!(nonPropertyValue instanceof Array)) {
+						throw `@OneToMany relation must be an array`;
+					}
+					let oneToManyConfig = PHMetadataUtils.getOneToManyConfig(propertyName, qEntity);
+					let cascadeType = oneToManyConfig.cascade;
+					switch (cascadeType) {
+						case CascadeType.ALL:
+						case CascadeType.PERSIST:
+							// Save for cascade operation
+							for (let manyEntity in nonPropertyValue) {
+								cascadeRecords.push({
+									entityName: entityRelation.entityName,
+									mappedBy: oneToManyConfig.mappedBy,
+									manyEntity: manyEntity,
+									cascadeType: 'create'
+								});
+							}
+					}
+					break;
+			}
+		}
+
+		await this.createNative(qEntity, columnNames, values, cascadeRecords);
+	}
+
+	protected abstract async createNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[],
+		cascadeRecords: CascadeRecord[]
+	);
+
+	async delete<E>(
+		entityName: string,
+		entity: E,
+		startNewTransaction: boolean = false
+	): Promise<void> {
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
+
+		if (!entityMetadata.idProperty) {
+			throw `@Id is not defined for entity: ${entityName}`;
+		}
+
+		let idValue = entity[entityMetadata.idProperty];
+		if (!idValue) {
+			throw `Cannot delete entity: ${entityName}, id is not set.`;
+		}
+
+		let cascadeRecords: CascadeRecord[] = [];
+		let removalRecords: RemovalRecord[] = [];
+		for (let propertyName in entity) {
+			let entityRelation = entityRelationMap[propertyName];
+			// Only check relationships
+			if (!entityRelation) {
+				continue;
+			}
+			let nonPropertyValue = entity[propertyName];
+			// skip blank relations
+			if (!nonPropertyValue) {
+				continue;
+			}
+			// If it's not an object/array it's invalid
+			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
+				throw `Entity relation ${entityName}.${propertyName} is not an object or an array`;
+			}
+			switch (entityRelation.relationType) {
+				case RelationType.MANY_TO_ONE:
+					if (nonPropertyValue instanceof Array) {
+						throw `@ManyToOne relation cannot be an array`;
+					}
+					// get the parent object's related OneToMany
+					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
+					let relatedOneToMany = NameMetadataUtils.getRelatedOneToManyConfig(propertyName, entityRelation.entityName);
+					if (!relatedOneToMany || !relatedOneToMany.config.orphanRemoval) {
+						continue;
+					}
+					let relatedObject = entity[propertyName];
+					let relatedObjectManyReference = relatedObject[relatedOneToMany.propertyName];
+					for (let i = 0; i < relatedObjectManyReference.length; i++) {
+						if (relatedObjectManyReference[i] === entity) {
+							removalRecords.push({
+								array: relatedObjectManyReference,
+								index: i
+							});
+							break;
+						}
+					}
+					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
+					continue;
+				case RelationType.ONE_TO_MANY:
+					if (!(nonPropertyValue instanceof Array)) {
+						throw `@OneToMany relation must be an array`;
+					}
+					let oneToManyConfig = PHMetadataUtils.getOneToManyConfig(propertyName, qEntity);
+					let cascadeType = oneToManyConfig.cascade;
+					switch (cascadeType) {
+						case CascadeType.ALL:
+						case CascadeType.REMOVE:
+							// Save for cascade operation
+							for (let manyEntity in nonPropertyValue) {
+								cascadeRecords.push({
+									entityName: entityRelation.entityName,
+									mappedBy: oneToManyConfig.mappedBy,
+									manyEntity: manyEntity,
+									cascadeType: 'remove'
+								});
+							}
+					}
+					break;
+			}
+		}
+
+		await this.deleteNative(qEntity, entity, idValue, cascadeRecords, startNewTransaction);
+
+		removalRecords.forEach((removalRecord) => {
+			// Remove the deleted object from the related @ManyToOne objects array reference
+			removalRecord.array.splice(removalRecord.index, 1);
+		});
+	}
+
+	protected abstract async deleteNative(
+		qEntity: QEntity<any>,
+		entity: any,
+		idValue: number | string,
+		cascadeRecords: CascadeRecord[],
+		startNewTransaction: boolean
+	);
+
+	async update<E>(
+		entityName: string,
+		entity: E
+	): Promise<void> {
+		/**
+		 * On an update operation, can a nested create contain an update?
+		 * Via:
+		 *  OneToMany:
+		 *    Yes, if the child entity is itself in the update cache
+		 *  ManyToOne:
+		 *    Cascades do not travel across ManyToOne
+		 */
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
+
+		if (!entityMetadata.idProperty) {
+			throw `@Id is not defined for entity: ${entityName}`;
+		}
+
+		let idValue = entity[entityMetadata.idProperty];
+		if (!idValue) {
+			throw `Cannot update entity: ${entityName}, id is not set.`;
+		}
+
+		let updateCache = UpdateCache.getEntityUpdateCache(entityName, entity);
+
+		let columnNames: string[] = [];
+		let values: any[] = [];
+		let cascadeRecords: CascadeRecord[] = [];
+		for (let propertyName in entity) {
+			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
+			// If the property is not a transient field and not a relation
+			if (columnName) {
+				let updatedValue = entity[propertyName];
+				if (typeof updatedValue === 'object' && updatedValue) {
+					if (!(qEntity[propertyName] instanceof QDateField)) {
+						throw `Unexpected object type in property: ${propertyName}, of entity: ${entityName}`;
+					}
+					if (!(updatedValue instanceof Date)) {
+						throw `Unexpected object in property: ${propertyName}, of entity: ${entityName}`;
+					}
+				}
+				if (updateCache) {
+					let originalValue = updateCache[propertyName];
+					if (!UpdateCache.valuesEqualIgnoreObjects(originalValue, updatedValue)) {
+						columnNames.push(columnName);
+						values.push(entity[propertyName]);
+
+					}
+				} else {
+					columnNames.push(columnName);
+					values.push(entity[propertyName]);
+				}
+				continue;
+			}
+			let nonPropertyValue = entity[propertyName];
+			columnName = PHMetadataUtils.getJoinColumnName(propertyName, qEntity);
+			// if there is no entity data on in, don't process it (transient field)
+			if (!columnName) {
+				return;
+			}
+			// If it's not an object/array
+			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
+				throw `Unexpected value in relation property: ${propertyName}, of entity ${entityName}`;
+			}
+			let entityRelation = entityRelationMap[propertyName];
+			switch (entityRelation.relationType) {
+				case RelationType.MANY_TO_ONE:
+					if (nonPropertyValue instanceof Array) {
+						throw `@ManyToOne relation cannot be an array`;
+					}
+					// get the parent object's id
+					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
+					if (!parentObjectIdValue) {
+						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
+					}
+					columnNames.push(columnName);
+					values.push(parentObjectIdValue);
+					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
+					continue;
+				case RelationType.ONE_TO_MANY:
+					if (!(nonPropertyValue instanceof Array)) {
+						throw `@OneToMany relation must be an array`;
+					}
+					let oneToManyConfig = PHMetadataUtils.getOneToManyConfig(propertyName, qEntity);
+					let cascadeType = oneToManyConfig.cascade;
+					switch (cascadeType) {
+						case CascadeType.ALL:
+						case CascadeType.MERGE:
+							// Save for cascade operation
+							for (let manyEntity in nonPropertyValue) {
+								let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, manyEntity);
+								// If the child record does not exist, cascade a create operation
+								if (!parentObjectIdValue) {
+									cascadeRecords.push({
+										entityName: entityRelation.entityName,
+										mappedBy: oneToManyConfig.mappedBy,
+										manyEntity: manyEntity,
+										cascadeType: 'create'
+									});
+								} else {
+									let updateCache = UpdateCache.getEntityUpdateCache(entityName, entity);
+									// Cannot cascade update operations without an update cache
+									if (!updateCache) {
+										continue;
+									}
+									cascadeRecords.push({
+										entityName: entityRelation.entityName,
+										mappedBy: oneToManyConfig.mappedBy,
+										manyEntity: manyEntity,
+										cascadeType: 'update'
+									});
+								}
+							}
+					}
+					break;
+			}
+		}
+
+		await this.updateNative(
+			qEntity,
+			columnNames,
+			values,
+			entityMetadata.idProperty,
+			idValue,
+			cascadeRecords);
+
+		return null;
+	}
+
+	protected abstract async updateNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[],
+		idProperty: string,
+		idValue: number | string,
+		cascadeRecords: CascadeRecord[]
+	);
+
+	async find < E, IE extends IEntity >(
+		entityName: string,
+		phQuery: PHQuery < IE >
+	): Promise < E[] > {
+		return null;
+	}
+
+	async  findOne < E, IE  extends IEntity >(
+		entityName: string,
+		phQuery: PHQuery < IE >
+	): Promise < E > {
+		return null;
+
+	}
+
+	async save<E>(
+		entityName: string,
+		entity: E
+	): Promise < E > {
+		return null;
+	}
+
+	search < E, IE extends IEntity >(
+		entityName: string,
+		phQuery: PHQuery < IE >,
+		subject ?: Subject < E[] >
+	): Observable < E[] > {
+		return null;
+	}
+
+	searchOne < E, IE extends IEntity >(
+		entityName: string,
+		phQuery: PHQuery < IE >,
+		subject ?: Subject < E >
+	): Observable < E > {
+		return null;
+	}
+
+	warn(
+		message: string
+	) {
+		console.log(message);
+	}
+
+}
