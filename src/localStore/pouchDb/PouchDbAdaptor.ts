@@ -17,6 +17,7 @@ import {PH} from "../../config/PH";
 import {Subject} from 'rxjs/Subject';
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {EntityProxy} from "../../core/proxy/Proxies";
+import {NameMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 
 declare function require(moduleName: string): any;
 
@@ -48,16 +49,15 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async create<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity: E
 	): Promise<E> {
-		let className = EntityUtils.getObjectClassName(entity);
 		let nowTimeStamp = DateUtils.getNowTimeStamp();
 		let macAddress = PlatformUtils.getDeviceAddress();
 
 		let proxy = <EntityProxy><any>entity;
 		let record: PouchDbRecord = <any>entity;
-		record._id = `${className}_${nowTimeStamp}_${macAddress}`;
+		record._id = `${entityName}_${nowTimeStamp}_${macAddress}`;
 		let updateRecord = await this.localDB.put(record);
 		record._rev = updateRecord.rev;
 
@@ -65,7 +65,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async delete<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity: E
 	): Promise<E> {
 		let record: PouchDbRecord = <any>entity;
@@ -75,11 +75,11 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	searchOne<IE extends IEntity, E>(
-		entityClass: {new (): E},
+		entityName:string,
 		phQuery: PHGraphQuery<IE>,
 		subject: Subject<E> = new Subject<E>()
 	): Observable<E> {
-		this.findOne(entityClass, phQuery).then((
+		this.findOne(entityName, phQuery).then((
 			entity: E
 		) => {
 			subject.next(entity);
@@ -88,11 +88,11 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	search<IE extends IEntity, E>(
-		entityClass: {new (): E},
+		entityName:string,
 		phQuery: PHGraphQuery<IE>,
 		subject: Subject<E[]> = new Subject<E[]>()
 	): Observable<E[]> {
-		this.find(entityClass, phQuery).then((
+		this.find(entityName, phQuery).then((
 			entities: E[]
 		) => {
 			subject.next(entities);
@@ -101,18 +101,18 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async find<IE extends IEntity, E>(
-		entityConstructor: {new (): E},
+		entityName:string,
 		phQuery: PHGraphQuery<IE>
 	): Promise<E[]> {
 		let jsonQuery = phQuery.toJSON();
 
 		let pouchDbQuery: PouchDbGraphQuery<IE> = new PouchDbGraphQuery<IE>(phQuery.qEntity.__entityName__, phQuery.qEntity.__entityName__, phQuery.entitiesRelationPropertyMap, phQuery.entitiesPropertyTypeMap, jsonQuery);
 
-		return this.processQuery(entityConstructor, pouchDbQuery);
+		return this.processQuery<IE, E>(entityName, pouchDbQuery);
 	}
 
 	async processQuery<IE extends IEntity, E>(
-		entityConstructor: {new (): E},
+		entityName:string,
 		pouchDbQuery: PouchDbGraphQuery<IE>
 	): Promise<E[]> {
 		pouchDbQuery.parseAll();
@@ -122,11 +122,15 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 			fields: pouchDbQuery.fields
 		});
 
-		let primaryKey = (<EntityMetadata><any>entityConstructor).idProperty;
+
+		let qEntity = NameMetadataUtils.getQEntity(entityName);
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+
+		let primaryKey = entityMetadata.idProperty;
 		let initialResults: E[] = findResult.docs.map((
 			doc: any
 		) => {
-			let entity = new entityConstructor();
+			let entity = new qEntity.__entityConstructor__();
 			pouchDbQuery.fields.forEach((
 				fieldName: string
 			) => {
@@ -142,7 +146,6 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 			return initialResults;
 		}
 
-		let entityName = EntityUtils.getClassName(entityConstructor);
 
 		for (let propertyName in childQueries) {
 			let childQuery: PouchDbGraphQuery<any> = childQueries[propertyName];
@@ -188,7 +191,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 		objectSelector['_id'] = {
 			'$in': foreignKeys
 		};
-		let oneChildEntities = await this.processQuery(childEntityConstructor, childQuery);
+		let oneChildEntities = await this.processQuery(entityName, childQuery);
 
 		oneChildEntities.forEach((
 			childEntity: any
@@ -233,7 +236,7 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 			'$in': ids
 		};
 
-		let manyChildEntities = await this.processQuery(childEntityConstructor, childQuery);
+		let manyChildEntities = await this.processQuery(entityName, childQuery);
 
 		manyChildEntities.forEach((
 			childEntity: any
@@ -248,10 +251,10 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async findOne<IE extends IEntity, E>(
-		entityClass: {new (): E},
+		entityName:string,
 		phQuery: PHGraphQuery<IE>
 	): Promise<E> {
-		let resultList = await this.find(entityClass, phQuery);
+		let resultList = await this.find<IE, E>(entityName, phQuery);
 
 		if (resultList.length > 1) {
 			throw `Found more than 1 entity for query (${resultList.length}).`;
@@ -265,19 +268,19 @@ export class PouchDbAdaptor implements LocalStoreAdaptor {
 	}
 
 	async save<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity: E
 	): Promise<E> {
 		let record: PouchDbRecord = <any>entity;
 		if (record._id && record._rev) {
-			return await this.update(entityClass, entity);
+			return await this.update(entityName, entity);
 		} else {
-			return await this.create(entityClass, entity);
+			return await this.create(entityName, entity);
 		}
 	}
 
 	async update<E>(
-		entityClass:{new (): E},
+		entityName:string,
 		entity: E
 	): Promise<E> {
 		let record: PouchDbRecord = <any>entity;

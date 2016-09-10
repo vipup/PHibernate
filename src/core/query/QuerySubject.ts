@@ -13,7 +13,6 @@ export class QuerySubject<E, IE extends IEntity> implements Subscribable<E[]> {
 	resultsSubject: Subject<E[]> = new Subject<E[]>();
 
 	constructor(
-		e: {new (): E},
 		private resultsUnsubscribeCallback: () => void
 	) {
 	}
@@ -40,7 +39,6 @@ export class QueryOneSubject<E, IE extends IEntity> implements Subscribable<E> {
 	resultsSubject: Subject<E> = new Subject<E>();
 
 	constructor(
-		e: {new (): E},
 		private resultsUnsubscribeCallback: () => void
 	) {
 	}

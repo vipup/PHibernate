@@ -8,6 +8,7 @@ import { PHDeltaStoreConfig, IDeltaStoreConfig } from "./DeltaStoreConfig";
 import { IQEntity } from "querydsl-typescript";
 import { DistributionStrategy, PlatformType } from "delta-store/lib/index";
 import { LocalStoreType } from "../localStore/LocalStoreApi";
+import { IdGeneration } from "../localStore/IdGenerator";
 export interface PHPersistenceConfig {
     appName: string;
     deltaStores?: {
@@ -45,12 +46,14 @@ export interface IPersistenceConfig {
     hasDeltaStores: boolean;
     hasLocalStores: boolean;
     offlineDeltaStore: IOfflineDeltaStoreConfig;
-    getEntityConfig(entity: any): IEntityConfig;
+    getEntityConfig(entityClass: {
+        new (): any;
+    }): IEntityConfig;
     getEntityConfigFromQ<IQE extends IQEntity>(qEntity: IQE): IEntityConfig;
 }
 export declare class PersistenceConfig implements IPersistenceConfig {
     private config;
-    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType): PHPersistenceConfig;
+    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, deltaIdField?: string, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType, idGeneration?: IdGeneration): PHPersistenceConfig;
     changeListConfigMap: {
         [changeListName: string]: IChangeListConfig;
     };
@@ -68,7 +71,9 @@ export declare class PersistenceConfig implements IPersistenceConfig {
     hasLocalStores: boolean;
     offlineDeltaStore: IOfflineDeltaStoreConfig;
     constructor(config: PHPersistenceConfig);
-    getEntityConfig(entity: any): IEntityConfig;
+    getEntityConfig(entityClass: {
+        new (): any;
+    }): IEntityConfig;
     getEntityConfigFromQ<IQE extends IQEntity>(qEntity: IQE): IEntityConfig;
     getEntityConfigWithClassNameAndConstructor(className: string, constructor: Function): IEntityConfig;
 }

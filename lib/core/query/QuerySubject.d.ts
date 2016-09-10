@@ -10,9 +10,7 @@ export declare class QuerySubject<E, IE extends IEntity> implements Subscribable
     private resultsUnsubscribeCallback;
     querySubject: Subject<IEntityQuery<IE>>;
     resultsSubject: Subject<E[]>;
-    constructor(e: {
-        new (): E;
-    }, resultsUnsubscribeCallback: () => void);
+    constructor(resultsUnsubscribeCallback: () => void);
     next(ieq: IEntityQuery<IE>): void;
     subscribe(observerOrNext?: PartialObserver<E[]> | ((value: E[]) => void), error?: (error: any) => void, complete?: () => void): ISubscription;
 }
@@ -20,9 +18,7 @@ export declare class QueryOneSubject<E, IE extends IEntity> implements Subscriba
     private resultsUnsubscribeCallback;
     querySubject: Subject<IEntityQuery<IE>>;
     resultsSubject: Subject<E>;
-    constructor(e: {
-        new (): E;
-    }, resultsUnsubscribeCallback: () => void);
+    constructor(resultsUnsubscribeCallback: () => void);
     next(ieq: IEntityQuery<IE>): void;
     subscribe(observerOrNext?: PartialObserver<E> | ((value: E) => void), error?: (error: any) => void, complete?: () => void): ISubscription;
 }

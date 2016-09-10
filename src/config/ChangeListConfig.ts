@@ -10,33 +10,35 @@ import {IDeltaStoreConfig} from "./DeltaStoreConfig";
 
 
 export interface PHChangeListConfig {
-	deltaStore?:string;
-	distributionStrategy?:DistributionStrategy | string;
+	deltaStore?: string;
+	distributionStrategy?: DistributionStrategy | string;
+	idField: string;
 }
 
 export interface PHOfflineDeltaStoreConfig {
-	type:LocalStoreType;
+	idField: string;
+	type: LocalStoreType;
 }
 
 export interface IChangeListConfig {
-	changeListInfo?:ChangeListShareInfo;
-	deltaStoreConfig:IDeltaStoreConfig;
-	deltaStoreName:string;
-	distributionStrategy:DistributionStrategy,
+	changeListInfo?: ChangeListShareInfo;
+	deltaStoreConfig: IDeltaStoreConfig;
+	deltaStoreName: string;
+	distributionStrategy: DistributionStrategy,
 }
 
 export class ChangeListConfig implements IChangeListConfig {
 
-	changeListInfo:ChangeListShareInfo;
-	deltaStoreConfig:IDeltaStoreConfig;
-	deltaStoreName:string;
-	distributionStrategy:DistributionStrategy;
+	changeListInfo: ChangeListShareInfo;
+	deltaStoreConfig: IDeltaStoreConfig;
+	deltaStoreName: string;
+	distributionStrategy: DistributionStrategy;
 
 	constructor(
-		public changeListName:string,
-		private config:PHChangeListConfig,
-		private defaultConfig:PHChangeListConfig,
-		deltaStoreConfigMap:{[deltaStoreName:string]:IDeltaStoreConfig}
+		public changeListName: string,
+		private config: PHChangeListConfig,
+		private defaultConfig: PHChangeListConfig,
+		deltaStoreConfigMap: {[deltaStoreName: string]: IDeltaStoreConfig}
 	) {
 		let deltaStoreName = config.deltaStore;
 		if (!deltaStoreName) {
@@ -67,7 +69,12 @@ export class ChangeListConfig implements IChangeListConfig {
 			this.distributionStrategy = <DistributionStrategy>config.distributionStrategy;
 		}
 
+		let idField = this.config.idField;
+		if (!idField) {
+			idField = this.defaultConfig.idField;
+		}
 		this.changeListInfo = {
+			idField: idField,
 			name: changeListName
 		};
 	}
@@ -75,24 +82,24 @@ export class ChangeListConfig implements IChangeListConfig {
 }
 
 export interface IOfflineDeltaStoreConfig extends IDeltaStoreConfig {
-	type:LocalStoreType;
+	type: LocalStoreType;
 	getOfflineChangeListName(
-		deltaStoreName:string,
-		changeListName:string
-	):string;
+		deltaStoreName: string,
+		changeListName: string
+	): string;
 }
 
 export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 
 	static OFFLINE_DELTA_STORE_NAME = 'Offline';
 
-	changeListConfigMap:{[changeListName:string]:IChangeListConfig} = {};
-	setupInfo:SharingPlatformSetupInfo;
-	type:LocalStoreType;
+	changeListConfigMap: {[changeListName: string]: IChangeListConfig} = {};
+	setupInfo: SharingPlatformSetupInfo;
+	type: LocalStoreType;
 
 	constructor(
-		private config:PHOfflineDeltaStoreConfig,
-		deltaStoreConfigMap:{[className:string]:IDeltaStoreConfig}
+		private config: PHOfflineDeltaStoreConfig,
+		deltaStoreConfigMap: {[className: string]: IDeltaStoreConfig}
 	) {
 		for (let deltaStoreName in deltaStoreConfigMap) {
 			let deltaStoreConfig = deltaStoreConfigMap[deltaStoreName];
@@ -109,14 +116,15 @@ export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 		}
 		this.type = config.type;
 		this.setupInfo = {
+			idField: this.config.idField,
 			platformType: PlatformType.OFFLINE
 		};
 	}
 
 	getOfflineChangeListName(
-		deltaStoreName:string,
-		changeListName:string
-	):string {
+		deltaStoreName: string,
+		changeListName: string
+	): string {
 		return `${deltaStoreName}:${changeListName}`;
 	}
 

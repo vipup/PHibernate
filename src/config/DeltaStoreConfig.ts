@@ -6,44 +6,46 @@ import {deltaStore, GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo} fro
 import {IChangeListConfig} from "./ChangeListConfig";
 
 export interface PHDeltaStoreConfig {
-	platform:PlatformType | string;
+	idField: string;
+	platform: PlatformType | string;
 }
 
 export interface PHGoogleDeltaStoreConfig extends PHDeltaStoreConfig {
-	apiKey:string;
-	clientId:string;
-	rootFolder:string;
+	apiKey: string;
+	clientId: string;
+	rootFolder: string;
 }
 
 export interface IDeltaStoreConfig {
-	changeListConfigMap:{[changeListName:string]:IChangeListConfig};
-	setupInfo:SharingPlatformSetupInfo;
+	changeListConfigMap: {[changeListName: string]: IChangeListConfig};
+	setupInfo: SharingPlatformSetupInfo;
 }
 
 export class DeltaStoreConfig implements IDeltaStoreConfig {
 
-	changeListConfigMap:{[changeListName:string]:IChangeListConfig} = {};
-	setupInfo:SharingPlatformSetupInfo;
+	changeListConfigMap: {[changeListName: string]: IChangeListConfig} = {};
+	setupInfo: SharingPlatformSetupInfo;
 
 	constructor(
-		public deltaStoreName:string,
-		config:PHDeltaStoreConfig
+		public deltaStoreName: string,
+		config: PHDeltaStoreConfig
 	) {
 		if (!config.platform) {
 			throw `Sharing Platform is not defined`;
 		}
 
-		let platformType:PlatformType = getPlatformType(config.platform);
+		let platformType: PlatformType = getPlatformType(config.platform);
 		this.setupInfo = {
+			idField: config.idField,
 			platformType: platformType
 		};
 	}
 }
 
 export function getPlatformType(
-	platform:PlatformType | string
-):PlatformType {
-	let platformType:PlatformType;
+	platform: PlatformType | string
+): PlatformType {
+	let platformType: PlatformType;
 	if (typeof platform === "string") {
 		platformType = deltaStore.platform.getValue(<string>platform);
 	} else {
@@ -56,16 +58,16 @@ export function getPlatformType(
 }
 
 export interface IGoogleDeltaStoreConfig extends IDeltaStoreConfig {
-	setupInfo:GoogleSetupInfo;
+	setupInfo: GoogleSetupInfo;
 }
 
 export class GoogleDeltaStoreConfig extends DeltaStoreConfig implements IGoogleDeltaStoreConfig {
 
-	setupInfo:GoogleSetupInfo;
+	setupInfo: GoogleSetupInfo;
 
 	constructor(
-		deltaStoreName:string,
-		private config:PHGoogleDeltaStoreConfig
+		deltaStoreName: string,
+		private config: PHGoogleDeltaStoreConfig
 	) {
 		super(deltaStoreName, config);
 		if (!config.rootFolder) {
@@ -85,13 +87,13 @@ export class GoogleDeltaStoreConfig extends DeltaStoreConfig implements IGoogleD
 }
 
 export function createDeltaStoreConfig(
-	deltaStoreName:string,
-	phDeltaStoreConfig:PHDeltaStoreConfig
-):IDeltaStoreConfig {
+	deltaStoreName: string,
+	phDeltaStoreConfig: PHDeltaStoreConfig
+): IDeltaStoreConfig {
 	if (!phDeltaStoreConfig.platform) {
 		throw `deltaStore.platform is nod specified`;
 	}
-	let platformType:PlatformType = getPlatformType(phDeltaStoreConfig.platform);
+	let platformType: PlatformType = getPlatformType(phDeltaStoreConfig.platform);
 
 	switch (platformType) {
 		case PlatformType.GOOGLE:

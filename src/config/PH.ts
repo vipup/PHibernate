@@ -90,7 +90,7 @@ export class PH {
 		entityClass:{new ():E}
 	):QuerySubject<E, IE> {
 		let subscription;
-		let querySubject = new QuerySubject<E, IE>(entityClass, () => {
+		let querySubject = new QuerySubject<E, IE>(() => {
 			if (querySubject.resultsSubject.observers.length < 1) {
 				subscription.unsubscribe();
 			}
@@ -110,7 +110,7 @@ export class PH {
 		entityClass:{new ():E}
 	):QueryOneSubject<E, IE> {
 		let subscription;
-		let querySubject = new QueryOneSubject<E, IE>(entityClass, () => {
+		let querySubject = new QueryOneSubject<E, IE>(() => {
 			if (querySubject.resultsSubject.observers.length < 1) {
 				subscription.unsubscribe();
 			}

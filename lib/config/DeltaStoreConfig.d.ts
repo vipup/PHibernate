@@ -4,6 +4,7 @@
 import { GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo } from "delta-store";
 import { IChangeListConfig } from "./ChangeListConfig";
 export interface PHDeltaStoreConfig {
+    idField: string;
     platform: PlatformType | string;
 }
 export interface PHGoogleDeltaStoreConfig extends PHDeltaStoreConfig {

@@ -12,8 +12,12 @@ export interface IEntityManager {
     goOnline(): Promise<any>;
     initialize(): Promise<any>;
     isOnline(): boolean;
-    create<E>(entity: E, cascade?: CascadeType): Promise<E>;
-    delete<E>(entity: E, cascade?: CascadeType): Promise<E>;
+    create<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascade?: CascadeType): Promise<E>;
+    delete<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascade?: CascadeType): Promise<E>;
     find<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE): Promise<E[]>;
@@ -21,14 +25,18 @@ export interface IEntityManager {
         new (): E;
     }, iEntity: IE): Promise<E>;
     initialize(): Promise<any>;
-    save<E>(entity: E, cascade?: CascadeType): Promise<E>;
+    save<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascade?: CascadeType): Promise<E>;
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE, subject?: Subject<E>): Observable<E>;
-    update<E>(entity: E, cascade?: CascadeType): Promise<E>;
+    update<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascade?: CascadeType): Promise<E>;
 }
 export declare class EntityManager implements IEntityManager {
     config: IPersistenceConfig;
@@ -40,18 +48,28 @@ export declare class EntityManager implements IEntityManager {
     localStoreMap: {
         [localStoreTypeName: string]: LocalStoreAdaptor;
     };
+    defaultLocalStore: LocalStoreAdaptor;
     constructor(config: IPersistenceConfig);
+    getLocalStore(localStoreTypeName?: string): LocalStoreAdaptor;
     initialize(): Promise<any>;
     goOffline(): void;
     goOnline(): Promise<any>;
     isOnline(): boolean;
-    create<E>(entity: E, cascadeRule?: CascadeType): Promise<E>;
-    delete<E>(entity: E, cascadeRule?: CascadeType): Promise<E>;
-    save<E>(entity: E, cascadeRule?: CascadeType): Promise<E>;
-    update<E>(entity: E, cascadeRule?: CascadeType): Promise<E>;
-    private persistEntity<E>(entity, operation, cascadeRule?);
+    create<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    delete<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    save<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    update<E>(entityClass: {
+        new (): E;
+    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    private persistEntity<E>(entityClass, entity, operation, cascadeRule?);
     private ensureId<E>(entity);
-    private setForeignKeys<E>(entity, cascadeRule?);
+    private setForeignKeys<E>(entityClass, entity, cascadeRule?);
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, phRawQuery: PHRawSQLQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;

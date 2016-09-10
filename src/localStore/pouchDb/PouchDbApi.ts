@@ -1,4 +1,5 @@
 import {LocalStore, LocalStoreShareInfo, LocalStoreSetupInfo, LocalStoreType} from "../LocalStoreApi";
+import {IdGeneration} from "../IdGenerator";
 /**
  * Created by Papa on 5/28/2016.
  */
@@ -10,6 +11,7 @@ export class PouchDbStoreShareInfo implements LocalStoreShareInfo {
 export class PouchDbStoreSetupInfo implements LocalStoreSetupInfo {
 	name:string;
 	type:LocalStoreType;
+	idGeneration:IdGeneration;
 }
 
 export class PouchDbStore implements LocalStore {

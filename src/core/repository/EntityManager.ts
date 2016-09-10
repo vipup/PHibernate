@@ -271,7 +271,7 @@ export class EntityManager implements IEntityManager {
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return localStore.search(entityClass, phQuery, subject);
+				return localStore.search(qEntity.__entityName__, phQuery, subject);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;
@@ -288,7 +288,7 @@ export class EntityManager implements IEntityManager {
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return localStore.searchOne(entityClass, phQuery, subject);
+				return localStore.searchOne(qEntity.__entityName__, phQuery, subject);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;
@@ -304,7 +304,7 @@ export class EntityManager implements IEntityManager {
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return await localStore.find(entityClass, phQuery);
+				return await <any>localStore.find(qEntity.__entityName__, phQuery);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;
@@ -320,7 +320,7 @@ export class EntityManager implements IEntityManager {
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
 			if (localStore) {
-				return await localStore.findOne(entityClass, phQuery);
+				return await <any>localStore.findOne(qEntity.__entityName__, phQuery);
 			}
 		}
 		throw `Entity is not setup with a LocalStore`;

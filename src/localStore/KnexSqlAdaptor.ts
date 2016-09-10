@@ -12,27 +12,32 @@ export abstract class KnexSqlAdaptor implements LocalStoreAdaptor {
 		setupInfo: LocalStoreSetupInfo
 	): Promise<any>;
 
+	wrapInTransaction(callback: ()=>void) {
+	}
+
 	create<E>(
+		entityName: string,
 		entity: E
 	): Promise<E> {
 		return null;
 	}
 
 	delete<E>(
+		entityName: string,
 		entity: E
 	): Promise<E> {
 		return null;
 	}
 
 	find<E, IE extends IEntity>(
-		entityClass: {new (): E},
+		entityName: string,
 		phQuery: PHQuery<IE>
 	): Promise<E[]> {
 		return null;
 	}
 
 	findOne<E, IE extends IEntity>(
-		entityClass: {new (): E},
+		entityName: string,
 		phQuery: PHQuery<IE>
 	): Promise<E> {
 		return null;
@@ -46,7 +51,7 @@ export abstract class KnexSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	search<E, IE extends IEntity>(
-		entityClass: {new (): E},
+		entityName: string,
 		phQuery: PHQuery<IE>,
 		subject?: Subject<E[]>
 	): Observable<E[]> {
@@ -54,7 +59,7 @@ export abstract class KnexSqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	searchOne<E, IE extends IEntity>(
-		entityClass: {new (): E},
+		entityString: string,
 		phQuery: PHQuery<IE>,
 		subject?: Subject<E>
 	): Observable<E> {

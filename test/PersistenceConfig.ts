@@ -7,13 +7,14 @@ import {LocalStoreType} from "../src/config/LocalStoreConfig";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/SharingAdaptor";
 import {IdGeneration} from "../src/localStore/IdGenerator";
 
-export var PERSISTENCE_CONFIG:PHPersistenceConfig = {
+export var PERSISTENCE_CONFIG: PHPersistenceConfig = {
 	appName: "DefaultApp",
 	changeLists: {
-		"DefaultChangeList": {}
+		"DefaultChangeList": {idField: "delta_unique_key"}
 	},
 	default: {
 		changeList: {
+			idField: "delta_unique_key",
 			distributionStrategy: DistributionStrategy.S3_SECURE_POLL,
 			deltaStore: "DefaultDeltaStore"
 		},
@@ -37,6 +38,7 @@ export var PERSISTENCE_CONFIG:PHPersistenceConfig = {
 		}
 	},
 	offlineDeltaStore: {
+		idField: "delta_unique_key",
 		type: LocalStoreType.SQLITE_CORDOVA
 	}
 };

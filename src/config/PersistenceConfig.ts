@@ -16,57 +16,59 @@ import {EntityUtils} from "../shared/EntityUtils";
 import {IdGeneration} from "../localStore/IdGenerator";
 
 export interface PHPersistenceConfig {
-	appName:string;
-	deltaStores?:{[name:string]:PHDeltaStoreConfig};
-	default?:{
-		changeList:PHChangeListConfig;
-		entity:PHEntityConfig;
+	appName: string;
+	deltaStores?: {[name: string]: PHDeltaStoreConfig};
+	default?: {
+		changeList: PHChangeListConfig;
+		entity: PHEntityConfig;
 	};
-	entities?:{[name:string]:PHEntityConfig};
-	changeLists:{[refName:string]:PHChangeListConfig};
-	localStores:{[refName:string]:PHLocalStoreConfig};
-	offlineDeltaStore?:PHOfflineDeltaStoreConfig;
+	entities?: {[name: string]: PHEntityConfig};
+	changeLists: {[refName: string]: PHChangeListConfig};
+	localStores: {[refName: string]: PHLocalStoreConfig};
+	offlineDeltaStore?: PHOfflineDeltaStoreConfig;
 }
 
 export interface IPersistenceConfig {
 
-	changeListConfigMap:{[changeListName:string]:IChangeListConfig};
-	deltaStoreConfigMap:{[deltaStoreName:string]:IDeltaStoreConfig};
-	entityConfigMap:{[className:string]:IEntityConfig};
-	localStoreConfigMap:{[storeName:string]:ILocalStoreConfig};
-	hasChangeLists:boolean;
-	hasDeltaStores:boolean;
-	hasLocalStores:boolean;
-	offlineDeltaStore:IOfflineDeltaStoreConfig;
+	changeListConfigMap: {[changeListName: string]: IChangeListConfig};
+	deltaStoreConfigMap: {[deltaStoreName: string]: IDeltaStoreConfig};
+	entityConfigMap: {[className: string]: IEntityConfig};
+	localStoreConfigMap: {[storeName: string]: ILocalStoreConfig};
+	hasChangeLists: boolean;
+	hasDeltaStores: boolean;
+	hasLocalStores: boolean;
+	offlineDeltaStore: IOfflineDeltaStoreConfig;
 
 	getEntityConfig(
-		entityClass:{new (): any}
-	):IEntityConfig;
+		entityClass: {new (): any}
+	): IEntityConfig;
 
 	getEntityConfigFromQ<IQE extends IQEntity>(
-		qEntity:IQE
-	):IEntityConfig;
+		qEntity: IQE
+	): IEntityConfig;
 }
 
 export class PersistenceConfig implements IPersistenceConfig {
 
 	static getDefaultPHConfig(
-		appName:string = 'DefaultApp',
-		distributionStrategy:DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
-		deltaStorePlatform:PlatformType = PlatformType.GOOGLE,
-		localStoreType:LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
-		offlineDeltaStoreType:LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
-	  idGeneration:IdGeneration = IdGeneration.USER_TIMESTAMP
-	):PHPersistenceConfig {
+		appName: string = 'DefaultApp',
+		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
+		deltaStorePlatform: PlatformType = PlatformType.GOOGLE,
+		deltaIdField: string = "delta_unique_key",
+		localStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
+		offlineDeltaStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
+		idGeneration: IdGeneration = IdGeneration.USER_TIMESTAMP
+	): PHPersistenceConfig {
 		return {
 			appName: appName,
 			changeLists: {
-				"DefaultChangeList": {}
+				"DefaultChangeList": {idField: deltaIdField}
 			},
 			default: {
 				changeList: {
 					distributionStrategy: distributionStrategy,
-					deltaStore: "DefaultDeltaStore"
+					deltaStore: "DefaultDeltaStore",
+					idField: deltaIdField
 				},
 				entity: {
 					changeList: "DefaultChangeList",
@@ -75,6 +77,7 @@ export class PersistenceConfig implements IPersistenceConfig {
 			},
 			deltaStores: {
 				"DefaultDeltaStore": {
+					idField: deltaIdField,
 					platform: deltaStorePlatform
 				}
 			},
@@ -85,22 +88,23 @@ export class PersistenceConfig implements IPersistenceConfig {
 				}
 			},
 			offlineDeltaStore: {
+				idField: deltaIdField,
 				type: offlineDeltaStoreType
 			}
 		};
 	}
 
-	changeListConfigMap:{[changeListName:string]:IChangeListConfig} = {};
-	deltaStoreConfigMap:{[className:string]:IDeltaStoreConfig} = {};
-	entityConfigMap:{[className:string]:IEntityConfig} = {};
-	localStoreConfigMap:{[storeName:string]:ILocalStoreConfig} = {};
-	hasChangeLists:boolean;
-	hasDeltaStores:boolean;
-	hasLocalStores:boolean;
-	offlineDeltaStore:IOfflineDeltaStoreConfig;
+	changeListConfigMap: {[changeListName: string]: IChangeListConfig} = {};
+	deltaStoreConfigMap: {[className: string]: IDeltaStoreConfig} = {};
+	entityConfigMap: {[className: string]: IEntityConfig} = {};
+	localStoreConfigMap: {[storeName: string]: ILocalStoreConfig} = {};
+	hasChangeLists: boolean;
+	hasDeltaStores: boolean;
+	hasLocalStores: boolean;
+	offlineDeltaStore: IOfflineDeltaStoreConfig;
 
 	constructor(
-		private config:PHPersistenceConfig
+		private config: PHPersistenceConfig
 	) {
 		this.hasDeltaStores = false;
 		if (config.deltaStores) {
@@ -167,8 +171,8 @@ export class PersistenceConfig implements IPersistenceConfig {
 	}
 
 	getEntityConfig(
-		entityClass:{new (): any}
-	):IEntityConfig {
+		entityClass: {new (): any}
+	): IEntityConfig {
 		// let className = EntityUtils.getObjectClassName(entity);
 		// let constructor = entity.constructor;
 		let className = entityClass.name;
@@ -179,8 +183,8 @@ export class PersistenceConfig implements IPersistenceConfig {
 
 
 	getEntityConfigFromQ<IQE extends IQEntity>(
-		qEntity:IQE
-	):IEntityConfig {
+		qEntity: IQE
+	): IEntityConfig {
 		let constructor = qEntity.__entityConstructor__;
 		let className = EntityUtils.getClassName(constructor);
 
@@ -188,9 +192,9 @@ export class PersistenceConfig implements IPersistenceConfig {
 	}
 
 	getEntityConfigWithClassNameAndConstructor(
-		className:string,
-		constructor:Function
-	):IEntityConfig {
+		className: string,
+		constructor: Function
+	): IEntityConfig {
 		let entityConfig = this.entityConfigMap[className];
 		if (!entityConfig) {
 			let phEntityConfig = this.config.entities[className];

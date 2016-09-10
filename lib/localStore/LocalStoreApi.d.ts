@@ -1,3 +1,4 @@
+import { IdGeneration } from "./IdGenerator";
 /**
  * Created by Papa on 5/28/2016.
  */
@@ -7,10 +8,11 @@ export interface LocalStoreShareInfo {
 export interface LocalStoreSetupInfo {
     name: string;
     type: LocalStoreType;
+    idGeneration: IdGeneration;
 }
 export declare enum LocalStoreType {
     POUCH_DB = 0,
-    SQLITE = 1,
+    SQLITE_CORDOVA = 1,
 }
 export declare namespace localStore.type {
     const POUCH_DB: string;

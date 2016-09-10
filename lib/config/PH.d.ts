@@ -19,6 +19,8 @@ export declare class PH {
             [propertyName: string]: boolean;
         };
     };
+    static startPersistenceContext(): void;
+    static endPeristenceContext(): void;
     static getQEntityFromEntityClass(entityClass: any): QEntity<any>;
     static addQEntity(entityConstructor: {
         new (): any;

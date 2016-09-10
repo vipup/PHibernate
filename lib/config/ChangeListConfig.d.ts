@@ -7,8 +7,10 @@ import { IDeltaStoreConfig } from "./DeltaStoreConfig";
 export interface PHChangeListConfig {
     deltaStore?: string;
     distributionStrategy?: DistributionStrategy | string;
+    idField: string;
 }
 export interface PHOfflineDeltaStoreConfig {
+    idField: string;
     type: LocalStoreType;
 }
 export interface IChangeListConfig {
