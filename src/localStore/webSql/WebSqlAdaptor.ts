@@ -1,6 +1,6 @@
 import {LocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {LocalStoreSetupInfo} from "../LocalStoreApi";
-import {IEntity, PHQuery, EntityMetadata, QEntity} from "querydsl-typescript";
+import {IEntity, PHQuery, EntityMetadata, QEntity, SQLDialect} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
 import {PH} from "../../config/PH";
 import {DDLManager} from "./DDLManager";
@@ -126,6 +126,18 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 				reject({err: err});
 			}
 		});
+	}
+
+	protected getDialect(): SQLDialect {
+		return SQLDialect.SQLITE;
+	}
+
+	protected async findNative(
+		sqlQuery: string,
+		parameters: any[]
+	):Promise<any[]> {
+		let nativeParameters = parameters.map((value) => this.convertValueIn(value));
+		return await this.query(sqlQuery, nativeParameters);
 	}
 
 	handleError(error: any) {
@@ -289,28 +301,6 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		} else {
 			await this.query(sql, values);
 		}
-	}
-
-	async find < E, IE extends IEntity >(
-		entityName: string,
-		phQuery: PHQuery < IE >
-	): Promise < E[] > {
-		return null;
-	}
-
-	async  findOne < E, IE  extends IEntity >(
-		entityName: string,
-		phQuery: PHQuery < IE >
-	): Promise < E > {
-		return null;
-
-	}
-
-	async save<E>(
-		entityName: string,
-		entity: E
-	): Promise < E > {
-		return null;
 	}
 
 	search < E, IE extends IEntity >(

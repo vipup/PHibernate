@@ -1,5 +1,8 @@
 import {PH} from "../config/PH";
-import {EntityMetadata, RelationType, CascadeType, IEntity, PHQuery, QEntity, QDateField} from "querydsl-typescript";
+import {
+	EntityMetadata, RelationType, CascadeType, IEntity, PHQuery, QEntity, QDateField,
+	SQLStringQuery, PHSQLQuery, SQLDialect
+} from "querydsl-typescript";
 import {PHMetadataUtils, NameMetadataUtils} from "../core/metadata/PHMetadataUtils";
 import {Observable, Subject} from "rxjs";
 import {IdGenerator, IdGeneration, getIdGenerator} from "./IdGenerator";
@@ -358,32 +361,68 @@ export abstract class SqlAdaptor {
 
 	async find < E, IE extends IEntity >(
 		entityName: string,
-		phQuery: PHQuery < IE >
+		phSqlQuery: PHSQLQuery < IE >
 	): Promise < E[] > {
-		return null;
+		let qEntity = PH.qEntityMap[entityName];
+		let query: SQLStringQuery<IE> = new SQLStringQuery<IE>(phSqlQuery.toSQL(), qEntity, PH.qEntityMap, PH.entitiesRelationPropertyMap, PH.entitiesPropertyTypeMap, this.getDialect());
+		let parameters = [];
+		let sql = query.toSQL(true, parameters);
+		let rawResults = await this.findNative(sql, parameters);
+		return query.parseQueryResults(rawResults);
 	}
+
+	protected abstract getDialect(): SQLDialect;
+
+	protected abstract async findNative(
+		sqlQuery: string,
+		parameters: any[]
+	): Promise<any[]>;
 
 	async  findOne < E, IE  extends IEntity >(
 		entityName: string,
-		phQuery: PHQuery < IE >
+		phSqlQuery: PHSQLQuery < IE >
 	): Promise < E > {
-		return null;
+		let results = await this.find(entityName, phSqlQuery);
 
+		if (results.length > 0) {
+			throw `Expecting a single result, got ${results.length}`;
+		}
+		if (results.length == 1) {
+			return <E>results[0];
+		}
+		return null;
 	}
 
 	async save<E>(
 		entityName: string,
 		entity: E
-	): Promise < E > {
-		return null;
+	): Promise < void > {
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+
+		if (!entityMetadata.idProperty) {
+			throw `@Id is not defined for entity: ${entityName}`;
+		}
+
+		if (entity[entityMetadata.idProperty]) {
+			await this.update(entityName, entity);
+		} else {
+			await this.create(entityName, entity);
+		}
 	}
 
 	search < E, IE extends IEntity >(
 		entityName: string,
-		phQuery: PHQuery < IE >,
+		phSqlQuery: PHSQLQuery < IE >,
 		subject ?: Subject < E[] >
 	): Observable < E[] > {
-		return null;
+		if (!subject) {
+			subject = new Subject<E[]>();
+		}
+		this.find(entityName, phSqlQuery).then((results: E[]) => {
+			subject.next(results);
+		});
+		return subject;
 	}
 
 	searchOne < E, IE extends IEntity >(

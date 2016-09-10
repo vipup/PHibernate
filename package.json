@@ -8,11 +8,11 @@
     "type": "git",
     "url": "git+https://github.com/russoturisto/PHibernate.git"
   },
-  "version": "0.0.35",
+  "version": "0.0.36",
   "dependencies": {
     "delta-store": "0.0.22",
     "es6-shim": "^0.35.1",
-    "querydsl-typescript": "0.0.46",
+    "querydsl-typescript": "0.0.48",
     "rxjs": "^5.0.0-beta.6"
   },
   "devDependencies": {
