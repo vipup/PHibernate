@@ -4,8 +4,11 @@
 import { GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo } from "delta-store";
 import { IChangeListConfig } from "./ChangeListConfig";
 export interface PHDeltaStoreConfig {
-    idField: string;
+    changeTimeField: string;
+    changeTypeField: string;
+    changeUserField: string;
     platform: PlatformType | string;
+    recordIdField: string;
 }
 export interface PHGoogleDeltaStoreConfig extends PHDeltaStoreConfig {
     apiKey: string;

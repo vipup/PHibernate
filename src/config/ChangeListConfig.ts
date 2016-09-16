@@ -3,7 +3,7 @@ import {
 	PlatformType, deltaStore
 } from "delta-store";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
-import {IDeltaStoreConfig} from "./DeltaStoreConfig";
+import {IDeltaStoreConfig, PHDeltaStoreConfig} from "./DeltaStoreConfig";
 /**
  * Created by Papa on 5/28/2016.
  */
@@ -12,11 +12,9 @@ import {IDeltaStoreConfig} from "./DeltaStoreConfig";
 export interface PHChangeListConfig {
 	deltaStore?: string;
 	distributionStrategy?: DistributionStrategy | string;
-	idField: string;
 }
 
 export interface PHOfflineDeltaStoreConfig {
-	idField: string;
 	type: LocalStoreType;
 }
 
@@ -69,12 +67,7 @@ export class ChangeListConfig implements IChangeListConfig {
 			this.distributionStrategy = <DistributionStrategy>config.distributionStrategy;
 		}
 
-		let idField = this.config.idField;
-		if (!idField) {
-			idField = this.defaultConfig.idField;
-		}
 		this.changeListInfo = {
-			idField: idField,
 			name: changeListName
 		};
 	}
@@ -98,6 +91,7 @@ export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 	type: LocalStoreType;
 
 	constructor(
+		private storeConfig: PHDeltaStoreConfig,
 		private config: PHOfflineDeltaStoreConfig,
 		deltaStoreConfigMap: {[className: string]: IDeltaStoreConfig}
 	) {
@@ -116,8 +110,11 @@ export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 		}
 		this.type = config.type;
 		this.setupInfo = {
-			idField: this.config.idField,
-			platformType: PlatformType.OFFLINE
+			changeTimeField: this.storeConfig.changeTimeField,
+			changeTypeField: this.storeConfig.changeTypeField,
+			changeUserField: this.storeConfig.changeUserField,
+			platformType: PlatformType.OFFLINE,
+			recordIdField: this.storeConfig.recordIdField
 		};
 	}
 

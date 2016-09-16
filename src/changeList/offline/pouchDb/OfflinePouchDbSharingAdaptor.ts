@@ -27,6 +27,7 @@ export class OfflinePouchDbSharingAdaptor implements SharingAdaptor {
 	}
 
 	loadChangeList(
+		setupInfo:OfflinePouchDbSetupInfo,
 		shareInfo:OfflinePouchDbChangeListShareInfo
 	):Promise<SharedChangeList> {
 		return null;

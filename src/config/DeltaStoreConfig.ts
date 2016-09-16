@@ -6,8 +6,11 @@ import {deltaStore, GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo} fro
 import {IChangeListConfig} from "./ChangeListConfig";
 
 export interface PHDeltaStoreConfig {
-	idField: string;
+	changeTimeField: string;
+	changeTypeField: string;
+	changeUserField: string;
 	platform: PlatformType | string;
+	recordIdField: string;
 }
 
 export interface PHGoogleDeltaStoreConfig extends PHDeltaStoreConfig {
@@ -36,8 +39,11 @@ export class DeltaStoreConfig implements IDeltaStoreConfig {
 
 		let platformType: PlatformType = getPlatformType(config.platform);
 		this.setupInfo = {
-			idField: config.idField,
-			platformType: platformType
+			changeTimeField: config.changeTimeField,
+			changeTypeField: config.changeTypeField,
+			changeUserField: config.changeUserField,
+			platformType: platformType,
+			recordIdField: config.recordIdField
 		};
 	}
 }

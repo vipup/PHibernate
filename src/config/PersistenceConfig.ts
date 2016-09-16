@@ -54,7 +54,6 @@ export class PersistenceConfig implements IPersistenceConfig {
 		appName: string = 'DefaultApp',
 		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
 		deltaStorePlatform: PlatformType = PlatformType.GOOGLE,
-		deltaIdField: string = "delta_unique_key",
 		localStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
 		offlineDeltaStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
 		idGeneration: IdGeneration = IdGeneration.USER_TIMESTAMP
@@ -62,13 +61,12 @@ export class PersistenceConfig implements IPersistenceConfig {
 		return {
 			appName: appName,
 			changeLists: {
-				"DefaultChangeList": {idField: deltaIdField}
+				"DefaultChangeList": {}
 			},
 			default: {
 				changeList: {
 					distributionStrategy: distributionStrategy,
-					deltaStore: "DefaultDeltaStore",
-					idField: deltaIdField
+					deltaStore: "DefaultDeltaStore"
 				},
 				entity: {
 					changeList: "DefaultChangeList",
@@ -77,7 +75,10 @@ export class PersistenceConfig implements IPersistenceConfig {
 			},
 			deltaStores: {
 				"DefaultDeltaStore": {
-					idField: deltaIdField,
+					changeTimeField: "change_time_field_",
+					changeTypeField: "change_type_field_",
+					changeUserField: "change_user_field_",
+					recordIdField: "record_id_field_",
 					platform: deltaStorePlatform
 				}
 			},
@@ -88,7 +89,6 @@ export class PersistenceConfig implements IPersistenceConfig {
 				}
 			},
 			offlineDeltaStore: {
-				idField: deltaIdField,
 				type: offlineDeltaStoreType
 			}
 		};

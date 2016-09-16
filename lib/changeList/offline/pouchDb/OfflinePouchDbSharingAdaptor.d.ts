@@ -7,6 +7,6 @@ export declare class OfflinePouchDbSharingAdaptor implements SharingAdaptor {
     initialize(setupInfo: OfflinePouchDbSetupInfo): Promise<any>;
     findExistingChangeLists(setupInfo: OfflinePouchDbSetupInfo): Promise<OfflinePouchDbChangeListShareInfo[]>;
     createChangeList(name: string, setupInfo: OfflinePouchDbSetupInfo): Promise<SharedChangeList>;
-    loadChangeList(shareInfo: OfflinePouchDbChangeListShareInfo): Promise<SharedChangeList>;
+    loadChangeList(setupInfo: OfflinePouchDbSetupInfo, shareInfo: OfflinePouchDbChangeListShareInfo): Promise<SharedChangeList>;
     setupInfoBelongsTo(setupInfo: OfflinePouchDbSetupInfo, setupInfos: OfflinePouchDbSetupInfo[]): boolean;
 }

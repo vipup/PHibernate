@@ -1,16 +1,14 @@
 import { ChangeListShareInfo, DistributionStrategy, SharingPlatformSetupInfo } from "delta-store";
 import { LocalStoreType } from "../localStore/LocalStoreApi";
-import { IDeltaStoreConfig } from "./DeltaStoreConfig";
+import { IDeltaStoreConfig, PHDeltaStoreConfig } from "./DeltaStoreConfig";
 /**
  * Created by Papa on 5/28/2016.
  */
 export interface PHChangeListConfig {
     deltaStore?: string;
     distributionStrategy?: DistributionStrategy | string;
-    idField: string;
 }
 export interface PHOfflineDeltaStoreConfig {
-    idField: string;
     type: LocalStoreType;
 }
 export interface IChangeListConfig {
@@ -36,6 +34,7 @@ export interface IOfflineDeltaStoreConfig extends IDeltaStoreConfig {
     getOfflineChangeListName(deltaStoreName: string, changeListName: string): string;
 }
 export declare class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
+    private storeConfig;
     private config;
     static OFFLINE_DELTA_STORE_NAME: string;
     changeListConfigMap: {
@@ -43,7 +42,7 @@ export declare class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig
     };
     setupInfo: SharingPlatformSetupInfo;
     type: LocalStoreType;
-    constructor(config: PHOfflineDeltaStoreConfig, deltaStoreConfigMap: {
+    constructor(storeConfig: PHDeltaStoreConfig, config: PHOfflineDeltaStoreConfig, deltaStoreConfigMap: {
         [className: string]: IDeltaStoreConfig;
     });
     getOfflineChangeListName(deltaStoreName: string, changeListName: string): string;

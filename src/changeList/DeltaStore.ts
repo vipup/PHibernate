@@ -105,7 +105,7 @@ export class DeltaStore implements IDeltaStore {
 			let remoteLoadOp;
 			if (existingChangeListConfig) {
 				changeListConfig = existingChangeListConfig;
-				remoteLoadOp = this.sharingAdaptor.loadChangeList(changeListConfig.changeListInfo);
+				remoteLoadOp = this.sharingAdaptor.loadChangeList(this.config.setupInfo, changeListConfig.changeListInfo);
 			} else {
 				remoteLoadOp = this.sharingAdaptor.createChangeList(changeListName, this.config.setupInfo);
 			}

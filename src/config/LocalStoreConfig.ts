@@ -6,7 +6,8 @@ import {IdGeneration} from "../localStore/IdGenerator";
 
 export interface PHLocalStoreConfig {
 	type: LocalStoreType | string;
-	idGeneration: IdGeneration
+	idGeneration: IdGeneration;
+	entityTypeField:string;
 }
 
 export interface ILocalStoreConfig {
