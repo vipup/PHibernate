@@ -53,7 +53,7 @@ export interface IPersistenceConfig {
 }
 export declare class PersistenceConfig implements IPersistenceConfig {
     private config;
-    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, deltaIdField?: string, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType, idGeneration?: IdGeneration): PHPersistenceConfig;
+    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType, idGeneration?: IdGeneration): PHPersistenceConfig;
     changeListConfigMap: {
         [changeListName: string]: IChangeListConfig;
     };

@@ -7,36 +7,37 @@ import {PHMetadataUtils, NameMetadataUtils} from "../core/metadata/PHMetadataUti
 import {Observable, Subject} from "rxjs";
 import {IdGenerator, IdGeneration, getIdGenerator} from "./IdGenerator";
 import {UpdateCache} from "../core/repository/UpdateCache";
+import {ChangeGroup} from "../changeList/model/ChangeGroup";
 /**
  * Created by Papa on 9/9/2016.
  */
 
 export interface CascadeRecord {
-	entityName: string;
-	mappedBy: string;
-	manyEntity: any;
-	cascadeType: 'create' | 'remove' | 'update';
+	entityName:string;
+	mappedBy:string;
+	manyEntity:any;
+	cascadeType:'create' | 'remove' | 'update';
 }
 
 export interface RemovalRecord {
-	array: any[];
-	index: number;
+	array:any[];
+	index:number;
 }
 
 export abstract class SqlAdaptor {
 
-	protected idGenerator: IdGenerator;
+	protected idGenerator:IdGenerator;
 
-	constructor(idGeneration: IdGeneration) {
+	constructor(idGeneration:IdGeneration) {
 		this.idGenerator = getIdGenerator(idGeneration);
 	}
 
 	async create<E>(
-		entityName: string,
-		entity: E
-	): Promise<void> {
+		entityName:string,
+		entity:E
+	):Promise<ChangeGroup> {
 		let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
 
 		if (!entityMetadata.idProperty) {
@@ -49,9 +50,9 @@ export abstract class SqlAdaptor {
 
 		entity[entityMetadata.idProperty] = this.idGenerator.generateId(<any>entityMetadata);
 
-		let columnNames: string[] = [];
-		let values: any[] = [];
-		let cascadeRecords: CascadeRecord[] = [];
+		let columnNames:string[] = [];
+		let values:any[] = [];
+		let cascadeRecords:CascadeRecord[] = [];
 		for (let propertyName in entity) {
 			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
 			if (columnName) {
@@ -115,19 +116,20 @@ export abstract class SqlAdaptor {
 	}
 
 	protected abstract async createNative(
-		qEntity: QEntity<any>,
-		columnNames: string[],
-		values: any[],
-		cascadeRecords: CascadeRecord[]
+		qEntity:QEntity<any>,
+		columnNames:string[],
+		values:any[],
+		cascadeRecords:CascadeRecord[]
 	);
 
 	async delete<E>(
-		entityName: string,
-		entity: E,
-		startNewTransaction: boolean = false
-	): Promise<void> {
+		entityName:string,
+		entity:E,
+		startNewTransaction:boolean = false
+	):Promise<ChangeGroup> {
+		let changeGroup = new ChangeGroup();
 		let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
 
 		if (!entityMetadata.idProperty) {
@@ -139,8 +141,8 @@ export abstract class SqlAdaptor {
 			throw `Cannot delete entity: ${entityName}, id is not set.`;
 		}
 
-		let cascadeRecords: CascadeRecord[] = [];
-		let removalRecords: RemovalRecord[] = [];
+		let cascadeRecords:CascadeRecord[] = [];
+		let removalRecords:RemovalRecord[] = [];
 		for (let propertyName in entity) {
 			let entityRelation = entityRelationMap[propertyName];
 			// Only check relationships
@@ -212,17 +214,17 @@ export abstract class SqlAdaptor {
 	}
 
 	protected abstract async deleteNative(
-		qEntity: QEntity<any>,
-		entity: any,
-		idValue: number | string,
-		cascadeRecords: CascadeRecord[],
-		startNewTransaction: boolean
+		qEntity:QEntity<any>,
+		entity:any,
+		idValue:number | string,
+		cascadeRecords:CascadeRecord[],
+		startNewTransaction:boolean
 	);
 
 	async update<E>(
-		entityName: string,
-		entity: E
-	): Promise<void> {
+		entityName:string,
+		entity:E
+	):Promise<ChangeGroup> {
 		/**
 		 * On an update operation, can a nested create contain an update?
 		 * Via:
@@ -232,7 +234,7 @@ export abstract class SqlAdaptor {
 		 *    Cascades do not travel across ManyToOne
 		 */
 		let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
 
 		if (!entityMetadata.idProperty) {
@@ -246,9 +248,9 @@ export abstract class SqlAdaptor {
 
 		let updateCache = UpdateCache.getEntityUpdateCache(entityName, entity);
 
-		let columnNames: string[] = [];
-		let values: any[] = [];
-		let cascadeRecords: CascadeRecord[] = [];
+		let columnNames:string[] = [];
+		let values:any[] = [];
+		let cascadeRecords:CascadeRecord[] = [];
 		for (let propertyName in entity) {
 			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
 			// If the property is not a transient field and not a relation
@@ -351,37 +353,37 @@ export abstract class SqlAdaptor {
 	}
 
 	protected abstract async updateNative(
-		qEntity: QEntity<any>,
-		columnNames: string[],
-		values: any[],
-		idProperty: string,
-		idValue: number | string,
-		cascadeRecords: CascadeRecord[]
+		qEntity:QEntity<any>,
+		columnNames:string[],
+		values:any[],
+		idProperty:string,
+		idValue:number | string,
+		cascadeRecords:CascadeRecord[]
 	);
 
 	async find < E, IE extends IEntity >(
-		entityName: string,
-		phSqlQuery: PHSQLQuery < IE >
-	): Promise < E[] > {
+		entityName:string,
+		phSqlQuery:PHSQLQuery < IE >
+	):Promise < E[] > {
 		let qEntity = PH.qEntityMap[entityName];
-		let query: SQLStringQuery<IE> = new SQLStringQuery<IE>(phSqlQuery.toSQL(), qEntity, PH.qEntityMap, PH.entitiesRelationPropertyMap, PH.entitiesPropertyTypeMap, this.getDialect());
+		let query:SQLStringQuery<IE> = new SQLStringQuery<IE>(phSqlQuery.toSQL(), qEntity, PH.qEntityMap, PH.entitiesRelationPropertyMap, PH.entitiesPropertyTypeMap, this.getDialect());
 		let parameters = [];
 		let sql = query.toSQL(true, parameters);
 		let rawResults = await this.findNative(sql, parameters);
 		return query.parseQueryResults(rawResults);
 	}
 
-	protected abstract getDialect(): SQLDialect;
+	protected abstract getDialect():SQLDialect;
 
 	protected abstract async findNative(
-		sqlQuery: string,
-		parameters: any[]
-	): Promise<any[]>;
+		sqlQuery:string,
+		parameters:any[]
+	):Promise<any[]>;
 
 	async  findOne < E, IE  extends IEntity >(
-		entityName: string,
-		phSqlQuery: PHSQLQuery < IE >
-	): Promise < E > {
+		entityName:string,
+		phSqlQuery:PHSQLQuery < IE >
+	):Promise < E > {
 		let results = await this.find(entityName, phSqlQuery);
 
 		if (results.length > 0) {
@@ -394,47 +396,47 @@ export abstract class SqlAdaptor {
 	}
 
 	async save<E>(
-		entityName: string,
-		entity: E
-	): Promise < void > {
+		entityName:string,
+		entity:E
+	):Promise < ChangeGroup > {
 		let qEntity = PH.qEntityMap[entityName];
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
 		if (!entityMetadata.idProperty) {
 			throw `@Id is not defined for entity: ${entityName}`;
 		}
 
 		if (entity[entityMetadata.idProperty]) {
-			await this.update(entityName, entity);
+			return await this.update(entityName, entity);
 		} else {
-			await this.create(entityName, entity);
+			return await this.create(entityName, entity);
 		}
 	}
 
 	search < E, IE extends IEntity >(
-		entityName: string,
-		phSqlQuery: PHSQLQuery < IE >,
-		subject ?: Subject < E[] >
-	): Observable < E[] > {
+		entityName:string,
+		phSqlQuery:PHSQLQuery < IE >,
+		subject ?:Subject < E[] >
+	):Observable < E[] > {
 		if (!subject) {
 			subject = new Subject<E[]>();
 		}
-		this.find(entityName, phSqlQuery).then((results: E[]) => {
+		this.find(entityName, phSqlQuery).then((results:E[]) => {
 			subject.next(results);
 		});
 		return subject;
 	}
 
 	searchOne < E, IE extends IEntity >(
-		entityName: string,
-		phQuery: PHQuery < IE >,
-		subject ?: Subject < E >
-	): Observable < E > {
+		entityName:string,
+		phQuery:PHQuery < IE >,
+		subject ?:Subject < E >
+	):Observable < E > {
 		return null;
 	}
 
 	warn(
-		message: string
+		message:string
 	) {
 		console.log(message);
 	}

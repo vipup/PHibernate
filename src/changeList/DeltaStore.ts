@@ -15,6 +15,16 @@ import {IDeltaStoreConfig} from "../config/DeltaStoreConfig";
 import {IChangeListConfig, IOfflineDeltaStoreConfig} from "../config/ChangeListConfig";
 import {EntityProxy} from "../core/proxy/Proxies";
 import {IEntityConfig} from "../config/EntityConfig";
+import {ChangeGroup} from "./model/ChangeGroup";
+import {UserUtils} from "../shared/UserUtils";
+import {PlatformUtils} from "../shared/PlatformUtils";
+import {EntityChangeDao} from "./dao/EntityChangeDao";
+import {EntityChange} from "./model/EntityChange";
+import {AbstractFieldChange} from "./model/AbstractFieldChange";
+import {BooleanFieldChange} from "./model/BooleanFieldChange";
+import {StringFieldChange} from "./model/StringFieldChange";
+import {NumberFieldChange} from "./model/NumberFieldChange";
+import {DateFieldChange} from "./model/DateFieldChange";
 
 
 export interface IDeltaStore {
@@ -44,6 +54,74 @@ export class DeltaStore implements IDeltaStore {
 		public config:IDeltaStoreConfig,
 		public sharingAdaptor:SharingAdaptor = null
 	) {
+	}
+
+	static getNewChangeGroup():ChangeGroup {
+		let changeGroup = new ChangeGroup();
+
+		let createDate = new Date();
+		let deviceId = PlatformUtils.getDeviceAddress();
+		let userId = UserUtils.getUserId();
+
+		changeGroup.id = ChangeGroup.getId(deviceId, createDate, userId);
+		changeGroup.createDateTime = createDate;
+		changeGroup.createDeviceId = deviceId;
+		changeGroup.createUserId = userId;
+		changeGroup.numberOfEntitiesInGroup = 0;
+
+		return changeGroup;
+	}
+
+	static getNewEntityChange(changeGroup:ChangeGroup):EntityChange {
+		let entityChange = new EntityChange();
+		entityChange.entityIdInGroup = ++changeGroup.numberOfEntitiesInGroup;
+		entityChange.numberOfFieldsInEntity = 0;
+
+		entityChange.id = EntityChange.getEntityChangeId(entityChange.entityIdInGroup, changeGroup.createDeviceId, changeGroup.createDateTime, changeGroup.createUserId);
+		entityChange.createDateTime = changeGroup.createDateTime;
+		entityChange.createDeviceId = changeGroup.createDeviceId;
+		entityChange.createUserId = changeGroup.createUserId;
+
+		return entityChange;
+	}
+
+	static getNewBooleanFieldChange(entityChange:EntityChange):BooleanFieldChange {
+		let booleanFieldChange = new BooleanFieldChange();
+
+		return this.getNewFieldChange(entityChange, booleanFieldChange);
+	}
+
+	static getNewDateFieldChange(entityChange:EntityChange):DateFieldChange {
+		let dateFieldChange = new DateFieldChange();
+
+		return this.getNewFieldChange(entityChange, dateFieldChange);
+	}
+
+	static getNewNumberFieldChange(entityChange:EntityChange):NumberFieldChange {
+		let numberFieldChange = new NumberFieldChange();
+
+		return this.getNewFieldChange(entityChange, numberFieldChange);
+	}
+
+	static getNewStringFieldChange(entityChange:EntityChange):StringFieldChange {
+		let stringFieldChange = new StringFieldChange();
+
+		return this.getNewFieldChange(entityChange, stringFieldChange);
+	}
+
+	static getNewFieldChange<C extends AbstractFieldChange>(
+		entityChange:EntityChange,
+		fieldChange:C
+	):C {
+		fieldChange.fieldIdInEntity = ++entityChange.numberOfFieldsInEntity;
+		fieldChange.entityIdInGroup = entityChange.entityIdInGroup;
+
+		fieldChange.id = AbstractFieldChange.getFieldChangeId(fieldChange.fieldIdInEntity, entityChange.entityIdInGroup, entityChange.createDeviceId, entityChange.createDateTime, entityChange.createUserId);
+		fieldChange.createDateTime = entityChange.createDateTime;
+		fieldChange.createDeviceId = entityChange.createDeviceId;
+		fieldChange.createUserId = entityChange.createUserId;
+
+			return fieldChange;
 	}
 
 	async addChange<E>(
