@@ -56,7 +56,7 @@ export class PersistenceConfig implements IPersistenceConfig {
 		deltaStorePlatform: PlatformType = PlatformType.GOOGLE,
 		localStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
 		offlineDeltaStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
-		idGeneration: IdGeneration = IdGeneration.USER_TIMESTAMP
+		idGeneration: IdGeneration = IdGeneration.ENTITY_CHANGE_ID
 	): PHPersistenceConfig {
 		return {
 			appName: appName,

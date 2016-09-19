@@ -2,38 +2,56 @@
  * Created by Papa on 9/2/2016.
  */
 import {UserUtils} from "../shared/UserUtils";
+import {EntityChange} from "../changeList/model/EntityChange";
+import {ChangeGroup} from "../changeList/model/ChangeGroup";
+import {DeltaRecord} from "../changeList/model/DeltaBackedRecord";
 export enum IdGeneration {
-	USER_TIMESTAMP
+	ENTITY_CHANGE_ID
 }
 
 export interface IdGenerator {
-	generateId(
-		entityClass: {new (): any}
-	): string | number;
+	generateChangeGroupId(
+		changeGroup: ChangeGroup
+	): string;
+
+	generateEntityId(
+		entity: any,
+		entityChange: EntityChange
+	): string;
 
 	getIdType(): 'string' | 'number';
 }
 
 export class UserTimeStampIdGenerator implements IdGenerator {
 
-	lastIdForTimeStamp: number;
-	lastTimestamp: number;
+	lastChangeGroupIndexForTimeStamp: number;
+	lastChangeGroupTimestamp: number;
 
-	generateId(
-		entityClass: {new (): any}
-	): string | number {
+	generateChangeGroupId(changeGroup: ChangeGroup): string {
+		let cgIndexInMillisecond = this.getChangeGroupIndexInMillisecond();
+		changeGroup.groupIndexInMillisecond = cgIndexInMillisecond;
+		return DeltaRecord.getDRId(changeGroup, cgIndexInMillisecond);
+	}
 
+	generateEntityId(
+		entity: any,
+		entityChange: EntityChange
+	): string {
+		// TODO: implement non change-based id generation
+		return entityChange.id;
+	}
+
+	getChangeGroupIndexInMillisecond(): number {
 		let nowTimeStamp = new Date().getTime();
-		let userId = UserUtils.getUserId();
 
-		if (this.lastTimestamp != nowTimeStamp) {
-			this.lastTimestamp = nowTimeStamp;
-			this.lastIdForTimeStamp = 1;
+		if (this.lastChangeGroupTimestamp != nowTimeStamp) {
+			this.lastChangeGroupTimestamp = nowTimeStamp;
+			this.lastChangeGroupIndexForTimeStamp = 1;
 		} else {
-			this.lastIdForTimeStamp++;
+			this.lastChangeGroupIndexForTimeStamp++;
 		}
 
-		return `${userId}_${nowTimeStamp}_${this.lastIdForTimeStamp}`;
+		return this.lastChangeGroupIndexForTimeStamp;
 	}
 
 	getIdType(): 'string' | 'number' {
@@ -43,10 +61,10 @@ export class UserTimeStampIdGenerator implements IdGenerator {
 }
 
 export function getIdGenerator(
-	idGeneration:IdGeneration
+	idGeneration: IdGeneration
 ) {
 	switch (idGeneration) {
-		case IdGeneration.USER_TIMESTAMP:
+		case IdGeneration.ENTITY_CHANGE_ID:
 			return new UserTimeStampIdGenerator();
 		default:
 			throw `Unsupported IdGeneration: ${idGeneration}`;

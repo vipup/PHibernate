@@ -33,7 +33,7 @@ export var PERSISTENCE_CONFIG: PHPersistenceConfig = {
 	localStores: {
 		"DefaultLocalStore": {
 			platform: LocalStoreType.SQLITE_CORDOVA,
-			idGeneration: IdGeneration.USER_TIMESTAMP
+			idGeneration: IdGeneration.ENTITY_CHANGE_ID
 		}
 	},
 	offlineDeltaStore: {

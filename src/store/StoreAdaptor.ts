@@ -1,6 +1,7 @@
 import {IEntity, PHQuery} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
+import {ChangeGroup} from "../changeList/model/ChangeGroup";
 
 /**
  * Created by Papa on 6/10/2016.
@@ -21,7 +22,9 @@ export interface StoreAdaptor {
 
 	delete<E>(
 		entityName:string,
-		entity:E
+		entity:E,
+		changeGroup:ChangeGroup,
+		startNewTransaction:boolean
 	):Promise<E>;
 
 	find<E, IE extends IEntity>(

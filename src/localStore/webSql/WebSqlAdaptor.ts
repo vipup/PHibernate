@@ -7,6 +7,8 @@ import {DDLManager} from "./DDLManager";
 import {IdGeneration} from "../IdGenerator";
 import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
+import {ChangeGroup} from "../../changeList/model/ChangeGroup";
+import {IEntityChange} from "../../changeList/model/EntityChange";
 
 /**
  * Created by Papa on 8/30/2016.
@@ -135,7 +137,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	protected async findNative(
 		sqlQuery: string,
 		parameters: any[]
-	):Promise<any[]> {
+	): Promise<any[]> {
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value));
 		return await this.query(sqlQuery, nativeParameters);
 	}
@@ -180,7 +182,8 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		qEntity: QEntity<any>,
 		columnNames: string[],
 		values: any[],
-		cascadeRecords: CascadeRecord[]
+		cascadeRecords: CascadeRecord[],
+		changeGroup: ChangeGroup
 	) {
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		let valuesBindString = values.map(() => '?').join(', ');
@@ -194,7 +197,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 			await this.query(sql, nativeValues, startTransaction);
 			for (let i = 0; i < cascadeRecords.length; i++) {
 				let cascadeRecord = cascadeRecords[i];
-				await this.create(cascadeRecord.entityName, cascadeRecord.manyEntity);
+				await this.create(cascadeRecord.entityName, cascadeRecord.manyEntity, changeGroup);
 			}
 			if (startTransaction) {
 				this.currentTransaction = null;
@@ -209,11 +212,11 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		entity: any,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		startNewTransaction: boolean = false
-	) {
+		changeGroup: ChangeGroup
+	): Promise<IEntityChange> {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
-		let startTransaction = startNewTransaction;
+		let startTransaction = false;
 		let transactionExists = !!this.currentTransaction;
 		if (cascadeRecords.length) {
 			if (!transactionExists) {
@@ -222,18 +225,21 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 			for (let i = 0; i < cascadeRecords.length; i++) {
 				let cascadeRecord = cascadeRecords[i];
 				cascadeRecord.manyEntity[cascadeRecord.mappedBy] = entity;
-				await this.delete(cascadeRecord.entityName, cascadeRecord.manyEntity, startTransaction);
+				await this.delete(cascadeRecord.entityName, cascadeRecord.manyEntity, changeGroup);
 			}
 		}
+		let entityChange = changeGroup.addNewDeleteEntityChange(qEntity.__entityName__, entity, entityMetadata.idProperty);
 		let tableName = PHMetadataUtils.getTableName(qEntity);
 		let idColumnName = PHMetadataUtils.getPropertyColumnName(entityMetadata.idProperty, qEntity);
 		let sql = `DELETE FROM ${tableName} where ${idColumnName} = ?`;
 
 		await this.query(sql, [idValue], startTransaction);
 
-		if (startTransaction && !transactionExists && !startNewTransaction) {
+		if (startTransaction && !transactionExists) {
 			this.currentTransaction = null;
 		}
+
+		return entityChange;
 	}
 
 	private convertValueIn(
@@ -266,7 +272,8 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		values: any[],
 		idProperty: string,
 		idValue: number | string,
-		cascadeRecords: CascadeRecord[]
+		cascadeRecords: CascadeRecord[],
+	  changeGroup: ChangeGroup
 	) {
 		let setFragments: string[];
 		let nativeValues = values.map((value) => this.convertValueIn(value));
@@ -286,10 +293,10 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 				let cascadeRecord = cascadeRecords[i];
 				switch (cascadeRecord.cascadeType) {
 					case "create":
-						await this.create(cascadeRecord.entityName, cascadeRecord.manyEntity);
+						await this.create(cascadeRecord.entityName, cascadeRecord.manyEntity, changeGroup);
 						break;
 					case "update":
-						await this.update(cascadeRecord.entityName, cascadeRecord.manyEntity);
+						await this.update(cascadeRecord.entityName, cascadeRecord.manyEntity, changeGroup);
 						break;
 					case "remove":
 						throw `Cascading removes from an update are not supported`;

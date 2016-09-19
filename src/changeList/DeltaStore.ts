@@ -18,116 +18,62 @@ import {IEntityConfig} from "../config/EntityConfig";
 import {ChangeGroup} from "./model/ChangeGroup";
 import {UserUtils} from "../shared/UserUtils";
 import {PlatformUtils} from "../shared/PlatformUtils";
-import {EntityChangeDao} from "./dao/EntityChangeDao";
-import {EntityChange} from "./model/EntityChange";
-import {AbstractFieldChange} from "./model/AbstractFieldChange";
-import {BooleanFieldChange} from "./model/BooleanFieldChange";
-import {StringFieldChange} from "./model/StringFieldChange";
-import {NumberFieldChange} from "./model/NumberFieldChange";
-import {DateFieldChange} from "./model/DateFieldChange";
-
+import {IdGenerator} from "../localStore/IdGenerator";
 
 export interface IDeltaStore {
-	config:IDeltaStoreConfig;
-	sharingAdaptor:SharingAdaptor;
+	config: IDeltaStoreConfig;
+	sharingAdaptor: SharingAdaptor;
 	addChange<E>(
-		entityConfig:IEntityConfig,
-		entityProxy:EntityProxy
-	):Promise<E>;
+		entityConfig: IEntityConfig,
+		entityProxy: EntityProxy
+	): Promise<E>;
 	getChangeList(
-		changeListConfig:IChangeListConfig
-	):SharedChangeList;
+		changeListConfig: IChangeListConfig
+	): SharedChangeList;
 	getChangeListName(
-		changeListConfig:IChangeListConfig
-	):string;
-	goOffline():void;
-	goOnline():Promise<any>;
+		changeListConfig: IChangeListConfig
+	): string;
+	goOffline(): void;
+	goOnline(): Promise<any>;
 }
 
 export class DeltaStore implements IDeltaStore {
 
-	batchChanges:boolean;
-	protected changeListMap:{[changeListName:string]:SharedChangeList} = {};
-	protected batchedChangeMap:{[changeListName:string]:ChangeRecord[]} = {};
+	batchChanges: boolean;
+	protected changeListMap: {[changeListName: string]: SharedChangeList} = {};
+	protected batchedChangeMap: {[changeListName: string]: ChangeRecord[]} = {};
 
 	constructor(
-		public config:IDeltaStoreConfig,
-		public sharingAdaptor:SharingAdaptor = null
+		public config: IDeltaStoreConfig,
+		public sharingAdaptor: SharingAdaptor = null
 	) {
 	}
 
-	static getNewChangeGroup():ChangeGroup {
+	static getNewChangeGroup(
+		type: string,
+	  idGenerator:IdGenerator
+	): ChangeGroup {
 		let changeGroup = new ChangeGroup();
 
 		let createDate = new Date();
 		let deviceId = PlatformUtils.getDeviceAddress();
 		let userId = UserUtils.getUserId();
 
-		changeGroup.id = ChangeGroup.getId(deviceId, createDate, userId);
+		changeGroup.type = type;
 		changeGroup.createDateTime = createDate;
 		changeGroup.createDeviceId = deviceId;
 		changeGroup.createUserId = userId;
 		changeGroup.numberOfEntitiesInGroup = 0;
 
+		changeGroup.id = idGenerator.generateChangeGroupId(changeGroup);
+
 		return changeGroup;
 	}
 
-	static getNewEntityChange(changeGroup:ChangeGroup):EntityChange {
-		let entityChange = new EntityChange();
-		entityChange.entityIdInGroup = ++changeGroup.numberOfEntitiesInGroup;
-		entityChange.numberOfFieldsInEntity = 0;
-
-		entityChange.id = EntityChange.getEntityChangeId(entityChange.entityIdInGroup, changeGroup.createDeviceId, changeGroup.createDateTime, changeGroup.createUserId);
-		entityChange.createDateTime = changeGroup.createDateTime;
-		entityChange.createDeviceId = changeGroup.createDeviceId;
-		entityChange.createUserId = changeGroup.createUserId;
-
-		return entityChange;
-	}
-
-	static getNewBooleanFieldChange(entityChange:EntityChange):BooleanFieldChange {
-		let booleanFieldChange = new BooleanFieldChange();
-
-		return this.getNewFieldChange(entityChange, booleanFieldChange);
-	}
-
-	static getNewDateFieldChange(entityChange:EntityChange):DateFieldChange {
-		let dateFieldChange = new DateFieldChange();
-
-		return this.getNewFieldChange(entityChange, dateFieldChange);
-	}
-
-	static getNewNumberFieldChange(entityChange:EntityChange):NumberFieldChange {
-		let numberFieldChange = new NumberFieldChange();
-
-		return this.getNewFieldChange(entityChange, numberFieldChange);
-	}
-
-	static getNewStringFieldChange(entityChange:EntityChange):StringFieldChange {
-		let stringFieldChange = new StringFieldChange();
-
-		return this.getNewFieldChange(entityChange, stringFieldChange);
-	}
-
-	static getNewFieldChange<C extends AbstractFieldChange>(
-		entityChange:EntityChange,
-		fieldChange:C
-	):C {
-		fieldChange.fieldIdInEntity = ++entityChange.numberOfFieldsInEntity;
-		fieldChange.entityIdInGroup = entityChange.entityIdInGroup;
-
-		fieldChange.id = AbstractFieldChange.getFieldChangeId(fieldChange.fieldIdInEntity, entityChange.entityIdInGroup, entityChange.createDeviceId, entityChange.createDateTime, entityChange.createUserId);
-		fieldChange.createDateTime = entityChange.createDateTime;
-		fieldChange.createDeviceId = entityChange.createDeviceId;
-		fieldChange.createUserId = entityChange.createUserId;
-
-			return fieldChange;
-	}
-
 	async addChange<E>(
-		entityConfig:IEntityConfig,
-		entityProxy:EntityProxy
-	):Promise<E> {
+		entityConfig: IEntityConfig,
+		entityProxy: EntityProxy
+	): Promise<E> {
 		let changeListConfig = entityConfig.changeListConfig;
 		let changeRecord = entityProxy.__recordState__.getChangeRecord();
 		if (this.batchChanges) {
@@ -146,35 +92,35 @@ export class DeltaStore implements IDeltaStore {
 	}
 
 	getChangeListName(
-		changeListConfig:IChangeListConfig
-	):string {
+		changeListConfig: IChangeListConfig
+	): string {
 		return changeListConfig.changeListInfo.name;
 	}
 
 	getChangeList(
-		changeListConfig:IChangeListConfig
-	):SharedChangeList {
+		changeListConfig: IChangeListConfig
+	): SharedChangeList {
 		let changeListName = this.getChangeListName(changeListConfig);
 		let changeList = this.changeListMap[changeListName];
 
 		return changeList;
 	}
 
-	goOffline():void {
+	goOffline(): void {
 		this.changeListMap = {};
 	}
 
-	async goOnline():Promise<any> {
+	async goOnline(): Promise<any> {
 		await this.sharingAdaptor.initialize(this.config.setupInfo);
 		await this.setupChangeLists();
 	}
 
-	private async setupChangeLists():Promise<any> {
+	private async setupChangeLists(): Promise<any> {
 
 		await this.loadChangeLists();
 
-		let remoteLoadOps:Promise<any>[] = [];
-		let changeListConfigs:IChangeListConfig[] = [];
+		let remoteLoadOps: Promise<any>[] = [];
+		let changeListConfigs: IChangeListConfig[] = [];
 
 		for (let changeListName in this.config.changeListConfigMap) {
 			let changeListConfig = this.config.changeListConfigMap[changeListName];
@@ -195,21 +141,21 @@ export class DeltaStore implements IDeltaStore {
 		let loadResponses = await Promise.all(remoteLoadOps);
 
 		changeListConfigs.forEach((
-			changeListConfig:IChangeListConfig,
-			index:number
+			changeListConfig: IChangeListConfig,
+			index: number
 		) => {
-			let changeList:SharedChangeList = <any>loadResponses[index];
+			let changeList: SharedChangeList = <any>loadResponses[index];
 			this.changeListMap[changeListConfig.changeListInfo.name] = changeList;
 		});
 
 		return null;
 	}
 
-	private async loadChangeLists():Promise<any> {
+	private async loadChangeLists(): Promise<any> {
 
-		let changeLists:ChangeListShareInfo[] = await this.sharingAdaptor.findExistingChangeLists(this.config.setupInfo);
+		let changeLists: ChangeListShareInfo[] = await this.sharingAdaptor.findExistingChangeLists(this.config.setupInfo);
 		changeLists.forEach((
-			changeListShareInfo:ChangeListShareInfo
+			changeListShareInfo: ChangeListShareInfo
 		) => {
 			let changeListName = changeListShareInfo.name;
 			let changeListConfig = this.config.changeListConfigMap[changeListName];
@@ -223,11 +169,11 @@ export class DeltaStore implements IDeltaStore {
 
 export class OfflineDeltaStore extends DeltaStore {
 
-	config:IOfflineDeltaStoreConfig;
+	config: IOfflineDeltaStoreConfig;
 
 	getChangeListName(
-		changeListConfig:IChangeListConfig
-	):string {
+		changeListConfig: IChangeListConfig
+	): string {
 		return this.config.getOfflineChangeListName(changeListConfig.deltaStoreName, changeListConfig.changeListInfo.name);
 	}
 
@@ -236,8 +182,8 @@ export class OfflineDeltaStore extends DeltaStore {
 var GOOGLE_SHARING_ADAPTOR;
 
 export function getSharingAdaptor(
-	platformType:PlatformType
-):SharingAdaptor {
+	platformType: PlatformType
+): SharingAdaptor {
 	switch (platformType) {
 		case PlatformType.GOOGLE:
 			if (!GOOGLE_SHARING_ADAPTOR) {
@@ -250,7 +196,7 @@ export function getSharingAdaptor(
 }
 
 
-export function getGooglesSharingAdaptor():GoogleSharingAdaptor {
+export function getGooglesSharingAdaptor(): GoogleSharingAdaptor {
 	let googleApi = getGoogleApi();
 	let googleDrive = getGoogleDrive(googleApi);
 	let googleDriveAdaptor = getGoogleDriveAdaptor(googleApi, googleDrive);
@@ -261,40 +207,40 @@ export function getGooglesSharingAdaptor():GoogleSharingAdaptor {
 	return googleSharingAdaptor;
 }
 
-function getGoogleApi():GoogleApi {
+function getGoogleApi(): GoogleApi {
 	return new GoogleApi();
 }
 
 function getGoogleDrive(
-	googleApi:GoogleApi
-):GoogleDrive {
+	googleApi: GoogleApi
+): GoogleDrive {
 	return new GoogleDrive(googleApi);
 }
 
 function getGoogleDriveAdaptor(
-	googleApi:GoogleApi,
-	googleDrive:GoogleDrive
-):GoogleDriveAdaptor {
+	googleApi: GoogleApi,
+	googleDrive: GoogleDrive
+): GoogleDriveAdaptor {
 	return new GoogleDriveAdaptor(googleApi, googleDrive);
 }
 
 function getGoogleRealtime(
-	googleDrive:GoogleDrive
-):GoogleRealtime {
+	googleDrive: GoogleDrive
+): GoogleRealtime {
 	return new GoogleRealtime(googleDrive);
 }
 
 function getGoogleRealtimeAdaptor(
-	googleRealtime:GoogleRealtime
-):GoogleRealtimeAdaptor {
+	googleRealtime: GoogleRealtime
+): GoogleRealtimeAdaptor {
 	return new GoogleRealtimeAdaptor(googleRealtime);
 }
 
 function getGoogleSharingAdaptor(
-	googleDrive:GoogleDrive,
-	googleDriveAdaptor:GoogleDriveAdaptor,
-	googleRealtime:GoogleRealtime,
-	googleRealtimeAdaptor:GoogleRealtimeAdaptor
-):GoogleSharingAdaptor {
+	googleDrive: GoogleDrive,
+	googleDriveAdaptor: GoogleDriveAdaptor,
+	googleRealtime: GoogleRealtime,
+	googleRealtimeAdaptor: GoogleRealtimeAdaptor
+): GoogleSharingAdaptor {
 	return new GoogleSharingAdaptor(googleDrive, googleDriveAdaptor, googleRealtime, googleRealtimeAdaptor);
 }
