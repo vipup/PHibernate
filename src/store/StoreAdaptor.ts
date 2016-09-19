@@ -17,14 +17,14 @@ export interface StoreAdaptor {
 
 	create<E>(
 		entityName:string,
-		entity:E
+		entity:E,
+		changeGroup:ChangeGroup
 	):Promise<E>;
 
 	delete<E>(
 		entityName:string,
 		entity:E,
-		changeGroup:ChangeGroup,
-		startNewTransaction:boolean
+		changeGroup:ChangeGroup
 	):Promise<E>;
 
 	find<E, IE extends IEntity>(
@@ -43,7 +43,8 @@ export interface StoreAdaptor {
 
 	save<E>(
 		entityName:string,
-		entity:E
+		entity:E,
+		changeGroup:ChangeGroup
 	):Promise<E>;
 
 	search<E, IE extends IEntity>(
@@ -60,7 +61,8 @@ export interface StoreAdaptor {
 
 	update<E>(
 		entityName:string,
-		entity:E
+		entity:E,
+		changeGroup:ChangeGroup
 	):Promise<E>;
 
 }

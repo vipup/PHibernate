@@ -1,4 +1,6 @@
-import {CascadeType, Column, Entity, JoinColumn, ManyToOne, OneToMany, Table} from "querydsl-typescript";
+import {CascadeType, Column, Entity, IQEntity, IQField, JoinColumn, JSONBaseOperation, ManyToOne,
+	IOperation, OneToMany, QBooleanField, QDateField, QNumberField, QStringField,
+	Table} from "querydsl-typescript";
 import {ChangeGroup} from "./ChangeGroup";
 import {BooleanFieldChange} from "./BooleanFieldChange";
 import {DateFieldChange} from "./DateFieldChange";
@@ -18,24 +20,35 @@ export enum EntityChangeType {
 
 export interface IEntityChange {
 
+	addNewFieldChange(
+		fieldName: string,
+		oldValue:any,
+		newValue:any,
+		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
+	):AbstractFieldChange;
+
 	addNewBooleanFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:any,
+		newValue:any
 	): BooleanFieldChange;
 
 	addNewDateFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:any,
+		newValue:any
 	): DateFieldChange;
 
 	addNewNumberFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:any,
+		newValue:any
 	): NumberFieldChange;
 
 	addNewStringFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:any,
+		newValue:any
 	): StringFieldChange;
 
 }
@@ -85,62 +98,90 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 		return `${entityIdInGroup}_${createDeviceId}_${createDateTime.getTime()}_${indexInMillisecond}_${createUserId}`;
 	}
 
+	addNewFieldChange(
+		fieldName: string,
+		oldValue:any,
+		newValue:any,
+		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
+	):AbstractFieldChange {
+		if (field instanceof QBooleanField) {
+			return this.addNewBooleanFieldChange(fieldName, oldValue, newValue);
+		} else if (field instanceof QDateField) {
+			return this.addNewDateFieldChange(fieldName, oldValue, newValue);
+		} else if (field instanceof QNumberField) {
+			return this.addNewNumberFieldChange(fieldName, oldValue, newValue);
+		} else if (field instanceof QStringField) {
+			return this.addNewStringFieldChange(fieldName, oldValue, newValue);
+		}
+	}
+
 	addNewBooleanFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:boolean,
+		newValue:boolean
 	): BooleanFieldChange {
 		let booleanFieldChange = new BooleanFieldChange();
-		let fieldChange = this.addNewFieldChange(entityChange, fieldName, booleanFieldChange);
-		entityChange.booleanFieldChanges.push(fieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, booleanFieldChange);
+		fieldChange.oldValue = oldValue;
+		fieldChange.newValue = newValue;
+		this.booleanFieldChanges.push(fieldChange);
 
 		return fieldChange;
 	}
 
 	addNewDateFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:Date,
+		newValue:Date
 	): DateFieldChange {
 		let dateFieldChange = new DateFieldChange();
-		let fieldChange = this.addNewFieldChange(entityChange, fieldName, dateFieldChange);
-		entityChange.dateFieldChanges.push(fieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, dateFieldChange);
+		fieldChange.oldValue = oldValue;
+		fieldChange.newValue = newValue;
+		this.dateFieldChanges.push(fieldChange);
 
 		return fieldChange;
 	}
 
 	addNewNumberFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:number,
+		newValue:number
 	): NumberFieldChange {
 		let numberFieldChange = new NumberFieldChange();
-		let fieldChange = this.addNewFieldChange(entityChange, fieldName, numberFieldChange);
-		entityChange.numberFieldChanges.push(fieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, numberFieldChange);
+		fieldChange.oldValue = oldValue;
+		fieldChange.newValue = newValue;
+		this.numberFieldChanges.push(fieldChange);
 
 		return fieldChange;
 	}
 
 	addNewStringFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:string,
+		newValue:string
 	): StringFieldChange {
 		let stringFieldChange = new StringFieldChange();
-		let fieldChange = this.addNewFieldChange(entityChange, fieldName, stringFieldChange);
-		entityChange.stringFieldChanges.push(fieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, stringFieldChange);
+		fieldChange.oldValue = oldValue;
+		fieldChange.newValue = newValue;
+		this.stringFieldChanges.push(fieldChange);
 
 		return fieldChange;
 	}
 
-	private addNewFieldChange<C extends AbstractFieldChange>(
-		entityChange: EntityChange,
+	private addNewFieldChangeInternal<C extends AbstractFieldChange>(
 		fieldName: string,
 		fieldChange: C
 	): C {
-		fieldChange.createDateTime = entityChange.createDateTime;
-		fieldChange.createDeviceId = entityChange.createDeviceId;
-		fieldChange.createUserId = entityChange.createUserId;
-		fieldChange.entityChange = entityChange;
-		fieldChange.fieldIdInEntity = ++entityChange.numberOfFieldsInEntity;
+		fieldChange.createDateTime = this.createDateTime;
+		fieldChange.createDeviceId = this.createDeviceId;
+		fieldChange.createUserId = this.createUserId;
+		fieldChange.entityChange = this;
+		fieldChange.fieldIdInEntity = ++this.numberOfFieldsInEntity;
 		fieldChange.propertyName = fieldName;
-		fieldChange.id = AbstractFieldChange.getFieldChangeId(fieldChange.fieldIdInEntity, entityChange.entityChangeIdInGroup, entityChange.createDeviceId, entityChange.createDateTime, entityChange.createUserId);
+		fieldChange.id = AbstractFieldChange.getFieldChangeId(fieldChange.fieldIdInEntity, this.entityChangeIdInGroup, this.createDeviceId, this.createDateTime, this.createUserId);
 
 		return fieldChange;
 	}
@@ -149,30 +190,51 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 
 export class StubEntityChange implements IEntityChange {
 
+	addNewFieldChange(
+		fieldName: string,
+		oldValue:any,
+		newValue:any,
+		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
+	):AbstractFieldChange {
+		if (field instanceof QBooleanField) {
+			return this.addNewBooleanFieldChange(fieldName, oldValue, newValue);
+		} else if (field instanceof QDateField) {
+			return this.addNewDateFieldChange(fieldName, oldValue, newValue);
+		} else if (field instanceof QNumberField) {
+			return this.addNewNumberFieldChange(fieldName, oldValue, newValue);
+		} else if (field instanceof QStringField) {
+			return this.addNewStringFieldChange(fieldName, oldValue, newValue);
+		}
+	}
+
 	addNewBooleanFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:boolean,
+		newValue:boolean
 	): BooleanFieldChange {
 		return new BooleanFieldChange();
 	}
 
 	addNewDateFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:Date,
+		newValue:Date
 	): DateFieldChange {
 		return new DateFieldChange();
 	}
 
 	addNewNumberFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:number,
+		newValue:number
 	): NumberFieldChange {
 		return new NumberFieldChange();
 	}
 
 	addNewStringFieldChange(
-		entityChange: EntityChange,
-		fieldName: string
+		fieldName: string,
+		oldValue:string,
+		newValue:string
 	): StringFieldChange {
 		return new StringFieldChange();
 	}

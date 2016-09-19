@@ -7,7 +7,7 @@ import {DDLManager} from "./DDLManager";
 import {IdGeneration} from "../IdGenerator";
 import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
-import {ChangeGroup} from "../../changeList/model/ChangeGroup";
+import {IChangeGroup} from "../../changeList/model/ChangeGroup";
 import {IEntityChange} from "../../changeList/model/EntityChange";
 
 /**
@@ -73,6 +73,17 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 				reject({err: err});
 			}
 		});
+	}
+
+
+
+	private async wrapPersistEntityInTransaction<E>(
+		entityClass:{new (): E},
+		entity:E,
+		operation:'create' | 'delete' | 'persist' | 'update',
+		cascadeRule?:CascadeType
+	):Promise<E> {
+
 	}
 
 	wrapInTransaction(callback: ()=> Promise<any>): Promise<any> {
@@ -183,8 +194,8 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		columnNames: string[],
 		values: any[],
 		cascadeRecords: CascadeRecord[],
-		changeGroup: ChangeGroup
-	) {
+		changeGroup: IChangeGroup
+	):Promise<void> {
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		let valuesBindString = values.map(() => '?').join(', ');
 		let tableName = PHMetadataUtils.getTableName(qEntity);
@@ -212,7 +223,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		entity: any,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: ChangeGroup
+		changeGroup: IChangeGroup
 	): Promise<IEntityChange> {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
@@ -273,8 +284,8 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		idProperty: string,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-	  changeGroup: ChangeGroup
-	) {
+	  changeGroup: IChangeGroup
+	):Promise<void> {
 		let setFragments: string[];
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		for (var i = 0; i < columnNames.length; i++) {

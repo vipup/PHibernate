@@ -4,7 +4,7 @@
 import {UserUtils} from "../shared/UserUtils";
 import {EntityChange} from "../changeList/model/EntityChange";
 import {ChangeGroup} from "../changeList/model/ChangeGroup";
-import {DeltaRecord} from "../changeList/model/DeltaBackedRecord";
+import {DeltaRecord} from "../changeList/model/DeltaRecord";
 export enum IdGeneration {
 	ENTITY_CHANGE_ID
 }

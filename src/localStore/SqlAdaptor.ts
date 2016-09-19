@@ -57,9 +57,12 @@ export abstract class SqlAdaptor {
 		let cascadeRecords: CascadeRecord[] = [];
 		for (let propertyName in entity) {
 			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
+			let field = qEntity.__entityFieldMap__[propertyName];
 			if (columnName) {
 				columnNames.push(columnName);
+				let newValue = entity[propertyName];
 				values.push(entity[propertyName]);
+				entityChange.addNewFieldChange(propertyName, null, newValue, field);
 				continue;
 			}
 			let nonPropertyValue = entity[propertyName];
@@ -89,6 +92,7 @@ export abstract class SqlAdaptor {
 					}
 					columnNames.push(columnName);
 					values.push(parentObjectIdValue);
+					entityChange.addNewFieldChange(propertyName, null, parentObjectIdValue, field);
 					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
 					continue;
 				case RelationType.ONE_TO_MANY:
@@ -115,6 +119,8 @@ export abstract class SqlAdaptor {
 		}
 
 		await this.createNative(qEntity, columnNames, values, cascadeRecords, changeGroup);
+
+		return entityChange;
 	}
 
 	protected abstract async createNative(
@@ -261,6 +267,7 @@ export abstract class SqlAdaptor {
 		let values: any[] = [];
 		let cascadeRecords: CascadeRecord[] = [];
 		for (let propertyName in entity) {
+			let field = qEntity.__entityFieldMap__[propertyName];
 			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
 			// If the property is not a transient field and not a relation
 			if (columnName) {
@@ -277,12 +284,14 @@ export abstract class SqlAdaptor {
 					let originalValue = updateCache[propertyName];
 					if (!UpdateCache.valuesEqualIgnoreObjects(originalValue, updatedValue)) {
 						columnNames.push(columnName);
-						values.push(entity[propertyName]);
+						values.push(updatedValue);
+						entityChange.addNewFieldChange(propertyName, originalValue, updatedValue, field);
 
 					}
 				} else {
 					columnNames.push(columnName);
-					values.push(entity[propertyName]);
+					values.push(updatedValue);
+					entityChange.addNewFieldChange(propertyName, null, updatedValue, field);
 				}
 				continue;
 			}
@@ -307,8 +316,19 @@ export abstract class SqlAdaptor {
 					if (!parentObjectIdValue) {
 						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
 					}
-					columnNames.push(columnName);
-					values.push(parentObjectIdValue);
+					if (updateCache) {
+						let originalValue = updateCache[propertyName];
+						if (!UpdateCache.valuesEqualIgnoreObjects(originalValue, parentObjectIdValue)) {
+							columnNames.push(columnName);
+							values.push(parentObjectIdValue);
+							entityChange.addNewFieldChange(propertyName, originalValue, parentObjectIdValue, field);
+
+						}
+					} else {
+						columnNames.push(columnName);
+						values.push(parentObjectIdValue);
+						entityChange.addNewFieldChange(propertyName, null, parentObjectIdValue, field);
+					}
 					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
 					continue;
 				case RelationType.ONE_TO_MANY:
@@ -356,9 +376,10 @@ export abstract class SqlAdaptor {
 			values,
 			entityMetadata.idProperty,
 			idValue,
-			cascadeRecords);
+			cascadeRecords,
+			changeGroup);
 
-		return null;
+		return entityChange;
 	}
 
 	protected abstract async updateNative(
@@ -367,7 +388,8 @@ export abstract class SqlAdaptor {
 		values: any[],
 		idProperty: string,
 		idValue: number | string,
-		cascadeRecords: CascadeRecord[]
+		cascadeRecords: CascadeRecord[],
+		changeGroup: IChangeGroup
 	);
 
 	async find < E, IE extends IEntity >(
