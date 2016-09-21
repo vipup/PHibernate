@@ -29,8 +29,20 @@ export abstract class SqlAdaptor {
 
 	protected idGenerator: IdGenerator;
 
+	protected currentChangeGroup:IChangeGroup;
+
 	constructor(idGeneration: IdGeneration) {
 		this.idGenerator = getIdGenerator(idGeneration);
+	}
+
+	private verifyChangeGroup() {
+		if(this.currentChangeGroup == null) {
+			throw `Current change group is not defined`;
+		}
+	}
+
+	get activeChangeGroup():IChangeGroup {
+		return this.currentChangeGroup;
 	}
 
 	async create<E>(

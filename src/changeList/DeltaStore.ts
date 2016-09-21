@@ -49,27 +49,6 @@ export class DeltaStore implements IDeltaStore {
 	) {
 	}
 
-	static getNewChangeGroup(
-		type: string,
-	  idGenerator:IdGenerator
-	): ChangeGroup {
-		let changeGroup = new ChangeGroup();
-
-		let createDate = new Date();
-		let deviceId = PlatformUtils.getDeviceAddress();
-		let userId = UserUtils.getUserId();
-
-		changeGroup.type = type;
-		changeGroup.createDateTime = createDate;
-		changeGroup.createDeviceId = deviceId;
-		changeGroup.createUserId = userId;
-		changeGroup.numberOfEntitiesInGroup = 0;
-
-		changeGroup.id = idGenerator.generateChangeGroupId(changeGroup);
-
-		return changeGroup;
-	}
-
 	async addChange<E>(
 		entityConfig: IEntityConfig,
 		entityProxy: EntityProxy

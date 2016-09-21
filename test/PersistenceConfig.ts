@@ -9,32 +9,18 @@ import {IdGeneration} from "../src/localStore/IdGenerator";
 
 export var PERSISTENCE_CONFIG: PHPersistenceConfig = {
 	appName: "DefaultApp",
-	changeLists: {
-		"DefaultChangeList": {}
+	changeList: {
+		distributionStrategy: DistributionStrategy.S3_SECURE_POLL
 	},
-	default: {
-		changeList: {
-			distributionStrategy: DistributionStrategy.S3_SECURE_POLL,
-			deltaStore: "DefaultDeltaStore"
-		},
-		entity: {
-			changeList: "DefaultChangeList",
-			localStore: "DefaultLocalStore"
-		}
+	deltaStore: {
+		apiKey: null,
+		clientId: null,
+		platform: PlatformType.GOOGLE,
+		rootDir: "PHibernate"
 	},
-	deltaStores: {
-		"DefaultDeltaStore": {
-			apiKey: null,
-			clientId: null,
-			platform: PlatformType.GOOGLE,
-			rootDir: "PHibernate",
-		}
-	},
-	localStores: {
-		"DefaultLocalStore": {
-			platform: LocalStoreType.SQLITE_CORDOVA,
-			idGeneration: IdGeneration.ENTITY_CHANGE_ID
-		}
+	localStore: {
+		platform: LocalStoreType.SQLITE_CORDOVA,
+		idGeneration: IdGeneration.ENTITY_CHANGE_ID
 	},
 	offlineDeltaStore: {
 		type: LocalStoreType.SQLITE_CORDOVA

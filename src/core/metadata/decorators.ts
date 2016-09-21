@@ -64,7 +64,7 @@ export interface AccessControlElements {
 }
 
 export function Transactional() {
-	return function (target: Function, methodName: string, methodDescriptor: any) {
+	return function (target: any, methodName: string, methodDescriptor: any) {
 		// save a reference to the original method
 		// this way we keep the values currently in the
 		// descriptor and don't overwrite what another

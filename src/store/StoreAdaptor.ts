@@ -1,7 +1,7 @@
 import {IEntity, PHQuery} from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
-import {ChangeGroup} from "../changeList/model/ChangeGroup";
+import {IChangeGroup} from "../changeList/model/ChangeGroup";
 
 /**
  * Created by Papa on 6/10/2016.
@@ -13,18 +13,20 @@ export interface StoreSetupInfo {
 
 export interface StoreAdaptor {
 
+	activeChangeGroup:IChangeGroup;
+
 	wrapInTransaction(callback: ()=>void);
 
 	create<E>(
 		entityName:string,
 		entity:E,
-		changeGroup:ChangeGroup
+		changeGroup:IChangeGroup
 	):Promise<E>;
 
 	delete<E>(
 		entityName:string,
 		entity:E,
-		changeGroup:ChangeGroup
+		changeGroup:IChangeGroup
 	):Promise<E>;
 
 	find<E, IE extends IEntity>(
@@ -44,7 +46,7 @@ export interface StoreAdaptor {
 	save<E>(
 		entityName:string,
 		entity:E,
-		changeGroup:ChangeGroup
+		changeGroup:IChangeGroup
 	):Promise<E>;
 
 	search<E, IE extends IEntity>(
@@ -62,7 +64,7 @@ export interface StoreAdaptor {
 	update<E>(
 		entityName:string,
 		entity:E,
-		changeGroup:ChangeGroup
+		changeGroup:IChangeGroup
 	):Promise<E>;
 
 }

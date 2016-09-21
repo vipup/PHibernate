@@ -3,6 +3,8 @@ import {EntityChange, EntityChangeType, StubEntityChange, IEntityChange} from ".
 import {DeltaRecord} from "./DeltaRecord";
 import {AbstractFieldChange} from "./AbstractFieldChange";
 import {IdGenerator} from "../../localStore/IdGenerator";
+import {PlatformUtils} from "../../shared/PlatformUtils";
+import {UserUtils} from "../../shared/UserUtils";
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -31,6 +33,27 @@ export interface IChangeGroup {
 @Entity()
 @Table({name: "CHANGE_GROUP"})
 export class ChangeGroup extends DeltaRecord implements IChangeGroup {
+
+	static getNewChangeGroup(
+		type: string,
+		idGenerator: IdGenerator
+	): ChangeGroup {
+		let changeGroup = new ChangeGroup();
+
+		let createDate = new Date();
+		let deviceId = PlatformUtils.getDeviceAddress();
+		let userId = UserUtils.getUserId();
+
+		changeGroup.type = type;
+		changeGroup.createDateTime = createDate;
+		changeGroup.createDeviceId = deviceId;
+		changeGroup.createUserId = userId;
+		changeGroup.numberOfEntitiesInGroup = 0;
+
+		changeGroup.id = idGenerator.generateChangeGroupId(changeGroup);
+
+		return changeGroup;
+	}
 
 	@Column({name: "TYPE"})
 	type;
@@ -111,4 +134,33 @@ export class ChangeGroup extends DeltaRecord implements IChangeGroup {
 
 		return entityChange;
 	}
+}
+
+export class StubChangeGroup implements IChangeGroup {
+
+	addNewCreateEntityChange(
+		entityName: string,
+		entity: any,
+		idProperty: string,
+		idGenerator: IdGenerator
+	): IEntityChange {
+		return new StubEntityChange();
+	}
+
+	addNewDeleteEntityChange(
+		entityName: string,
+		entity: any,
+		idProperty: string
+	): IEntityChange {
+		return new StubEntityChange();
+	}
+
+	addNewUpdateEntityChange(
+		entityName: string,
+		entity: any,
+		idProperty: string
+	): IEntityChange {
+		return new StubEntityChange();
+	}
+
 }

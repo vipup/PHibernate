@@ -17,21 +17,16 @@ import {IdGeneration} from "../localStore/IdGenerator";
 
 export interface PHPersistenceConfig {
 	appName: string;
-	deltaStores?: {[name: string]: PHDeltaStoreConfig};
-	default?: {
-		changeList: PHChangeListConfig;
-		entity: PHEntityConfig;
-	};
-	entities?: {[name: string]: PHEntityConfig};
-	changeLists: {[refName: string]: PHChangeListConfig};
-	localStores: {[refName: string]: PHLocalStoreConfig};
+	deltaStore?: PHDeltaStoreConfig;
+	changeList: PHChangeListConfig;
+	localStore: PHLocalStoreConfig;
 	offlineDeltaStore?: PHOfflineDeltaStoreConfig;
 }
 
 export interface IPersistenceConfig {
 
-	changeListConfigMap: {[changeListName: string]: IChangeListConfig};
-	deltaStoreConfigMap: {[deltaStoreName: string]: IDeltaStoreConfig};
+	changeListConfig: {[changeListName: string]: IChangeListConfig};
+	deltaStoreConfig: {[deltaStoreName: string]: IDeltaStoreConfig};
 	entityConfigMap: {[className: string]: IEntityConfig};
 	localStoreConfigMap: {[storeName: string]: ILocalStoreConfig};
 	hasChangeLists: boolean;

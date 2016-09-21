@@ -4,6 +4,7 @@
 import {ILocalStoreConfig} from "./LocalStoreConfig";
 import {IChangeListConfig} from "./ChangeListConfig";
 import {IPersistenceConfig} from "./PersistenceConfig";
+import {IRemoteStoreConfig} from "./RemoveStoreConfig";
 
 export interface PHEntityConfig {
 	changeList?:string;
@@ -15,6 +16,7 @@ export interface IEntityConfig {
 	className?:string;
 	clazz?:any;
 	localStoreConfig?:ILocalStoreConfig;
+	remoteStoreConfig?:IRemoteStoreConfig;
 }
 
 export class EntityConfig implements IEntityConfig {

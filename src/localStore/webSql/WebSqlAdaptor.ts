@@ -7,7 +7,7 @@ import {DDLManager} from "./DDLManager";
 import {IdGeneration} from "../IdGenerator";
 import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
-import {IChangeGroup} from "../../changeList/model/ChangeGroup";
+import {IChangeGroup, ChangeGroup} from "../../changeList/model/ChangeGroup";
 import {IEntityChange} from "../../changeList/model/EntityChange";
 
 /**
@@ -75,17 +75,6 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-
-
-	private async wrapPersistEntityInTransaction<E>(
-		entityClass:{new (): E},
-		entity:E,
-		operation:'create' | 'delete' | 'persist' | 'update',
-		cascadeRule?:CascadeType
-	):Promise<E> {
-
-	}
-
 	wrapInTransaction(callback: ()=> Promise<any>): Promise<any> {
 		let result;
 		if (this.currentTransaction) {
@@ -99,15 +88,17 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 			try {
 				this._db.transaction((tx) => {
 						this.currentTransaction = tx;
+						this.currentChangeGroup = ChangeGroup.getNewChangeGroup('Transactional', this.idGenerator);
 						result = callback();
 						if (!(result instanceof Promise)) {
 							throw `A method with @Transactional decorator must return a promise`;
 						}
-						result.catch((error: any) => {
-							reject(error);
-						}).then((value: any)=> {
+						result.then((value: any)=> {
 							this.currentTransaction = null;
+							this.currentChangeGroup = null;
 							resolve(value);
+						}).catch((error:any) => {
+							reject(error);
 						});
 					},
 					(err) => reject(err));
@@ -195,7 +186,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		values: any[],
 		cascadeRecords: CascadeRecord[],
 		changeGroup: IChangeGroup
-	):Promise<void> {
+	): Promise<void> {
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		let valuesBindString = values.map(() => '?').join(', ');
 		let tableName = PHMetadataUtils.getTableName(qEntity);
@@ -284,8 +275,8 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		idProperty: string,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-	  changeGroup: IChangeGroup
-	):Promise<void> {
+		changeGroup: IChangeGroup
+	): Promise<void> {
 		let setFragments: string[];
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		for (var i = 0; i < columnNames.length; i++) {

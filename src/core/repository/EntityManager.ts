@@ -16,73 +16,75 @@ import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
 import {EntityUtils} from "../../shared/EntityUtils";
 import {Subject} from "rxjs/Subject";
+import {Transactional} from "../metadata/decorators";
+import {ChangeGroup, StubChangeGroup, IChangeGroup} from "../../changeList/model/ChangeGroup";
 
 export interface IEntityManager {
 
-	goOffline():void;
-	goOnline():Promise<any>;
-	initialize():Promise<any>;
-	isOnline():boolean;
+	goOffline(): void;
+	goOnline(): Promise<any>;
+	initialize(): Promise<any>;
+	isOnline(): boolean;
 
 	create<E>(
-		entityClass:{new (): E},
-		entity:E,
-	  cascade?:CascadeType
-	):Promise<E>;
+		entityClass: {new (): E},
+		entity: E,
+		cascade?: CascadeType
+	): Promise<E>;
 
 	delete<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascade?:CascadeType
-	):Promise<E>;
+		entityClass: {new (): E},
+		entity: E,
+		cascade?: CascadeType
+	): Promise<E>;
 
 	find<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE
-	):Promise<E[]>;
+		entityClass: {new (): E},
+		iEntity: IE
+	): Promise<E[]>;
 
 	findOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE
-	):Promise<E>;
+		entityClass: {new (): E},
+		iEntity: IE
+	): Promise<E>;
 
-	initialize():Promise<any>;
+	initialize(): Promise<any>;
 
 	save<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascade?:CascadeType
-	):Promise<E>;
+		entityClass: {new (): E},
+		entity: E,
+		cascade?: CascadeType
+	): Promise<E>;
 
 	search<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE,
-		subject?:Subject<E[]>
-	):Observable<E[]>;
+		entityClass: {new (): E},
+		iEntity: IE,
+		subject?: Subject<E[]>
+	): Observable<E[]>;
 
 	searchOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		iEntity:IE,
-		subject?:Subject<E>
-	):Observable<E>;
+		entityClass: {new (): E},
+		iEntity: IE,
+		subject?: Subject<E>
+	): Observable<E>;
 
 	update<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascade?:CascadeType
-	):Promise<E>;
+		entityClass: {new (): E},
+		entity: E,
+		cascade?: CascadeType
+	): Promise<E>;
 }
 
 export class EntityManager implements IEntityManager {
 
-	deltaStoreMap:{[deltaStoreName:string]:IDeltaStore} = {};
-	online:boolean;
-	offlineDeltaStore:IDeltaStore;
-	localStoreMap:{[localStoreTypeName:string]:LocalStoreAdaptor} = {};
-	defaultLocalStore:LocalStoreAdaptor;
+	deltaStoreMap: {[deltaStoreName: string]: IDeltaStore} = {};
+	online: boolean;
+	offlineDeltaStore: IDeltaStore;
+	localStoreMap: {[localStoreTypeName: string]: LocalStoreAdaptor} = {};
+	defaultLocalStore: LocalStoreAdaptor;
 
 	constructor(
-		public config:IPersistenceConfig
+		public config: IPersistenceConfig
 	) {
 		if (config.offlineDeltaStore) {
 			let offlineSharingAdaptor = getOfflineSharingAdaptor(config.offlineDeltaStore.type);
@@ -98,7 +100,7 @@ export class EntityManager implements IEntityManager {
 		}
 		if (config.hasLocalStores) {
 			for (let localStoreName in config.localStoreConfigMap) {
-				if(this.defaultLocalStore) {
+				if (this.defaultLocalStore) {
 					throw `Unsupported Feature: More than one Local Store defined.`;
 				}
 				let localStoreConfig = config.localStoreConfigMap[localStoreName];
@@ -110,15 +112,15 @@ export class EntityManager implements IEntityManager {
 
 	}
 
-	getLocalStore(localStoreTypeName?:string) {
-		let localStore:LocalStoreAdaptor;
-		if(localStoreTypeName) {
+	getLocalStore(localStoreTypeName?: string) {
+		let localStore: LocalStoreAdaptor;
+		if (localStoreTypeName) {
 			localStore = this.localStoreMap[localStoreTypeName];
-			if(!localStore) {
+			if (!localStore) {
 				throw `LocalStore '${localStoreTypeName}' is not setup.`;
 			}
 		} else {
-			if(!this.defaultLocalStore) {
+			if (!this.defaultLocalStore) {
 				throw `Default LocalStore is not setup.`;
 			}
 			localStore = this.defaultLocalStore;
@@ -126,8 +128,8 @@ export class EntityManager implements IEntityManager {
 		return localStore;
 	}
 
-	async initialize():Promise<any> {
-		let initializers:Promise<any>[] = [];
+	async initialize(): Promise<any> {
+		let initializers: Promise<any>[] = [];
 
 		if (this.offlineDeltaStore) {
 			initializers.push(this.offlineDeltaStore.goOnline());
@@ -142,7 +144,7 @@ export class EntityManager implements IEntityManager {
 		return Promise.all(initializers);
 	}
 
-	goOffline():void {
+	goOffline(): void {
 		for (let deltaStoreName in this.deltaStoreMap) {
 			let deltaStore = this.deltaStoreMap[deltaStoreName];
 			deltaStore.goOffline();
@@ -150,8 +152,8 @@ export class EntityManager implements IEntityManager {
 		this.online = false;
 	}
 
-	async goOnline():Promise<any> {
-		let initializers:Promise<any>[] = [];
+	async goOnline(): Promise<any> {
+		let initializers: Promise<any>[] = [];
 
 		for (let deltaStoreName in this.deltaStoreMap) {
 			let deltaStore = this.deltaStoreMap[deltaStoreName];
@@ -161,66 +163,75 @@ export class EntityManager implements IEntityManager {
 		return Promise.all(initializers).then(results => this.online = true);
 	}
 
-	isOnline():boolean {
+	isOnline(): boolean {
 		return true;
 	}
 
 	async create<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascadeRule?:CascadeType
-	):Promise<E> {
-		return this.persistEntity(entityClass, entity, 'create', cascadeRule);
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
+		return this.persistEntity(entityClass, entity, 'create');
 	}
 
 	async delete<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascadeRule?:CascadeType
-	):Promise<E> {
-		return this.persistEntity(entityClass, entity, 'delete', cascadeRule);
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
+		return this.persistEntity(entityClass, entity, 'delete');
 	}
 
 	async save<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascadeRule?:CascadeType
-	):Promise<E> {
-		return this.persistEntity(entityClass, entity, 'persist', cascadeRule);
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
+		return this.persistEntity(entityClass, entity, 'persist');
 	}
 
 	async update<E>(
-		entityClass:{new (): E},
-		entity:E,
-		cascadeRule?:CascadeType
-	):Promise<E> {
-		return this.persistEntity(entityClass, entity, 'update', cascadeRule);
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
+		return this.persistEntity(entityClass, entity, 'update');
 	}
 
+	@Transactional()
 	private async persistEntity<E>(
-		entityClass:{new (): E},
-		entity:E,
-		operation:'create' | 'delete' | 'persist' | 'update',
-	  cascadeRule?:CascadeType
-	):Promise<E> {
+		entityClass: {new (): E},
+		entity: E,
+		operation: 'create' | 'delete' | 'persist' | 'update'
+	): Promise<E> {
 		let entityConfig = this.config.getEntityConfig(entityClass);
-		let entityProxy:EntityProxy = <EntityProxy><any>entity;
-		this.setForeignKeys(entityClass, entity, cascadeRule);
 
-		let persistedInLocalStore:boolean = false;
+		let changeGroup: IChangeGroup;
+		let localStore;
 		if (entityConfig.localStoreConfig) {
 			let localStore = this.localStoreMap[entityConfig.localStoreConfig.setupInfo.name];
-			await localStore[operation](entityClass, entity);
-			persistedInLocalStore = true;
-		}
+			if (!localStore) {
+				throw `Cound not find Local Store '${entityConfig.localStoreConfig.setupInfo.name}'`;
+			}
+		} else {}
 
-		let persistedInDeltaStore:boolean = false;
+		let persistedInLocalStore: boolean = false;
+		await localStore[operation](entityClass, entity, localStore.activeChangeGroup);
+		await localStore['create']('ChangeGroup', localStore.activeChangeGroup, new StubChangeGroup());
+		changeGroup = localStore.activeChangeGroup;
+		persistedInLocalStore = true;
+
+		let persistedInDeltaStore: boolean = false;
 		if (entityConfig.changeListConfig) {
+			if (!changeGroup) {
+				if (!this.defaultLocalStore) {
+					throw `Default local store is not setup`;
+				}
+				await this.defaultLocalStore[operation](entityClass, entity, this.defaultLocalStore.activeChangeGroup);
+				changeGroup = this.defaultLocalStore.activeChangeGroup;
+			}
 			if (this.isOnline()) {
 				let deltaStore = this.deltaStoreMap[entityConfig.changeListConfig.deltaStoreName];
-				await deltaStore.addChange(entityConfig, entityProxy);
+				await deltaStore.addChange(entityConfig, changeGroup);
 			} else {
-				await this.offlineDeltaStore.addChange(entityConfig, entityProxy);
+				await this.offlineDeltaStore.addChange(entityConfig, changeGroup);
 			}
 			persistedInDeltaStore = true;
 		}
@@ -233,38 +244,15 @@ export class EntityManager implements IEntityManager {
 	}
 
 	private ensureId<E>(
-		entity:E
+		entity: E
 	) {
 	}
 
-	private setForeignKeys<E>(
-		entityClass:{new (): E},
-		entity:E,
-	  cascadeRule?:CascadeType
-	):void {
-		let entityConfig = this.config.getEntityConfig(entityClass);
-		let entityClassName = EntityUtils.getClassName(entityClass);
-		let entityRelationPropertyMap = PH.entitiesRelationPropertyMap[entityClassName];
-
-		for(let propertyName in entityRelationPropertyMap) {
-			let relationRecord:RelationRecord = entityRelationPropertyMap[propertyName];
-			if(entity[propertyName]) {
-				switch(relationRecord.relationType) {
-					case RelationType.MANY_TO_ONE:
-						// FIXME: work here next
-						break;
-					default:
-						// Nothing to do for One-to-Many, no foreign key in this entity
-				}
-			}
-		}
-	}
-
 	search<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		phRawQuery:PHRawSQLQuery<IE>,
-		subject?:Subject<E[]>
-	):Observable<E[]> {
+		entityClass: {new (): E},
+		phRawQuery: PHRawSQLQuery<IE>,
+		subject?: Subject<E[]>
+	): Observable<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
@@ -278,10 +266,10 @@ export class EntityManager implements IEntityManager {
 	}
 
 	searchOne<E, IE extends IEntity>(
-		entityClass:{new ():E},
-		phRawQuery:PHRawSQLQuery<IE>,
-		subject?:Subject<E>
-	):Observable<E> {
+		entityClass: {new (): E},
+		phRawQuery: PHRawSQLQuery<IE>,
+		subject?: Subject<E>
+	): Observable<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
@@ -295,9 +283,9 @@ export class EntityManager implements IEntityManager {
 	}
 
 	async find<E, IE extends IEntity>(
-		entityClass:{new (): E},
-		phRawQuery:PHRawSQLQuery<IE>
-	):Promise<E[]> {
+		entityClass: {new (): E},
+		phRawQuery: PHRawSQLQuery<IE>
+	): Promise<E[]> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
@@ -311,9 +299,9 @@ export class EntityManager implements IEntityManager {
 	}
 
 	async findOne<E, IE extends IEntity>(
-		entityClass:{new (): E},
-		phRawQuery:PHRawSQLQuery<IE>
-	):Promise<E> {
+		entityClass: {new (): E},
+		phRawQuery: PHRawSQLQuery<IE>
+	): Promise<E> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let entityConfig = this.config.getEntityConfigFromQ(qEntity);
 		let phQuery = this.getPHSQLQuery(qEntity, phRawQuery);
@@ -327,13 +315,13 @@ export class EntityManager implements IEntityManager {
 	}
 
 	getPHSQLQuery<E, IE extends IEntity>(
-		qEntity:any,
-		phRawQuery:PHRawSQLQuery<IE>
-	):PHSQLQuery<IE> {
-		let qEntityMap:{[entityName:string]:QEntity<any>} = PH.qEntityMap;
-		let entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}} = PH.entitiesRelationPropertyMap;
-		let entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}} = PH.entitiesPropertyTypeMap;
-		let phSqlQuery:PHSQLQuery<IE> = new PHSQLQuery(phRawQuery, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+		qEntity: any,
+		phRawQuery: PHRawSQLQuery<IE>
+	): PHSQLQuery<IE> {
+		let qEntityMap: {[entityName: string]: QEntity<any>} = PH.qEntityMap;
+		let entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}} = PH.entitiesRelationPropertyMap;
+		let entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}} = PH.entitiesPropertyTypeMap;
+		let phSqlQuery: PHSQLQuery<IE> = new PHSQLQuery(phRawQuery, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
 
 		return phSqlQuery;
 	}
