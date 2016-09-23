@@ -14,14 +14,14 @@ export interface PHChangeListConfig {
 }
 
 export interface PHOfflineDeltaStoreConfig {
-	name?:string;
 	type:LocalStoreType;
 }
 
 export interface IChangeListConfig {
 	changeListInfo?:ChangeListShareInfo;
 	deltaStoreConfig:IDeltaStoreConfig;
-	distributionStrategy:DistributionStrategy,
+	distributionStrategy:DistributionStrategy;
+	exists?:boolean;
 }
 
 export class ChangeListConfig implements IChangeListConfig {
@@ -48,28 +48,21 @@ export class ChangeListConfig implements IChangeListConfig {
 		}
 
 		this.changeListInfo = {
-			name: deltaStoreConfig.config.name,
-			idField: deltaStoreConfig.config.recordIdField
+			name: 'ChangeGroups'
 		};
 	}
 
 }
 
 export interface IOfflineDeltaStoreConfig {
-	changeListConfig:IChangeListConfig;
+	// changeListConfig:IChangeListConfig;
 	config:PHOfflineDeltaStoreConfig;
 	type:LocalStoreType;
-	getOfflineChangeListName(
-		deltaStoreName:string,
-		changeListName:string
-	):string;
 }
 
 export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 
-	static OFFLINE_DELTA_STORE_NAME = 'Offline';
-
-	changeListConfig:IChangeListConfig;
+	// changeListConfig:IChangeListConfig;
 	setupInfo:SharingPlatformSetupInfo;
 	type:LocalStoreType;
 
@@ -78,24 +71,11 @@ export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
 		deltaStoreConfig:IDeltaStoreConfig
 	) {
 		let changeListConfig = deltaStoreConfig.changeListConfig;
-		let offlineChangeListName = this.getOfflineChangeListName(deltaStoreConfig.config.name, changeListConfig.changeListInfo.name);
-		this.changeListConfig = {
-			changeListInfo: changeListConfig.changeListInfo,
-			deltaStoreConfig: this,
-			distributionStrategy: changeListConfig.distributionStrategy
-		};
 		this.type = config.type;
 		this.setupInfo = {
-			idField: deltaStoreConfig.config.recordIdField,
 			platformType: PlatformType.OFFLINE,
+			recordIdField: deltaStoreConfig.config.recordIdField
 		};
-	}
-
-	getOfflineChangeListName(
-		deltaStoreName:string,
-		changeListName:string
-	):string {
-		return `${deltaStoreName}:${changeListName}`;
 	}
 
 }

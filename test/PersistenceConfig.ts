@@ -20,7 +20,7 @@ export var PERSISTENCE_CONFIG: PHPersistenceConfig<PHGoogleDeltaStoreConfig> = {
 			type: LocalStoreType.SQLITE_CORDOVA
 		},
 		platform: PlatformType.GOOGLE,
-		rootDir: "PHibernate",
+		rootFolder: "PHibernate",
 		recordIdField: "id"
 	},
 	localStore: {

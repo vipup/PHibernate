@@ -10,7 +10,6 @@ import {
 
 export interface PHDeltaStoreConfig {
 	changeList?:PHChangeListConfig;
-	name?:string;
 	offlineDeltaStore?:PHOfflineDeltaStoreConfig;
 	platform:PlatformType | string;
 	recordIdField:string;
@@ -44,7 +43,7 @@ export class DeltaStoreConfig implements IDeltaStoreConfig {
 
 		let platformType:PlatformType = getPlatformType(config.platform);
 		this.setupInfo = {
-			idField: config.recordIdField,
+			recordIdField: config.recordIdField,
 			platformType: platformType
 		};
 		if (config.changeList) {

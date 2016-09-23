@@ -21,40 +21,38 @@ import {PlatformUtils} from "../shared/PlatformUtils";
 import {IdGenerator} from "../localStore/IdGenerator";
 
 export interface IDeltaStore {
-	config: IDeltaStoreConfig;
-	sharingAdaptor: SharingAdaptor;
+	config:IDeltaStoreConfig;
+	sharingAdaptor:SharingAdaptor;
 	addChange<E>(
-		entityConfig: IEntityConfig,
-		entityProxy: EntityProxy
-	): Promise<E>;
+		changeListConfig:IChangeListConfig,
+		changeRecord:E
+	):Promise<E>;
 	getChangeList(
-		changeListConfig: IChangeListConfig
-	): SharedChangeList;
+		changeListConfig:IChangeListConfig
+	):SharedChangeList;
 	getChangeListName(
-		changeListConfig: IChangeListConfig
-	): string;
-	goOffline(): void;
-	goOnline(): Promise<any>;
+		changeListConfig:IChangeListConfig
+	):string;
+	goOffline():void;
+	goOnline():Promise<any>;
 }
 
 export class DeltaStore implements IDeltaStore {
 
-	batchChanges: boolean;
-	protected changeListMap: {[changeListName: string]: SharedChangeList} = {};
-	protected batchedChangeMap: {[changeListName: string]: ChangeRecord[]} = {};
+	batchChanges:boolean;
+	protected changeListMap:{[changeListName:string]:SharedChangeList} = {};
+	protected batchedChangeMap:{[changeListName:string]:ChangeRecord[]} = {};
 
 	constructor(
-		public config: IDeltaStoreConfig,
-		public sharingAdaptor: SharingAdaptor = null
+		public config:IDeltaStoreConfig,
+		public sharingAdaptor:SharingAdaptor = null
 	) {
 	}
 
 	async addChange<E>(
-		entityConfig: IEntityConfig,
-		entityProxy: EntityProxy
-	): Promise<E> {
-		let changeListConfig = entityConfig.changeListConfig;
-		let changeRecord = entityProxy.__recordState__.getChangeRecord();
+		changeListConfig:IChangeListConfig,
+		changeRecord:E
+	):Promise<E> {
 		if (this.batchChanges) {
 			let changeListName = this.getChangeListName(changeListConfig);
 			let batchedChangeQueue = this.batchedChangeMap[changeListName];
@@ -63,7 +61,7 @@ export class DeltaStore implements IDeltaStore {
 				this.batchedChangeMap[changeListName] = batchedChangeQueue;
 			}
 			batchedChangeQueue.push(changeRecord);
-			return <E><any>entityProxy;
+			return changeRecord;
 		} else {
 			let changeList = this.getChangeList(changeListConfig);
 			return await changeList.addChanges([changeRecord]);
@@ -71,74 +69,75 @@ export class DeltaStore implements IDeltaStore {
 	}
 
 	getChangeListName(
-		changeListConfig: IChangeListConfig
-	): string {
+		changeListConfig:IChangeListConfig
+	):string {
 		return changeListConfig.changeListInfo.name;
 	}
 
 	getChangeList(
-		changeListConfig: IChangeListConfig
-	): SharedChangeList {
+		changeListConfig:IChangeListConfig
+	):SharedChangeList {
 		let changeListName = this.getChangeListName(changeListConfig);
 		let changeList = this.changeListMap[changeListName];
 
 		return changeList;
 	}
 
-	goOffline(): void {
+	goOffline():void {
 		this.changeListMap = {};
 	}
 
-	async goOnline(): Promise<any> {
+	async goOnline():Promise<any> {
 		await this.sharingAdaptor.initialize(this.config.setupInfo);
 		await this.setupChangeLists();
 	}
 
-	private async setupChangeLists(): Promise<any> {
+	private async setupChangeLists():Promise<any> {
 
 		await this.loadChangeLists();
 
-		let remoteLoadOps: Promise<any>[] = [];
-		let changeListConfigs: IChangeListConfig[] = [];
+		let remoteLoadOps:Promise<any>[] = [];
+		let changeListConfigs:IChangeListConfig[] = [];
 
-		for (let changeListName in this.config.changeListConfigMap) {
-			let changeListConfig = this.config.changeListConfigMap[changeListName];
+			let changeListConfig = this.config.changeListConfig;
 
-			let existingChangeListConfig = this.config.changeListConfigMap[changeListName];
+			let existingChangeListConfig = this.config.changeListConfig;
 			let remoteLoadOp;
-			if (existingChangeListConfig) {
-				changeListConfig = existingChangeListConfig;
+			if (this.config.changeListConfig.exists) {
 				remoteLoadOp = this.sharingAdaptor.loadChangeList(this.config.setupInfo, changeListConfig.changeListInfo);
 			} else {
-				remoteLoadOp = this.sharingAdaptor.createChangeList(changeListName, this.config.setupInfo);
+				remoteLoadOp = this.sharingAdaptor.createChangeList(changeListConfig.changeListInfo.name, this.config.setupInfo);
+				this.config.changeListConfig.exists = true;
 			}
 
 			changeListConfigs.push(changeListConfig);
 			remoteLoadOps.push(remoteLoadOp);
-		}
 
 		let loadResponses = await Promise.all(remoteLoadOps);
 
 		changeListConfigs.forEach((
-			changeListConfig: IChangeListConfig,
-			index: number
+			changeListConfig:IChangeListConfig,
+			index:number
 		) => {
-			let changeList: SharedChangeList = <any>loadResponses[index];
+			let changeList:SharedChangeList = <any>loadResponses[index];
 			this.changeListMap[changeListConfig.changeListInfo.name] = changeList;
 		});
 
 		return null;
 	}
 
-	private async loadChangeLists(): Promise<any> {
+	private async loadChangeLists():Promise<any> {
 
-		let changeLists: ChangeListShareInfo[] = await this.sharingAdaptor.findExistingChangeLists(this.config.setupInfo);
-		changeLists.forEach((
-			changeListShareInfo: ChangeListShareInfo
+		let changeLists:ChangeListShareInfo[] = await this.sharingAdaptor.findExistingChangeLists(this.config.setupInfo);
+		let changeListConfig = this.config.changeListConfig;
+		changeLists.some((
+			changeListShareInfo:ChangeListShareInfo
 		) => {
-			let changeListName = changeListShareInfo.name;
-			let changeListConfig = this.config.changeListConfigMap[changeListName];
-			changeListConfig.changeListInfo = changeListShareInfo;
+			if (changeListShareInfo.name === changeListConfig.changeListInfo.name) {
+				changeListConfig.exists = true;
+				changeListConfig.changeListInfo = changeListShareInfo;
+				return true;
+			}
 		});
 
 		return null;
@@ -146,14 +145,23 @@ export class DeltaStore implements IDeltaStore {
 
 }
 
-export class OfflineDeltaStore extends DeltaStore {
+export interface IOfflineDeltaStore extends IDeltaStore {
 
-	config: IOfflineDeltaStoreConfig;
+}
+
+export class OfflineDeltaStore extends DeltaStore implements IOfflineDeltaStore {
+
+	constructor(
+	public config:IOfflineDeltaStoreConfig,
+	public sharingAdaptor:SharingAdaptor
+	) {
+		super(config, sharingAdaptor);
+	}
 
 	getChangeListName(
-		changeListConfig: IChangeListConfig
-	): string {
-		return this.config.getOfflineChangeListName(changeListConfig.deltaStoreName, changeListConfig.changeListInfo.name);
+		changeListConfig:IChangeListConfig
+	):string {
+		return changeListConfig.changeListInfo.name;
 	}
 
 }
@@ -161,8 +169,8 @@ export class OfflineDeltaStore extends DeltaStore {
 var GOOGLE_SHARING_ADAPTOR;
 
 export function getSharingAdaptor(
-	platformType: PlatformType
-): SharingAdaptor {
+	platformType:PlatformType
+):SharingAdaptor {
 	switch (platformType) {
 		case PlatformType.GOOGLE:
 			if (!GOOGLE_SHARING_ADAPTOR) {
@@ -175,7 +183,7 @@ export function getSharingAdaptor(
 }
 
 
-export function getGooglesSharingAdaptor(): GoogleSharingAdaptor {
+export function getGooglesSharingAdaptor():GoogleSharingAdaptor {
 	let googleApi = getGoogleApi();
 	let googleDrive = getGoogleDrive(googleApi);
 	let googleDriveAdaptor = getGoogleDriveAdaptor(googleApi, googleDrive);
@@ -186,40 +194,40 @@ export function getGooglesSharingAdaptor(): GoogleSharingAdaptor {
 	return googleSharingAdaptor;
 }
 
-function getGoogleApi(): GoogleApi {
+function getGoogleApi():GoogleApi {
 	return new GoogleApi();
 }
 
 function getGoogleDrive(
-	googleApi: GoogleApi
-): GoogleDrive {
+	googleApi:GoogleApi
+):GoogleDrive {
 	return new GoogleDrive(googleApi);
 }
 
 function getGoogleDriveAdaptor(
-	googleApi: GoogleApi,
-	googleDrive: GoogleDrive
-): GoogleDriveAdaptor {
+	googleApi:GoogleApi,
+	googleDrive:GoogleDrive
+):GoogleDriveAdaptor {
 	return new GoogleDriveAdaptor(googleApi, googleDrive);
 }
 
 function getGoogleRealtime(
-	googleDrive: GoogleDrive
-): GoogleRealtime {
+	googleDrive:GoogleDrive
+):GoogleRealtime {
 	return new GoogleRealtime(googleDrive);
 }
 
 function getGoogleRealtimeAdaptor(
-	googleRealtime: GoogleRealtime
-): GoogleRealtimeAdaptor {
+	googleRealtime:GoogleRealtime
+):GoogleRealtimeAdaptor {
 	return new GoogleRealtimeAdaptor(googleRealtime);
 }
 
 function getGoogleSharingAdaptor(
-	googleDrive: GoogleDrive,
-	googleDriveAdaptor: GoogleDriveAdaptor,
-	googleRealtime: GoogleRealtime,
-	googleRealtimeAdaptor: GoogleRealtimeAdaptor
-): GoogleSharingAdaptor {
+	googleDrive:GoogleDrive,
+	googleDriveAdaptor:GoogleDriveAdaptor,
+	googleRealtime:GoogleRealtime,
+	googleRealtimeAdaptor:GoogleRealtimeAdaptor
+):GoogleSharingAdaptor {
 	return new GoogleSharingAdaptor(googleDrive, googleDriveAdaptor, googleRealtime, googleRealtimeAdaptor);
 }
