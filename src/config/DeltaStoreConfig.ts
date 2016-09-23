@@ -3,55 +3,65 @@
  */
 
 import {deltaStore, GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo} from "delta-store";
-import {IChangeListConfig} from "./ChangeListConfig";
+import {
+	IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig,
+	IOfflineDeltaStoreConfig, ChangeListConfig, OfflineDeltaStoreConfig
+} from "./ChangeListConfig";
 
 export interface PHDeltaStoreConfig {
-	changeTimeField: string;
-	changeTypeField: string;
-	changeUserField: string;
-	platform: PlatformType | string;
-	recordIdField: string;
+	changeList?:PHChangeListConfig;
+	name?:string;
+	offlineDeltaStore?:PHOfflineDeltaStoreConfig;
+	platform:PlatformType | string;
+	recordIdField:string;
 }
 
 export interface PHGoogleDeltaStoreConfig extends PHDeltaStoreConfig {
-	apiKey: string;
-	clientId: string;
-	rootFolder: string;
+	apiKey:string;
+	clientId:string;
+	rootFolder:string;
 }
 
 export interface IDeltaStoreConfig {
-	changeListConfigMap: {[changeListName: string]: IChangeListConfig};
-	setupInfo: SharingPlatformSetupInfo;
+	changeListConfig:IChangeListConfig;
+	config:PHDeltaStoreConfig;
+	offlineDeltaStore:IOfflineDeltaStoreConfig;
+	setupInfo:SharingPlatformSetupInfo;
 }
 
 export class DeltaStoreConfig implements IDeltaStoreConfig {
 
-	changeListConfigMap: {[changeListName: string]: IChangeListConfig} = {};
-	setupInfo: SharingPlatformSetupInfo;
+	changeListConfig:IChangeListConfig;
+	offlineDeltaStore:IOfflineDeltaStoreConfig;
+	setupInfo:SharingPlatformSetupInfo;
 
 	constructor(
-		public deltaStoreName: string,
-		config: PHDeltaStoreConfig
+		public config:PHDeltaStoreConfig
 	) {
 		if (!config.platform) {
 			throw `Sharing Platform is not defined`;
 		}
 
-		let platformType: PlatformType = getPlatformType(config.platform);
+		let platformType:PlatformType = getPlatformType(config.platform);
 		this.setupInfo = {
-			changeTimeField: config.changeTimeField,
-			changeTypeField: config.changeTypeField,
-			changeUserField: config.changeUserField,
-			platformType: platformType,
-			recordIdField: config.recordIdField
+			idField: config.recordIdField,
+			platformType: platformType
 		};
+		if (config.changeList) {
+			throw `ChangeList config is not defined`;
+		}
+		if (!config.offlineDeltaStore) {
+			throw `OfflineDeltaStore must be specified if changeLists are specified.`;
+		}
+		this.changeListConfig = new ChangeListConfig(config.changeList, this);
+		this.offlineDeltaStore = new OfflineDeltaStoreConfig(config.offlineDeltaStore, this);
 	}
 }
 
 export function getPlatformType(
-	platform: PlatformType | string
-): PlatformType {
-	let platformType: PlatformType;
+	platform:PlatformType | string
+):PlatformType {
+	let platformType:PlatformType;
 	if (typeof platform === "string") {
 		platformType = deltaStore.platform.getValue(<string>platform);
 	} else {
@@ -64,18 +74,17 @@ export function getPlatformType(
 }
 
 export interface IGoogleDeltaStoreConfig extends IDeltaStoreConfig {
-	setupInfo: GoogleSetupInfo;
+	setupInfo:GoogleSetupInfo;
 }
 
 export class GoogleDeltaStoreConfig extends DeltaStoreConfig implements IGoogleDeltaStoreConfig {
 
-	setupInfo: GoogleSetupInfo;
+	setupInfo:GoogleSetupInfo;
 
 	constructor(
-		deltaStoreName: string,
-		private config: PHGoogleDeltaStoreConfig
+		config:PHGoogleDeltaStoreConfig
 	) {
-		super(deltaStoreName, config);
+		super(config);
 		if (!config.rootFolder) {
 			throw `Root folder is not defined`;
 		}
@@ -93,17 +102,16 @@ export class GoogleDeltaStoreConfig extends DeltaStoreConfig implements IGoogleD
 }
 
 export function createDeltaStoreConfig(
-	deltaStoreName: string,
-	phDeltaStoreConfig: PHDeltaStoreConfig
-): IDeltaStoreConfig {
+	phDeltaStoreConfig:PHDeltaStoreConfig
+):IDeltaStoreConfig {
 	if (!phDeltaStoreConfig.platform) {
 		throw `deltaStore.platform is nod specified`;
 	}
-	let platformType: PlatformType = getPlatformType(phDeltaStoreConfig.platform);
+	let platformType:PlatformType = getPlatformType(phDeltaStoreConfig.platform);
 
 	switch (platformType) {
 		case PlatformType.GOOGLE:
-			return new GoogleDeltaStoreConfig(deltaStoreName, <PHGoogleDeltaStoreConfig>phDeltaStoreConfig);
+			return new GoogleDeltaStoreConfig(<PHGoogleDeltaStoreConfig>phDeltaStoreConfig);
 		default:
 			throw `Unsupported platform type ${platformType}`;
 	}

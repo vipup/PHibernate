@@ -56,7 +56,7 @@ export class ChangeGroup extends DeltaRecord implements IChangeGroup {
 	}
 
 	@Column({name: "TYPE"})
-	type;
+	type:string;
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'changeGroup'})
 	entityChanges: EntityChange[] = [];

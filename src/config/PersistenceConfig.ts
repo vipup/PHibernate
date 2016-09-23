@@ -8,209 +8,72 @@ import {
 	IChangeListConfig, ChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig,
 	IOfflineDeltaStoreConfig, OfflineDeltaStoreConfig
 } from "./ChangeListConfig";
-import {PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig} from "./DeltaStoreConfig";
+import {
+	PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig,
+	PHGoogleDeltaStoreConfig
+} from "./DeltaStoreConfig";
 import {IQEntity} from "querydsl-typescript";
 import {DistributionStrategy, PlatformType} from "delta-store/lib/index";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
 import {EntityUtils} from "../shared/EntityUtils";
 import {IdGeneration} from "../localStore/IdGenerator";
 
-export interface PHPersistenceConfig {
-	appName: string;
-	deltaStore?: PHDeltaStoreConfig;
-	changeList: PHChangeListConfig;
-	localStore: PHLocalStoreConfig;
-	offlineDeltaStore?: PHOfflineDeltaStoreConfig;
+export interface PHPersistenceConfig<DSC extends PHDeltaStoreConfig> {
+	appName:string;
+	deltaStore?:DSC;
+	localStore?:PHLocalStoreConfig;
 }
 
 export interface IPersistenceConfig {
 
-	changeListConfig: {[changeListName: string]: IChangeListConfig};
-	deltaStoreConfig: {[deltaStoreName: string]: IDeltaStoreConfig};
-	entityConfigMap: {[className: string]: IEntityConfig};
-	localStoreConfigMap: {[storeName: string]: ILocalStoreConfig};
-	hasChangeLists: boolean;
-	hasDeltaStores: boolean;
-	hasLocalStores: boolean;
-	offlineDeltaStore: IOfflineDeltaStoreConfig;
+	deltaStoreConfig:IDeltaStoreConfig;
+	localStoreConfig:ILocalStoreConfig;
 
-	getEntityConfig(
-		entityClass: {new (): any}
-	): IEntityConfig;
-
-	getEntityConfigFromQ<IQE extends IQEntity>(
-		qEntity: IQE
-	): IEntityConfig;
 }
 
-export class PersistenceConfig implements IPersistenceConfig {
+export class PersistenceConfig<DSC extends PHDeltaStoreConfig> implements IPersistenceConfig {
 
 	static getDefaultPHConfig(
-		appName: string = 'DefaultApp',
-		distributionStrategy: DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
-		deltaStorePlatform: PlatformType = PlatformType.GOOGLE,
-		localStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
-		offlineDeltaStoreType: LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
-		idGeneration: IdGeneration = IdGeneration.ENTITY_CHANGE_ID
-	): PHPersistenceConfig {
+		appName:string = 'DefaultApp',
+		distributionStrategy:DistributionStrategy = DistributionStrategy.S3_SECURE_POLL,
+		deltaStorePlatform:PlatformType = PlatformType.GOOGLE,
+		localStoreType:LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
+		offlineDeltaStoreType:LocalStoreType = LocalStoreType.SQLITE_CORDOVA,
+		idGeneration:IdGeneration = IdGeneration.ENTITY_CHANGE_ID
+	):PHPersistenceConfig<PHDeltaStoreConfig> {
 		return {
 			appName: appName,
-			changeLists: {
-				"DefaultChangeList": {}
-			},
-			default: {
+			deltaStore: {
 				changeList: {
-					distributionStrategy: distributionStrategy,
-					deltaStore: "DefaultDeltaStore"
+					distributionStrategy: distributionStrategy
 				},
-				entity: {
-					changeList: "DefaultChangeList",
-					localStore: "DefaultLocalStore"
-				}
+				offlineDeltaStore: {
+					type: offlineDeltaStoreType
+				},
+				recordIdField: "id",
+				platform: deltaStorePlatform
 			},
-			deltaStores: {
-				"DefaultDeltaStore": {
-					changeTimeField: "change_time_field_",
-					changeTypeField: "change_type_field_",
-					changeUserField: "change_user_field_",
-					recordIdField: "record_id_field_",
-					platform: deltaStorePlatform
-				}
-			},
-			localStores: {
-				"DefaultLocalStore": {
-					type: localStoreType,
-					idGeneration: idGeneration
-				}
-			},
-			offlineDeltaStore: {
-				type: offlineDeltaStoreType
+			localStore: {
+				type: localStoreType,
+				idGeneration: idGeneration
 			}
 		};
 	}
 
-	changeListConfigMap: {[changeListName: string]: IChangeListConfig} = {};
-	deltaStoreConfigMap: {[className: string]: IDeltaStoreConfig} = {};
-	entityConfigMap: {[className: string]: IEntityConfig} = {};
-	localStoreConfigMap: {[storeName: string]: ILocalStoreConfig} = {};
-	hasChangeLists: boolean;
-	hasDeltaStores: boolean;
-	hasLocalStores: boolean;
-	offlineDeltaStore: IOfflineDeltaStoreConfig;
+	deltaStoreConfig:IDeltaStoreConfig;
+	localStoreConfig:ILocalStoreConfig;
 
 	constructor(
-		private config: PHPersistenceConfig
+		private config:PHPersistenceConfig<DSC>
 	) {
-		this.hasDeltaStores = false;
-		if (config.deltaStores) {
-			for (let deltaStoreName in config.deltaStores) {
-				let phDeltaStoreConfig = config.deltaStores[deltaStoreName];
-				let deltaStoreConfig = createDeltaStoreConfig(deltaStoreName, phDeltaStoreConfig);
-				this.deltaStoreConfigMap[deltaStoreName] = deltaStoreConfig;
-				this.hasDeltaStores = true;
-			}
-		}
-		this.hasChangeLists = false;
-		let defaultPhChangeListConfig;
-		let defaultPhEntityConfig;
-		if (config.default) {
-			defaultPhChangeListConfig = config.default.changeList;
-			defaultPhEntityConfig = config.default.entity;
-		}
-		if (config.changeLists) {
-			for (let changeListName in config.changeLists) {
-				let phChangeListConfig = config.changeLists[changeListName];
-				let changeListConfig = new ChangeListConfig(changeListName, phChangeListConfig, defaultPhChangeListConfig, this.deltaStoreConfigMap);
-				let deltaStoreConfig = this.deltaStoreConfigMap[changeListConfig.deltaStoreName];
-				deltaStoreConfig.changeListConfigMap[changeListName] = changeListConfig;
-				this.changeListConfigMap[changeListName] = changeListConfig;
-				this.hasChangeLists = true;
-			}
-			if (this.hasChangeLists) {
-				if (!config.offlineDeltaStore) {
-					throw `OfflineDeltaStore must be specified if changeLists are specified.`;
-				}
-				if (!this.hasDeltaStores) {
-					throw `Delta stores must be specified if changeLists are specified`
-				}
-			}
-			this.offlineDeltaStore = new OfflineDeltaStoreConfig(config.offlineDeltaStore, this.deltaStoreConfigMap);
+		if (config.deltaStore) {
+			let phDeltaStoreConfig = config.deltaStore;
+			this.deltaStoreConfig = createDeltaStoreConfig(phDeltaStoreConfig);
 		}
 
-		this.hasLocalStores = false;
-		if (config.localStores) {
-			for (let localStoreName in config.localStores) {
-				let phLocalStoreConfig = config.localStores[localStoreName];
-				let localStoreConfig = createLocalStoreConfig(localStoreName, phLocalStoreConfig);
-				this.localStoreConfigMap[localStoreName] = localStoreConfig;
-				this.hasLocalStores = true;
-			}
+		if (config.localStore) {
+			this.localStoreConfig = createLocalStoreConfig(config.appName, config.localStore);
 		}
-
-		if (defaultPhEntityConfig) {
-			let changeListName = defaultPhEntityConfig.changeList;
-			if (changeListName) {
-				let defaultChangeList = this.config.changeLists[changeListName];
-				if (!defaultChangeList) {
-					throw `Unknown default Change List: ${changeListName}`;
-				}
-			}
-			let localStoreName = defaultPhEntityConfig.localStore;
-			if (localStoreName) {
-				let defaultLocalStore = this.localStoreConfigMap[localStoreName];
-				if (!defaultLocalStore) {
-					throw `Unknown default Local Store: ${localStoreName}`;
-				}
-			}
-		}
-	}
-
-	getEntityConfig(
-		entityClass: {new (): any}
-	): IEntityConfig {
-		// let className = EntityUtils.getObjectClassName(entity);
-		// let constructor = entity.constructor;
-		let className = entityClass.name;
-		let constructor = entityClass;
-
-		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
-	}
-
-
-	getEntityConfigFromQ<IQE extends IQEntity>(
-		qEntity: IQE
-	): IEntityConfig {
-		let constructor = qEntity.__entityConstructor__;
-		let className = EntityUtils.getClassName(constructor);
-
-		return this.getEntityConfigWithClassNameAndConstructor(className, constructor);
-	}
-
-	getEntityConfigWithClassNameAndConstructor(
-		className: string,
-		constructor: Function
-	): IEntityConfig {
-		let entityConfig = this.entityConfigMap[className];
-		if (!entityConfig) {
-			let phEntityConfig = this.config.entities[className];
-			if (!phEntityConfig) {
-				phEntityConfig = {};
-			}
-			let entityDefault = this.config.default.entity;
-			if (entityDefault) {
-				if (!phEntityConfig.changeList) {
-					phEntityConfig.changeList = entityDefault.changeList;
-				}
-				if (!phEntityConfig.localStore) {
-					phEntityConfig.localStore = entityDefault.localStore;
-				}
-			}
-
-			entityConfig = new EntityConfig(className, constructor, phEntityConfig, this);
-			this.entityConfigMap[className] = entityConfig;
-		}
-
-		return entityConfig;
 	}
 
 }

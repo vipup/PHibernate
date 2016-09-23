@@ -13,17 +13,14 @@ export abstract class AbstractFieldChange extends DeltaRecord {
 	@JoinColumn({name: "ENTITY_CHANGE_ID", nullable: false})
 	entityChange:EntityChange;
 
-	@Column({name: "FIELD_ID_IN_ENTITY"})
-	fieldIdInEntity:number;
-
 	static getFieldChangeId(
-		fieldIdInEntity:number,
+		propertyName:string,
 		entityIdInGroup:number,
 		createDeviceId:string,
 		createDateTime:Date,
 		createUserId:string
 	):string {
-		return `${fieldIdInEntity}_${entityIdInGroup}_${createDeviceId}_${createDateTime.getTime()}_${createUserId}`;
+		return `${entityIdInGroup}_${createDeviceId}_${createDateTime.getTime()}_${createUserId}_${propertyName}`;
 	}
 
 }

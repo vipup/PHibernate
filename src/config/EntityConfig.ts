@@ -33,7 +33,7 @@ export class EntityConfig implements IEntityConfig {
 		if (!config) {
 			throw `Entity Configuration not specified`;
 		}
-		let changeListName = config.changeList;
+/*		let changeListName = config.changeList;
 		if (changeListName) {
 			let changeListConfig = persistenceConfig.changeListConfigMap[changeListName];
 			if (!changeListConfig) {
@@ -52,7 +52,7 @@ export class EntityConfig implements IEntityConfig {
 
 		if(!this.changeListConfig && !this.localStoreConfig) {
 			throw `Entity Configuration does not specify a Change List or a Local Store`;
-		}
+		}*/
 	}
 
 }

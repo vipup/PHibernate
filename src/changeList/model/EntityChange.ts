@@ -1,6 +1,8 @@
-import {CascadeType, Column, Entity, IQEntity, IQField, JoinColumn, JSONBaseOperation, ManyToOne,
+import {
+	CascadeType, Column, Entity, IQEntity, IQField, JoinColumn, JSONBaseOperation, ManyToOne,
 	IOperation, OneToMany, QBooleanField, QDateField, QNumberField, QStringField,
-	Table} from "querydsl-typescript";
+	Table
+} from "querydsl-typescript";
 import {ChangeGroup} from "./ChangeGroup";
 import {BooleanFieldChange} from "./BooleanFieldChange";
 import {DateFieldChange} from "./DateFieldChange";
@@ -21,35 +23,35 @@ export enum EntityChangeType {
 export interface IEntityChange {
 
 	addNewFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any,
 		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
 	):AbstractFieldChange;
 
 	addNewBooleanFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any
-	): BooleanFieldChange;
+	):BooleanFieldChange;
 
 	addNewDateFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any
-	): DateFieldChange;
+	):DateFieldChange;
 
 	addNewNumberFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any
-	): NumberFieldChange;
+	):NumberFieldChange;
 
 	addNewStringFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any
-	): StringFieldChange;
+	):StringFieldChange;
 
 }
 
@@ -60,32 +62,32 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	@Column({name: "ENTITY_NAME"})
 	entityName:string;
 
-	@Column({name: 'CHANGE_TYPE'})
+	@Column({name: "CHANGE_TYPE"})
 	changeType:EntityChangeType;
 
-	@Column({name: 'CHANGED_ENTITY_ID'})
+	@Column({name: "CHANGED_ENTITY_ID"})
 	changedEntityId:string;
 
-	@Column({name: 'ENTITY_CHANGE_ID_IN_GROUP'})
+	@Column({name: "ENTITY_CHANGE_ID_IN_GROUP"})
 	entityChangeIdInGroup:number;
 
 	@Column({name: "NUM_FIELDS_IN_ENTITY"})
 	numberOfFieldsInEntity:number = 0;
 
-	@OneToMany({ cascade: CascadeType.ALL, mappedBy: 'entityChange'})
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
 	booleanFieldChanges:BooleanFieldChange[] = [];
 
-	@OneToMany({ cascade: CascadeType.ALL, mappedBy: 'entityChange'})
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
 	dateFieldChanges:DateFieldChange[] = [];
 
-	@OneToMany({ cascade: CascadeType.ALL, mappedBy: 'entityChange'})
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
 	numberFieldChanges:NumberFieldChange[] = [];
 
-	@OneToMany({ cascade: CascadeType.ALL, mappedBy: 'entityChange'})
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
 	stringFieldChanges:StringFieldChange[] = [];
 
 	@ManyToOne()
-	@JoinColumn({name: "CHANGE_ID", nullable: false})
+	@JoinColumn({name: "CHANGE_GROUP_ID", nullable: false})
 	changeGroup:ChangeGroup;
 
 	static getEntityChangeId(
@@ -99,7 +101,7 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any,
 		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
@@ -116,10 +118,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewBooleanFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:boolean,
 		newValue:boolean
-	): BooleanFieldChange {
+	):BooleanFieldChange {
 		let booleanFieldChange = new BooleanFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, booleanFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -130,10 +132,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewDateFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:Date,
 		newValue:Date
-	): DateFieldChange {
+	):DateFieldChange {
 		let dateFieldChange = new DateFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, dateFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -144,10 +146,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewNumberFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:number,
 		newValue:number
-	): NumberFieldChange {
+	):NumberFieldChange {
 		let numberFieldChange = new NumberFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, numberFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -158,10 +160,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewStringFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:string,
 		newValue:string
-	): StringFieldChange {
+	):StringFieldChange {
 		let stringFieldChange = new StringFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, stringFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -172,16 +174,16 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	private addNewFieldChangeInternal<C extends AbstractFieldChange>(
-		fieldName: string,
-		fieldChange: C
-	): C {
+		fieldName:string,
+		fieldChange:C
+	):C {
 		fieldChange.createDateTime = this.createDateTime;
 		fieldChange.createDeviceId = this.createDeviceId;
 		fieldChange.createUserId = this.createUserId;
 		fieldChange.entityChange = this;
-		fieldChange.fieldIdInEntity = ++this.numberOfFieldsInEntity;
+		++this.numberOfFieldsInEntity;
 		fieldChange.propertyName = fieldName;
-		fieldChange.id = AbstractFieldChange.getFieldChangeId(fieldChange.fieldIdInEntity, this.entityChangeIdInGroup, this.createDeviceId, this.createDateTime, this.createUserId);
+		fieldChange.id = AbstractFieldChange.getFieldChangeId(fieldName, this.entityChangeIdInGroup, this.createDeviceId, this.createDateTime, this.createUserId);
 
 		return fieldChange;
 	}
@@ -191,7 +193,7 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 export class StubEntityChange implements IEntityChange {
 
 	addNewFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:any,
 		newValue:any,
 		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
@@ -208,34 +210,34 @@ export class StubEntityChange implements IEntityChange {
 	}
 
 	addNewBooleanFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:boolean,
 		newValue:boolean
-	): BooleanFieldChange {
+	):BooleanFieldChange {
 		return new BooleanFieldChange();
 	}
 
 	addNewDateFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:Date,
 		newValue:Date
-	): DateFieldChange {
+	):DateFieldChange {
 		return new DateFieldChange();
 	}
 
 	addNewNumberFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:number,
 		newValue:number
-	): NumberFieldChange {
+	):NumberFieldChange {
 		return new NumberFieldChange();
 	}
 
 	addNewStringFieldChange(
-		fieldName: string,
+		fieldName:string,
 		oldValue:string,
 		newValue:string
-	): StringFieldChange {
+	):StringFieldChange {
 		return new StringFieldChange();
 	}
 

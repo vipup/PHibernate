@@ -79,7 +79,7 @@ export class PH {
 	static entityManager:EntityManager;
 
 	static init(
-		phConfig:PHPersistenceConfig
+		phConfig:PHPersistenceConfig<any>
 	) {
 		let persistenceConfig = new PersistenceConfig(phConfig);
 
