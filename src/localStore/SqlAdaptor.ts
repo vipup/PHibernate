@@ -9,6 +9,7 @@ import {IdGenerator, IdGeneration, getIdGenerator} from "./IdGenerator";
 import {UpdateCache} from "../core/repository/UpdateCache";
 import {IChangeGroup} from "../changeList/model/ChangeGroup";
 import {IEntityChange} from "../changeList/model/EntityChange";
+import {IEntityManager} from "../core/repository/EntityManager";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -31,7 +32,10 @@ export abstract class SqlAdaptor {
 
 	protected currentChangeGroup:IChangeGroup;
 
-	constructor(idGeneration: IdGeneration) {
+	constructor(
+		protected entityManager:IEntityManager,
+		idGeneration: IdGeneration
+	) {
 		this.idGenerator = getIdGenerator(idGeneration);
 	}
 

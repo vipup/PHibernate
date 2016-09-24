@@ -9,13 +9,14 @@ import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
 import {IChangeGroup, ChangeGroup} from "../../changeList/model/ChangeGroup";
 import {IEntityChange} from "../../changeList/model/EntityChange";
+import {IEntityManager} from "../../core/repository/EntityManager";
 
 /**
  * Created by Papa on 8/30/2016.
  */
 
-const DB_NAME: string = 'appStorage';
-const win: any = window;
+const DB_NAME:string = 'appStorage';
+const win:any = window;
 
 export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 
@@ -23,15 +24,18 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	static BACKUP_LIBRARY = 1;
 	static BACKUP_DOCUMENTS = 0;
 
-	private _db: any;
+	private _db:any;
 
 	private currentTransaction;
 
-	constructor(idGeneration: IdGeneration) {
-		super(idGeneration);
+	constructor(
+		entityManager:IEntityManager,
+		idGeneration:IdGeneration
+	) {
+		super(entityManager, idGeneration);
 	}
 
-	private getBackupLocation(dbFlag: number): number {
+	private getBackupLocation(dbFlag:number):number {
 		switch (dbFlag) {
 			case WebSqlAdaptor.BACKUP_LOCAL:
 				return 2;
@@ -45,9 +49,9 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	initialize(
-		setupInfo: LocalStoreSetupInfo
-	): Promise<any> {
-		let dbOptions: any = {
+		setupInfo:LocalStoreSetupInfo
+	):Promise<any> {
+		let dbOptions:any = {
 			name: DB_NAME,
 			backupFlag: WebSqlAdaptor.BACKUP_LOCAL,
 			existingDatabase: false
@@ -75,7 +79,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	wrapInTransaction(callback: ()=> Promise<any>): Promise<any> {
+	wrapInTransaction(callback:()=> Promise<any>):Promise<any> {
 		let result;
 		if (this.currentTransaction) {
 			result = callback();
@@ -93,7 +97,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 						if (!(result instanceof Promise)) {
 							throw `A method with @Transactional decorator must return a promise`;
 						}
-						result.then((value: any)=> {
+						result.then((value:any)=> {
 							this.currentTransaction = null;
 							this.currentChangeGroup = null;
 							resolve(value);
@@ -108,7 +112,7 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	async query(query: string, params = [], saveTransaction: boolean = false): Promise<any> {
+	async query(query:string, params = [], saveTransaction:boolean = false):Promise<any> {
 		return new Promise((resolve, reject) => {
 			try {
 				if (this.currentTransaction) {
@@ -132,19 +136,19 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 		});
 	}
 
-	protected getDialect(): SQLDialect {
+	protected getDialect():SQLDialect {
 		return SQLDialect.SQLITE;
 	}
 
 	protected async findNative(
-		sqlQuery: string,
-		parameters: any[]
-	): Promise<any[]> {
+		sqlQuery:string,
+		parameters:any[]
+	):Promise<any[]> {
 		let nativeParameters = parameters.map((value) => this.convertValueIn(value));
 		return await this.query(sqlQuery, nativeParameters);
 	}
 
-	handleError(error: any) {
+	handleError(error:any) {
 		throw error;
 	}
 
@@ -181,12 +185,12 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	protected async createNative(
-		qEntity: QEntity<any>,
-		columnNames: string[],
-		values: any[],
-		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
-	): Promise<void> {
+		qEntity:QEntity<any>,
+		columnNames:string[],
+		values:any[],
+		cascadeRecords:CascadeRecord[],
+		changeGroup:IChangeGroup
+	):Promise<void> {
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		let valuesBindString = values.map(() => '?').join(', ');
 		let tableName = PHMetadataUtils.getTableName(qEntity);
@@ -210,13 +214,13 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	protected async deleteNative(
-		qEntity: QEntity<any>,
-		entity: any,
-		idValue: number | string,
-		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
-	): Promise<IEntityChange> {
-		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		qEntity:QEntity<any>,
+		entity:any,
+		idValue:number | string,
+		cascadeRecords:CascadeRecord[],
+		changeGroup:IChangeGroup
+	):Promise<IEntityChange> {
+		let entityMetadata:EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
 		let startTransaction = false;
 		let transactionExists = !!this.currentTransaction;
@@ -245,8 +249,8 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	private convertValueIn(
-		value: any
-	): number | string {
+		value:any
+	):number | string {
 		switch (typeof value) {
 			case 'boolean':
 				return value ? 1 : 0;
@@ -269,15 +273,15 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	protected async updateNative(
-		qEntity: QEntity<any>,
-		columnNames: string[],
-		values: any[],
-		idProperty: string,
-		idValue: number | string,
-		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
-	): Promise<void> {
-		let setFragments: string[];
+		qEntity:QEntity<any>,
+		columnNames:string[],
+		values:any[],
+		idProperty:string,
+		idValue:number | string,
+		cascadeRecords:CascadeRecord[],
+		changeGroup:IChangeGroup
+	):Promise<void> {
+		let setFragments:string[];
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		for (var i = 0; i < columnNames.length; i++) {
 			setFragments.push(`${columnNames[i]} = ?`);
@@ -313,23 +317,23 @@ export class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
 	}
 
 	search < E, IE extends IEntity >(
-		entityName: string,
-		phQuery: PHQuery < IE >,
-		subject ?: Subject < E[] >
-	): Observable < E[] > {
+		entityName:string,
+		phQuery:PHQuery < IE >,
+		subject ?:Subject < E[] >
+	):Observable < E[] > {
 		return null;
 	}
 
 	searchOne < E, IE extends IEntity >(
-		entityName: string,
-		phQuery: PHQuery < IE >,
-		subject ?: Subject < E >
-	): Observable < E > {
+		entityName:string,
+		phQuery:PHQuery < IE >,
+		subject ?:Subject < E >
+	):Observable < E > {
 		return null;
 	}
 
 	warn(
-		message: string
+		message:string
 	) {
 		console.log(message);
 	}
