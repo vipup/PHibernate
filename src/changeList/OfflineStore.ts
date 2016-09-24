@@ -1,5 +1,5 @@
 import {SharingAdaptor} from "delta-store";
-import {OfflinePouchDbSharingAdaptor} from "./offline/pouchDb/OfflinePouchDbSharingAdaptor";
+import {OfflinePouchDbSharingAdaptor} from "./offline/sql/OfflineSqlSharingAdaptor";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
 /**
  * Created by Papa on 5/31/2016.

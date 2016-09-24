@@ -1,7 +1,7 @@
 /**
  * Created by Papa on 5/23/2016.
  */
-import { IDeltaStore } from "../../changeList/DeltaStore";
+import { IDeltaStore, IOfflineDeltaStore } from "../../changeList/DeltaStore";
 import { IPersistenceConfig } from "../../config/PersistenceConfig";
 import { LocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
 import { IEntity, CascadeType, PHRawSQLQuery, PHSQLQuery } from "querydsl-typescript";
@@ -40,15 +40,10 @@ export interface IEntityManager {
 }
 export declare class EntityManager implements IEntityManager {
     config: IPersistenceConfig;
-    deltaStoreMap: {
-        [deltaStoreName: string]: IDeltaStore;
-    };
+    deltaStore: IDeltaStore;
     online: boolean;
-    offlineDeltaStore: IDeltaStore;
-    localStoreMap: {
-        [localStoreTypeName: string]: LocalStoreAdaptor;
-    };
-    defaultLocalStore: LocalStoreAdaptor;
+    offlineDeltaStore: IOfflineDeltaStore;
+    localStore: LocalStoreAdaptor;
     constructor(config: IPersistenceConfig);
     getLocalStore(localStoreTypeName?: string): LocalStoreAdaptor;
     initialize(): Promise<any>;
@@ -57,19 +52,18 @@ export declare class EntityManager implements IEntityManager {
     isOnline(): boolean;
     create<E>(entityClass: {
         new (): E;
-    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
     delete<E>(entityClass: {
         new (): E;
-    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
     save<E>(entityClass: {
         new (): E;
-    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
     update<E>(entityClass: {
         new (): E;
-    }, entity: E, cascadeRule?: CascadeType): Promise<E>;
-    private persistEntity<E>(entityClass, entity, operation, cascadeRule?);
+    }, entity: E): Promise<E>;
+    private persistEntity<E>(entityClass, entity, operation);
     private ensureId<E>(entity);
-    private setForeignKeys<E>(entityClass, entity, cascadeRule?);
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, phRawQuery: PHRawSQLQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;

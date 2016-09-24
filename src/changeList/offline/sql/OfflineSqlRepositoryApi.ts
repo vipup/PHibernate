@@ -3,16 +3,15 @@
  */
 
 import {ChangeRecordIterator, ChangeRecord, ChangeError, SharedChangeList} from "delta-store";
-import {OfflinePouchDbChangeListShareInfo} from "./OfflinePouchDbSharingModel";
-import {Subject} from "rxjs/Subject";
+import {OfflineSqlChangeListShareInfo} from "./OfflineSqlSharingModel";
 
-export interface OfflinePouchDbSharedChangeList extends SharedChangeList {
+export interface OfflineSqlSharedChangeList extends SharedChangeList {
 
-	shareInfo:OfflinePouchDbChangeListShareInfo;
+	shareInfo:OfflineSqlChangeListShareInfo;
 
 }
 
-export class OfflinePouchDbChangeRecordIterator implements ChangeRecordIterator {
+export class OfflineSqlChangeRecordIterator implements ChangeRecordIterator {
 
 	length:number;
 

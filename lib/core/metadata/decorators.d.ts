@@ -39,7 +39,7 @@ export declare function Access(accessType: AccessType): (targetObject: any, prop
 export interface AccessControlElements {
     roles: string[];
 }
-export declare function Transactional(): (target: Function, methodName: string, methodDescriptor: any) => any;
+export declare function Transactional(): (target: any, methodName: string, methodDescriptor: any) => any;
 export interface VisibleForElements extends AccessControlElements {
 }
 export declare function VisibleFor(elements: VisibleForElements): (targetObject: any, propertyKey: string) => void;

@@ -26,7 +26,7 @@ export declare class PH {
         new (): any;
     }, qEntity: QEntity<any>): void;
     static entityManager: EntityManager;
-    static init(phConfig: PHPersistenceConfig): void;
+    static init(phConfig: PHPersistenceConfig<any>): void;
     static getFindSubject<E, IE extends IEntity>(entityClass: {
         new (): E;
     }): QuerySubject<E, IE>;

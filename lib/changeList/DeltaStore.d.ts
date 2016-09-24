@@ -4,12 +4,10 @@
 import { GoogleSharingAdaptor, PlatformType, SharingAdaptor, SharedChangeList, ChangeRecord } from "delta-store";
 import { IDeltaStoreConfig } from "../config/DeltaStoreConfig";
 import { IChangeListConfig, IOfflineDeltaStoreConfig } from "../config/ChangeListConfig";
-import { EntityProxy } from "../core/proxy/Proxies";
-import { IEntityConfig } from "../config/EntityConfig";
 export interface IDeltaStore {
     config: IDeltaStoreConfig;
     sharingAdaptor: SharingAdaptor;
-    addChange<E>(entityConfig: IEntityConfig, entityProxy: EntityProxy): Promise<E>;
+    addChange<E>(changeListConfig: IChangeListConfig, changeRecord: E): Promise<E>;
     getChangeList(changeListConfig: IChangeListConfig): SharedChangeList;
     getChangeListName(changeListConfig: IChangeListConfig): string;
     goOffline(): void;
@@ -26,7 +24,7 @@ export declare class DeltaStore implements IDeltaStore {
         [changeListName: string]: ChangeRecord[];
     };
     constructor(config: IDeltaStoreConfig, sharingAdaptor?: SharingAdaptor);
-    addChange<E>(entityConfig: IEntityConfig, entityProxy: EntityProxy): Promise<E>;
+    addChange<E>(changeListConfig: IChangeListConfig, changeRecord: E): Promise<E>;
     getChangeListName(changeListConfig: IChangeListConfig): string;
     getChangeList(changeListConfig: IChangeListConfig): SharedChangeList;
     goOffline(): void;
@@ -34,8 +32,12 @@ export declare class DeltaStore implements IDeltaStore {
     private setupChangeLists();
     private loadChangeLists();
 }
-export declare class OfflineDeltaStore extends DeltaStore {
+export interface IOfflineDeltaStore extends IDeltaStore {
+}
+export declare class OfflineDeltaStore extends DeltaStore implements IOfflineDeltaStore {
     config: IOfflineDeltaStoreConfig;
+    sharingAdaptor: SharingAdaptor;
+    constructor(config: IOfflineDeltaStoreConfig, sharingAdaptor: SharingAdaptor);
     getChangeListName(changeListConfig: IChangeListConfig): string;
 }
 export declare function getSharingAdaptor(platformType: PlatformType): SharingAdaptor;

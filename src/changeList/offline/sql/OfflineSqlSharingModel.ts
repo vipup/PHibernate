@@ -3,13 +3,13 @@
  */
 import {SharingPlatformSetupInfo, ChangeListShareInfo} from "delta-store";
 
-export interface OfflinePouchDbSetupInfo extends SharingPlatformSetupInfo {
+export interface OfflineSqlSetupInfo extends SharingPlatformSetupInfo {
 	apiKey:string;
 	clientId:string;
 	sharedAppFolderId?:string;
 }
 
-export interface OfflinePouchDbChangeListShareInfo extends ChangeListShareInfo {
+export interface OfflineSqlChangeListShareInfo extends ChangeListShareInfo {
 	folderId:string;
 	realtimeFileId?:string;
 	recentFileId?:string;

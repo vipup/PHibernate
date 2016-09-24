@@ -3,40 +3,40 @@
  */
 
 import {PlatformType, SharingAdaptor, SharedChangeList, GoogleSetupInfo} from "delta-store";
-import {OfflinePouchDbSetupInfo, OfflinePouchDbChangeListShareInfo} from "./OfflinePouchDbSharingModel";
+import {OfflineSqlSetupInfo, OfflineSqlChangeListShareInfo} from "./OfflineSqlSharingModel";
 
-export class OfflinePouchDbSharingAdaptor implements SharingAdaptor {
+export class OfflineSqlSharingAdaptor implements SharingAdaptor {
 
 	initialize(
-		setupInfo:OfflinePouchDbSetupInfo
+		setupInfo:OfflineSqlSetupInfo
 	):Promise<any> {
 		return null;
 	}
 
 	findExistingChangeLists(
-		setupInfo:OfflinePouchDbSetupInfo
-	):Promise<OfflinePouchDbChangeListShareInfo[]> {
+		setupInfo:OfflineSqlSetupInfo
+	):Promise<OfflineSqlChangeListShareInfo[]> {
 		return null;
 	}
 
 	createChangeList(
 		name:string,
-		setupInfo:OfflinePouchDbSetupInfo
+		setupInfo:OfflineSqlSetupInfo
 	):Promise<SharedChangeList> {
 		return null;
 	}
 
 	loadChangeList(
-		setupInfo:OfflinePouchDbSetupInfo,
-		shareInfo:OfflinePouchDbChangeListShareInfo
+		setupInfo:OfflineSqlSetupInfo,
+		shareInfo:OfflineSqlChangeListShareInfo
 	):Promise<SharedChangeList> {
 		return null;
 	}
 
 
 	setupInfoBelongsTo(
-		setupInfo:OfflinePouchDbSetupInfo,
-		setupInfos:OfflinePouchDbSetupInfo[]
+		setupInfo:OfflineSqlSetupInfo,
+		setupInfos:OfflineSqlSetupInfo[]
 	):boolean {
 		if (setupInfo.platformType !== PlatformType.OFFLINE) {
 			return false;

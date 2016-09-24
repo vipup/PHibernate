@@ -1,18 +1,19 @@
+import { EntityChange } from "../changeList/model/EntityChange";
+import { ChangeGroup } from "../changeList/model/ChangeGroup";
 export declare enum IdGeneration {
-    USER_TIMESTAMP = 0,
+    ENTITY_CHANGE_ID = 0,
 }
 export interface IdGenerator {
-    generateId(entityClass: {
-        new (): any;
-    }): string | number;
+    generateChangeGroupId(changeGroup: ChangeGroup): string;
+    generateEntityId(entity: any, entityChange: EntityChange): string;
     getIdType(): 'string' | 'number';
 }
 export declare class UserTimeStampIdGenerator implements IdGenerator {
-    lastIdForTimeStamp: number;
-    lastTimestamp: number;
-    generateId(entityClass: {
-        new (): any;
-    }): string | number;
+    lastChangeGroupIndexForTimeStamp: number;
+    lastChangeGroupTimestamp: number;
+    generateChangeGroupId(changeGroup: ChangeGroup): string;
+    generateEntityId(entity: any, entityChange: EntityChange): string;
+    getChangeGroupIndexInMillisecond(): number;
     getIdType(): 'string' | 'number';
 }
 export declare function getIdGenerator(idGeneration: IdGeneration): UserTimeStampIdGenerator;

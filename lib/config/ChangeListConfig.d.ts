@@ -1,11 +1,10 @@
 import { ChangeListShareInfo, DistributionStrategy, SharingPlatformSetupInfo } from "delta-store";
 import { LocalStoreType } from "../localStore/LocalStoreApi";
-import { IDeltaStoreConfig, PHDeltaStoreConfig } from "./DeltaStoreConfig";
+import { IDeltaStoreConfig } from "./DeltaStoreConfig";
 /**
  * Created by Papa on 5/28/2016.
  */
 export interface PHChangeListConfig {
-    deltaStore?: string;
     distributionStrategy?: DistributionStrategy | string;
 }
 export interface PHOfflineDeltaStoreConfig {
@@ -14,36 +13,23 @@ export interface PHOfflineDeltaStoreConfig {
 export interface IChangeListConfig {
     changeListInfo?: ChangeListShareInfo;
     deltaStoreConfig: IDeltaStoreConfig;
-    deltaStoreName: string;
     distributionStrategy: DistributionStrategy;
+    exists?: boolean;
 }
 export declare class ChangeListConfig implements IChangeListConfig {
-    changeListName: string;
     private config;
-    private defaultConfig;
-    changeListInfo: ChangeListShareInfo;
     deltaStoreConfig: IDeltaStoreConfig;
-    deltaStoreName: string;
+    changeListInfo: ChangeListShareInfo;
     distributionStrategy: DistributionStrategy;
-    constructor(changeListName: string, config: PHChangeListConfig, defaultConfig: PHChangeListConfig, deltaStoreConfigMap: {
-        [deltaStoreName: string]: IDeltaStoreConfig;
-    });
+    constructor(config: PHChangeListConfig, deltaStoreConfig: IDeltaStoreConfig);
 }
-export interface IOfflineDeltaStoreConfig extends IDeltaStoreConfig {
+export interface IOfflineDeltaStoreConfig {
+    config: PHOfflineDeltaStoreConfig;
     type: LocalStoreType;
-    getOfflineChangeListName(deltaStoreName: string, changeListName: string): string;
 }
 export declare class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
-    private storeConfig;
-    private config;
-    static OFFLINE_DELTA_STORE_NAME: string;
-    changeListConfigMap: {
-        [changeListName: string]: IChangeListConfig;
-    };
+    config: PHOfflineDeltaStoreConfig;
     setupInfo: SharingPlatformSetupInfo;
     type: LocalStoreType;
-    constructor(storeConfig: PHDeltaStoreConfig, config: PHOfflineDeltaStoreConfig, deltaStoreConfigMap: {
-        [className: string]: IDeltaStoreConfig;
-    });
-    getOfflineChangeListName(deltaStoreName: string, changeListName: string): string;
+    constructor(config: PHOfflineDeltaStoreConfig, deltaStoreConfig: IDeltaStoreConfig);
 }

@@ -1,79 +1,21 @@
-/**
- * Created by Papa on 5/28/2016.
- */
-import { IEntityConfig, PHEntityConfig } from "./EntityConfig";
 import { ILocalStoreConfig, PHLocalStoreConfig } from "./LocalStoreConfig";
-import { IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig, IOfflineDeltaStoreConfig } from "./ChangeListConfig";
 import { PHDeltaStoreConfig, IDeltaStoreConfig } from "./DeltaStoreConfig";
-import { IQEntity } from "querydsl-typescript";
 import { DistributionStrategy, PlatformType } from "delta-store/lib/index";
 import { LocalStoreType } from "../localStore/LocalStoreApi";
 import { IdGeneration } from "../localStore/IdGenerator";
-export interface PHPersistenceConfig {
+export interface PHPersistenceConfig<DSC extends PHDeltaStoreConfig> {
     appName: string;
-    deltaStores?: {
-        [name: string]: PHDeltaStoreConfig;
-    };
-    default?: {
-        changeList: PHChangeListConfig;
-        entity: PHEntityConfig;
-    };
-    entities?: {
-        [name: string]: PHEntityConfig;
-    };
-    changeLists: {
-        [refName: string]: PHChangeListConfig;
-    };
-    localStores: {
-        [refName: string]: PHLocalStoreConfig;
-    };
-    offlineDeltaStore?: PHOfflineDeltaStoreConfig;
+    deltaStore?: DSC;
+    localStore?: PHLocalStoreConfig;
 }
 export interface IPersistenceConfig {
-    changeListConfigMap: {
-        [changeListName: string]: IChangeListConfig;
-    };
-    deltaStoreConfigMap: {
-        [deltaStoreName: string]: IDeltaStoreConfig;
-    };
-    entityConfigMap: {
-        [className: string]: IEntityConfig;
-    };
-    localStoreConfigMap: {
-        [storeName: string]: ILocalStoreConfig;
-    };
-    hasChangeLists: boolean;
-    hasDeltaStores: boolean;
-    hasLocalStores: boolean;
-    offlineDeltaStore: IOfflineDeltaStoreConfig;
-    getEntityConfig(entityClass: {
-        new (): any;
-    }): IEntityConfig;
-    getEntityConfigFromQ<IQE extends IQEntity>(qEntity: IQE): IEntityConfig;
+    deltaStoreConfig: IDeltaStoreConfig;
+    localStoreConfig: ILocalStoreConfig;
 }
-export declare class PersistenceConfig implements IPersistenceConfig {
+export declare class PersistenceConfig<DSC extends PHDeltaStoreConfig> implements IPersistenceConfig {
     private config;
-    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType, idGeneration?: IdGeneration): PHPersistenceConfig;
-    changeListConfigMap: {
-        [changeListName: string]: IChangeListConfig;
-    };
-    deltaStoreConfigMap: {
-        [className: string]: IDeltaStoreConfig;
-    };
-    entityConfigMap: {
-        [className: string]: IEntityConfig;
-    };
-    localStoreConfigMap: {
-        [storeName: string]: ILocalStoreConfig;
-    };
-    hasChangeLists: boolean;
-    hasDeltaStores: boolean;
-    hasLocalStores: boolean;
-    offlineDeltaStore: IOfflineDeltaStoreConfig;
-    constructor(config: PHPersistenceConfig);
-    getEntityConfig(entityClass: {
-        new (): any;
-    }): IEntityConfig;
-    getEntityConfigFromQ<IQE extends IQEntity>(qEntity: IQE): IEntityConfig;
-    getEntityConfigWithClassNameAndConstructor(className: string, constructor: Function): IEntityConfig;
+    static getDefaultPHConfig(appName?: string, distributionStrategy?: DistributionStrategy, deltaStorePlatform?: PlatformType, localStoreType?: LocalStoreType, offlineDeltaStoreType?: LocalStoreType, idGeneration?: IdGeneration): PHPersistenceConfig<PHDeltaStoreConfig>;
+    deltaStoreConfig: IDeltaStoreConfig;
+    localStoreConfig: ILocalStoreConfig;
+    constructor(config: PHPersistenceConfig<DSC>);
 }
