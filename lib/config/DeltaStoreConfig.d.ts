@@ -2,7 +2,8 @@
  * Created by Papa on 5/31/2016.
  */
 import { GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo } from "delta-store";
-import { IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig, IOfflineDeltaStoreConfig } from "./ChangeListConfig";
+import { IChangeListConfig, PHChangeListConfig } from "./ChangeListConfig";
+import { IOfflineDeltaStoreConfig, PHOfflineDeltaStoreConfig } from "./OfflineDeltaStoreConfig";
 export interface PHDeltaStoreConfig {
     changeList?: PHChangeListConfig;
     offlineDeltaStore?: PHOfflineDeltaStoreConfig;

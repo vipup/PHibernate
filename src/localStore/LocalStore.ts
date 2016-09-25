@@ -1,6 +1,6 @@
 import {LocalStoreType} from "./LocalStoreApi";
 import {PouchDbAdaptor} from "./pouchDb/PouchDbAdaptor";
-import {LocalStoreAdaptor} from "./LocalStoreAdaptor";
+import {ILocalStoreAdaptor} from "./LocalStoreAdaptor";
 import {WebSqlAdaptor} from "./webSql/WebSqlAdaptor";
 import {IdGeneration} from "./IdGenerator";
 import {IEntityManager} from "../core/repository/EntityManager";
@@ -13,7 +13,7 @@ export function getLocalStoreAdaptor(
 	localStoreType:LocalStoreType,
 	entityManager:IEntityManager,
 	idGeneration:IdGeneration
-):LocalStoreAdaptor {
+):ILocalStoreAdaptor {
 	switch (localStoreType) {
 		case LocalStoreType.POUCH_DB:
 			throw `PouchDb is not curently supported`;
@@ -30,6 +30,6 @@ export function getLocalStoreAdaptor(
 export function getSQLiteAdaptor(
 	entityManager:IEntityManager,
 	idGeneration:IdGeneration
-):LocalStoreAdaptor {
+):ILocalStoreAdaptor {
 	return new WebSqlAdaptor(entityManager, idGeneration);
 }

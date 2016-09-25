@@ -12,13 +12,7 @@ import {
 	SharingAdaptor, SharedChangeList, ChangeListShareInfo, ChangeRecord
 } from "delta-store";
 import {IDeltaStoreConfig} from "../config/DeltaStoreConfig";
-import {IChangeListConfig, IOfflineDeltaStoreConfig} from "../config/ChangeListConfig";
-import {EntityProxy} from "../core/proxy/Proxies";
-import {IEntityConfig} from "../config/EntityConfig";
-import {ChangeGroup} from "./model/ChangeGroup";
-import {UserUtils} from "../shared/UserUtils";
-import {PlatformUtils} from "../shared/PlatformUtils";
-import {IdGenerator} from "../localStore/IdGenerator";
+import {IChangeListConfig} from "../config/ChangeListConfig";
 
 export interface IDeltaStore {
 	config:IDeltaStoreConfig;
@@ -145,26 +139,6 @@ export class DeltaStore implements IDeltaStore {
 
 }
 
-export interface IOfflineDeltaStore extends IDeltaStore {
-
-}
-
-export class OfflineDeltaStore extends DeltaStore implements IOfflineDeltaStore {
-
-	constructor(
-	public config:IOfflineDeltaStoreConfig,
-	public sharingAdaptor:SharingAdaptor
-	) {
-		super(config, sharingAdaptor);
-	}
-
-	getChangeListName(
-		changeListConfig:IChangeListConfig
-	):string {
-		return changeListConfig.changeListInfo.name;
-	}
-
-}
 
 var GOOGLE_SHARING_ADAPTOR;
 

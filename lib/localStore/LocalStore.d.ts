@@ -1,5 +1,6 @@
 import { LocalStoreType } from "./LocalStoreApi";
-import { LocalStoreAdaptor } from "./LocalStoreAdaptor";
+import { ILocalStoreAdaptor } from "./LocalStoreAdaptor";
 import { IdGeneration } from "./IdGenerator";
-export declare function getLocalStoreAdaptor(localStoreType: LocalStoreType, idGeneration: IdGeneration): LocalStoreAdaptor;
-export declare function getSQLiteAdaptor(idGeneration: IdGeneration): LocalStoreAdaptor;
+import { IEntityManager } from "../core/repository/EntityManager";
+export declare function getLocalStoreAdaptor(localStoreType: LocalStoreType, entityManager: IEntityManager, idGeneration: IdGeneration): ILocalStoreAdaptor;
+export declare function getSQLiteAdaptor(entityManager: IEntityManager, idGeneration: IdGeneration): ILocalStoreAdaptor;

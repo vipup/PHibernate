@@ -3,12 +3,12 @@ import { IChangeGroup } from "../../changeList/model/ChangeGroup";
 import { SQLDialect, QEntity, PHQuery, IEntity } from "querydsl-typescript";
 import { IEntityChange } from "../../changeList/model/EntityChange";
 import { Subject, Observable } from "rxjs";
-import { LocalStoreAdaptor } from "../LocalStoreAdaptor";
+import { ILocalStoreAdaptor } from "../LocalStoreAdaptor";
 import { LocalStoreSetupInfo } from "../LocalStoreApi";
 /**
  * Created by Papa on 9/20/2016.
  */
-export declare class StubSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
+export declare class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
     private currentTransaction;
     initialize(setupInfo: LocalStoreSetupInfo): Promise<any>;
     wrapInTransaction(callback: () => Promise<any>): Promise<any>;

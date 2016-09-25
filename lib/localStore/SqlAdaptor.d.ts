@@ -3,6 +3,9 @@ import { Observable, Subject } from "rxjs";
 import { IdGenerator, IdGeneration } from "./IdGenerator";
 import { IChangeGroup } from "../changeList/model/ChangeGroup";
 import { IEntityChange } from "../changeList/model/EntityChange";
+import { IEntityManager } from "../core/repository/EntityManager";
+import { LocalStoreType, LocalStoreSetupInfo } from "./LocalStoreApi";
+import { ILocalStoreAdaptor } from "./LocalStoreAdaptor";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -16,10 +19,14 @@ export interface RemovalRecord {
     array: any[];
     index: number;
 }
-export declare abstract class SqlAdaptor {
+export declare abstract class SqlAdaptor implements ILocalStoreAdaptor {
+    protected entityManager: IEntityManager;
+    type: LocalStoreType;
     protected idGenerator: IdGenerator;
     protected currentChangeGroup: IChangeGroup;
-    constructor(idGeneration: IdGeneration);
+    constructor(entityManager: IEntityManager, idGeneration: IdGeneration);
+    abstract initialize(setupInfo: LocalStoreSetupInfo): Promise<any>;
+    abstract wrapInTransaction(callback: () => Promise<any>): Promise<any>;
     private verifyChangeGroup();
     readonly activeChangeGroup: IChangeGroup;
     create<E>(entityName: string, entity: E, changeGroup: IChangeGroup): Promise<IEntityChange>;

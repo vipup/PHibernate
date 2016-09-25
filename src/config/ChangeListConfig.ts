@@ -13,10 +13,6 @@ export interface PHChangeListConfig {
 	distributionStrategy?:DistributionStrategy | string;
 }
 
-export interface PHOfflineDeltaStoreConfig {
-	type:LocalStoreType;
-}
-
 export interface IChangeListConfig {
 	changeListInfo?:ChangeListShareInfo;
 	deltaStoreConfig:IDeltaStoreConfig;
@@ -49,32 +45,6 @@ export class ChangeListConfig implements IChangeListConfig {
 
 		this.changeListInfo = {
 			name: 'ChangeGroups'
-		};
-	}
-
-}
-
-export interface IOfflineDeltaStoreConfig {
-	// changeListConfig:IChangeListConfig;
-	config:PHOfflineDeltaStoreConfig;
-	type:LocalStoreType;
-}
-
-export class OfflineDeltaStoreConfig implements IOfflineDeltaStoreConfig {
-
-	// changeListConfig:IChangeListConfig;
-	setupInfo:SharingPlatformSetupInfo;
-	type:LocalStoreType;
-
-	constructor(
-		public config:PHOfflineDeltaStoreConfig,
-		deltaStoreConfig:IDeltaStoreConfig
-	) {
-		let changeListConfig = deltaStoreConfig.changeListConfig;
-		this.type = config.type;
-		this.setupInfo = {
-			platformType: PlatformType.OFFLINE,
-			recordIdField: deltaStoreConfig.config.recordIdField
 		};
 	}
 

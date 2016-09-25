@@ -11,7 +11,7 @@ export interface StoreSetupInfo {
 	name:string;
 }
 
-export interface StoreAdaptor {
+export interface IStoreAdaptor {
 
 	activeChangeGroup:IChangeGroup;
 

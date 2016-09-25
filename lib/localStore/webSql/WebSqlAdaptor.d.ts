@@ -1,4 +1,3 @@
-import { LocalStoreAdaptor } from "../LocalStoreAdaptor";
 import { LocalStoreSetupInfo } from "../LocalStoreApi";
 import { IEntity, PHQuery, QEntity, SQLDialect } from "querydsl-typescript";
 import { Subject, Observable } from "rxjs";
@@ -6,13 +5,14 @@ import { IdGeneration } from "../IdGenerator";
 import { SqlAdaptor, CascadeRecord } from "../SqlAdaptor";
 import { IChangeGroup } from "../../changeList/model/ChangeGroup";
 import { IEntityChange } from "../../changeList/model/EntityChange";
-export declare class WebSqlAdaptor extends SqlAdaptor implements LocalStoreAdaptor {
+import { IEntityManager } from "../../core/repository/EntityManager";
+export declare class WebSqlAdaptor extends SqlAdaptor {
     static BACKUP_LOCAL: number;
     static BACKUP_LIBRARY: number;
     static BACKUP_DOCUMENTS: number;
     private _db;
     private currentTransaction;
-    constructor(idGeneration: IdGeneration);
+    constructor(entityManager: IEntityManager, idGeneration: IdGeneration);
     private getBackupLocation(dbFlag);
     initialize(setupInfo: LocalStoreSetupInfo): Promise<any>;
     wrapInTransaction(callback: () => Promise<any>): Promise<any>;

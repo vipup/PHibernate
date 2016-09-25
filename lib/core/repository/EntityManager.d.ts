@@ -1,9 +1,10 @@
 /**
  * Created by Papa on 5/23/2016.
  */
-import { IDeltaStore, IOfflineDeltaStore } from "../../changeList/DeltaStore";
+import { IDeltaStore } from "../../changeList/DeltaStore";
 import { IPersistenceConfig } from "../../config/PersistenceConfig";
-import { LocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
+import { ILocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
+import { IOfflineDeltaStore } from "../../changeList/OfflineDeltaStore";
 import { IEntity, CascadeType, PHRawSQLQuery, PHSQLQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
@@ -28,6 +29,7 @@ export interface IEntityManager {
     save<E>(entityClass: {
         new (): E;
     }, entity: E, cascade?: CascadeType): Promise<E>;
+    saveActiveChangeGroup(): Promise<void>;
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE, subject?: Subject<E[]>): Observable<E[]>;
@@ -43,9 +45,9 @@ export declare class EntityManager implements IEntityManager {
     deltaStore: IDeltaStore;
     online: boolean;
     offlineDeltaStore: IOfflineDeltaStore;
-    localStore: LocalStoreAdaptor;
+    localStore: ILocalStoreAdaptor;
     constructor(config: IPersistenceConfig);
-    getLocalStore(localStoreTypeName?: string): LocalStoreAdaptor;
+    getLocalStore(localStoreTypeName?: string): ILocalStoreAdaptor;
     initialize(): Promise<any>;
     goOffline(): void;
     goOnline(): Promise<any>;
@@ -63,6 +65,7 @@ export declare class EntityManager implements IEntityManager {
         new (): E;
     }, entity: E): Promise<E>;
     private persistEntity<E>(entityClass, entity, operation);
+    saveActiveChangeGroup(): Promise<void>;
     private ensureId<E>(entity);
     search<E, IE extends IEntity>(entityClass: {
         new (): E;

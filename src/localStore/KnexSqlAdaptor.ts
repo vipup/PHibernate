@@ -1,12 +1,16 @@
-import {LocalStoreAdaptor} from "./LocalStoreAdaptor";
+import {ILocalStoreAdaptor} from "./LocalStoreAdaptor";
 import {IEntity, PHQuery} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
-import {LocalStoreSetupInfo} from "./LocalStoreApi";
+import {LocalStoreSetupInfo, LocalStoreType} from "./LocalStoreApi";
+import {IChangeGroup} from "../changeList/model/ChangeGroup";
 /**
  * Created by Papa on 8/31/2016.
  */
 
-export abstract class KnexSqlAdaptor implements LocalStoreAdaptor {
+export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
+
+	activeChangeGroup:IChangeGroup;
+	type:LocalStoreType;
 
 	abstract initialize(
 		setupInfo: LocalStoreSetupInfo

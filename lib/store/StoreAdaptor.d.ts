@@ -8,7 +8,7 @@ import { IChangeGroup } from "../changeList/model/ChangeGroup";
 export interface StoreSetupInfo {
     name: string;
 }
-export interface StoreAdaptor {
+export interface IStoreAdaptor {
     activeChangeGroup: IChangeGroup;
     wrapInTransaction(callback: () => void): any;
     create<E>(entityName: string, entity: E, changeGroup: IChangeGroup): Promise<E>;

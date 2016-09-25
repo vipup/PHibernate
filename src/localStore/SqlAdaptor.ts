@@ -10,6 +10,8 @@ import {UpdateCache} from "../core/repository/UpdateCache";
 import {IChangeGroup} from "../changeList/model/ChangeGroup";
 import {IEntityChange} from "../changeList/model/EntityChange";
 import {IEntityManager} from "../core/repository/EntityManager";
+import {LocalStoreType, LocalStoreSetupInfo} from "./LocalStoreApi";
+import {ILocalStoreAdaptor} from "./LocalStoreAdaptor";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -26,26 +28,34 @@ export interface RemovalRecord {
 	index: number;
 }
 
-export abstract class SqlAdaptor {
+export abstract class SqlAdaptor implements ILocalStoreAdaptor {
+
+	public type: LocalStoreType;
 
 	protected idGenerator: IdGenerator;
 
-	protected currentChangeGroup:IChangeGroup;
+	protected currentChangeGroup: IChangeGroup;
 
 	constructor(
-		protected entityManager:IEntityManager,
+		protected entityManager: IEntityManager,
 		idGeneration: IdGeneration
 	) {
 		this.idGenerator = getIdGenerator(idGeneration);
 	}
 
+	abstract initialize(
+		setupInfo: LocalStoreSetupInfo
+	): Promise<any>;
+
+	abstract wrapInTransaction(callback: ()=> Promise<any>): Promise<any>;
+
 	private verifyChangeGroup() {
-		if(this.currentChangeGroup == null) {
+		if (this.currentChangeGroup == null) {
 			throw `Current change group is not defined`;
 		}
 	}
 
-	get activeChangeGroup():IChangeGroup {
+	get activeChangeGroup(): IChangeGroup {
 		return this.currentChangeGroup;
 	}
 
@@ -445,7 +455,7 @@ export abstract class SqlAdaptor {
 	async save<E>(
 		entityName: string,
 		entity: E,
-	  changeGroup:IChangeGroup
+		changeGroup: IChangeGroup
 	): Promise < IEntityChange > {
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;

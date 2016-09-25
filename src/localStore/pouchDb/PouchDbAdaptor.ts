@@ -1,4 +1,4 @@
-import {LocalStoreAdaptor} from "../LocalStoreAdaptor";
+import {ILocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {PouchDbStoreSetupInfo} from "./PouchDbApi";
 import {
 	RelationRecord,
@@ -18,6 +18,8 @@ import {Subject} from 'rxjs/Subject';
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {EntityProxy} from "../../core/proxy/Proxies";
 import {NameMetadataUtils} from "../../core/metadata/PHMetadataUtils";
+import {LocalStoreType} from "../LocalStoreApi";
+import {IChangeGroup} from "../../changeList/model/ChangeGroup";
 
 declare function require(moduleName: string): any;
 
@@ -26,10 +28,11 @@ const PouchDB = require('pouchdb');
  * Created by Papa on 5/28/2016.
  */
 
-export class PouchDbAdaptor implements LocalStoreAdaptor {
+export class PouchDbAdaptor implements ILocalStoreAdaptor {
 
+	activeChangeGroup:IChangeGroup;
 	localDB: pouchDB.IPouchDB;
-
+	type:LocalStoreType = LocalStoreType.POUCH_DB;
 
 	wrapInTransaction(callback: ()=>void) {
 		throw `Not implemented`;

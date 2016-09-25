@@ -1,3 +1,6 @@
+/**
+ * Created by Papa on 5/28/2016.
+ */
 import { ILocalStoreConfig, PHLocalStoreConfig } from "./LocalStoreConfig";
 import { PHDeltaStoreConfig, IDeltaStoreConfig } from "./DeltaStoreConfig";
 import { DistributionStrategy, PlatformType } from "delta-store/lib/index";

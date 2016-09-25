@@ -2,12 +2,7 @@
  * Created by Papa on 5/28/2016.
  */
 
-import {EntityConfig, IEntityConfig, PHEntityConfig} from "./EntityConfig";
 import {createLocalStoreConfig, ILocalStoreConfig, PHLocalStoreConfig} from "./LocalStoreConfig";
-import {
-	IChangeListConfig, ChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig,
-	IOfflineDeltaStoreConfig, OfflineDeltaStoreConfig
-} from "./ChangeListConfig";
 import {
 	PHDeltaStoreConfig, IDeltaStoreConfig, createDeltaStoreConfig,
 	PHGoogleDeltaStoreConfig

@@ -4,9 +4,9 @@
 
 import {deltaStore, GoogleSetupInfo, PlatformType, SharingPlatformSetupInfo} from "delta-store";
 import {
-	IChangeListConfig, PHChangeListConfig, PHOfflineDeltaStoreConfig,
-	IOfflineDeltaStoreConfig, ChangeListConfig, OfflineDeltaStoreConfig
+	IChangeListConfig, PHChangeListConfig, ChangeListConfig
 } from "./ChangeListConfig";
+import {IOfflineDeltaStoreConfig, OfflineDeltaStoreConfig, PHOfflineDeltaStoreConfig} from "./OfflineDeltaStoreConfig";
 
 export interface PHDeltaStoreConfig {
 	changeList?:PHChangeListConfig;

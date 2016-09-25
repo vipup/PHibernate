@@ -13,20 +13,6 @@ export interface ILocalStoreConfig {
 	setupInfo: LocalStoreSetupInfo;
 }
 
-export interface IPouchDbLocalStoreConfig extends ILocalStoreConfig {
-}
-
-export class PouchDbLocalStoreConfig extends CommonLocalStoreConfig implements IPouchDbLocalStoreConfig {
-
-}
-
-export interface ISqLiteCordovaLocalStoreConfig extends ILocalStoreConfig {
-}
-
-export class SqLiteCordovaLocalStoreConfig extends CommonLocalStoreConfig implements SqLiteCordovaLocalStoreConfig {
-
-}
-
 export class CommonLocalStoreConfig implements ILocalStoreConfig {
 
 	setupInfo: LocalStoreSetupInfo;
@@ -75,4 +61,18 @@ export function createLocalStoreConfig(
 		default:
 			throw `Unsupported LocalStoreType: ${type}`;
 	}
+}
+
+export interface IPouchDbLocalStoreConfig extends ILocalStoreConfig {
+}
+
+export class PouchDbLocalStoreConfig extends CommonLocalStoreConfig implements IPouchDbLocalStoreConfig {
+
+}
+
+export interface ISqLiteCordovaLocalStoreConfig extends ILocalStoreConfig {
+}
+
+export class SqLiteCordovaLocalStoreConfig extends CommonLocalStoreConfig implements SqLiteCordovaLocalStoreConfig {
+
 }

@@ -3,7 +3,7 @@
  */
 import { GoogleSharingAdaptor, PlatformType, SharingAdaptor, SharedChangeList, ChangeRecord } from "delta-store";
 import { IDeltaStoreConfig } from "../config/DeltaStoreConfig";
-import { IChangeListConfig, IOfflineDeltaStoreConfig } from "../config/ChangeListConfig";
+import { IChangeListConfig } from "../config/ChangeListConfig";
 export interface IDeltaStore {
     config: IDeltaStoreConfig;
     sharingAdaptor: SharingAdaptor;
@@ -31,14 +31,6 @@ export declare class DeltaStore implements IDeltaStore {
     goOnline(): Promise<any>;
     private setupChangeLists();
     private loadChangeLists();
-}
-export interface IOfflineDeltaStore extends IDeltaStore {
-}
-export declare class OfflineDeltaStore extends DeltaStore implements IOfflineDeltaStore {
-    config: IOfflineDeltaStoreConfig;
-    sharingAdaptor: SharingAdaptor;
-    constructor(config: IOfflineDeltaStoreConfig, sharingAdaptor: SharingAdaptor);
-    getChangeListName(changeListConfig: IChangeListConfig): string;
 }
 export declare function getSharingAdaptor(platformType: PlatformType): SharingAdaptor;
 export declare function getGooglesSharingAdaptor(): GoogleSharingAdaptor;
