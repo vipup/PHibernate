@@ -9,6 +9,12 @@ import {UserUtils} from "../../shared/UserUtils";
  * Created by Papa on 9/15/2016.
  */
 
+export enum SyncStatus {
+	SYNCHRONIZED,
+	CLIENT_CHANGES_SYNC_PENDING,
+	REMOTE_CHANGES_SYNC_PENDING
+}
+
 export interface IChangeGroup {
 	addNewCreateEntityChange(
 		entityName: string,
@@ -66,6 +72,9 @@ export class ChangeGroup extends DeltaRecord implements IChangeGroup {
 
 	@Column({name: "GROUP_INDEX_IN_MILLISECOND"})
 	groupIndexInMillisecond: number;
+
+	@Column({name: "SYNC_STATUS"})
+	syncStatus: SyncStatus = SyncStatus.CLIENT_CHANGES_SYNC_PENDING;
 
 	addNewCreateEntityChange(
 		entityName: string,

@@ -179,7 +179,6 @@ export class EntityManager implements IEntityManager {
 
 		let changeGroup: IChangeGroup;
 		await this.localStore[operation](entityClass, entity, this.localStore.activeChangeGroup);
-		await this.localStore['create']('ChangeGroup', this.localStore.activeChangeGroup, new StubChangeGroup());
 
 		return entity;
 	}
