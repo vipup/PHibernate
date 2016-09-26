@@ -1,6 +1,6 @@
 {
   "name": "phibernate",
-  "description": "Client side Hibernate for PouchDb and Spring/JPA/Relational",
+  "description": "Client side ORM and Delta Tracker for Relational data",
   "license": "MIT",
   "main": "lib/index.js",
   "typings": "lib/index",
