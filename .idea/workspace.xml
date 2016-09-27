@@ -6,7 +6,14 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/booleanfieldchange.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/changegroup.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/datefieldchange.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/entitychange.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/numberfieldchange.ts" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/stringfieldchange.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/core/repository/EntityManager.ts" afterPath="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -95,11 +102,11 @@
               </provider>
             </entry>
           </file>
-          <file leaf-file-name="ChangeGroup.ts" pinned="false" current-in-tab="true">
+          <file leaf-file-name="ChangeGroup.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="391">
-                  <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="12" />
+                <state relative-caret-position="1037">
+                  <caret line="67" column="37" selection-start-line="67" selection-start-column="37" selection-end-line="67" selection-end-column="37" />
                   <folding />
                 </state>
               </provider>
@@ -108,10 +115,22 @@
           <file leaf-file-name="EntityManager.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/core/repository/EntityManager.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="489">
-                  <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
+                <state relative-caret-position="682">
+                  <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="63" selection-end-column="20" />
                   <folding>
                     <element signature="e#42#133#0" expanded="true" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="EntityChange.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityChange.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="2856">
+                  <caret line="181" column="49" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
+                  <folding>
+                    <element signature="e#579#619#0" expanded="false" />
                   </folding>
                 </state>
               </provider>
@@ -190,8 +209,8 @@
           <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/package.json">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="34">
-                  <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+                <state relative-caret-position="221">
+                  <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
                   <folding />
                 </state>
               </provider>
@@ -275,9 +294,9 @@
         <option value="$PROJECT_DIR$/src/changeList/OfflineDeltaStore.ts" />
         <option value="$PROJECT_DIR$/src/localStore/KnexSqlAdaptor.ts" />
         <option value="$PROJECT_DIR$/src/config/LocalStoreConfig.ts" />
-        <option value="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
         <option value="$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts" />
         <option value="$PROJECT_DIR$/package.json" />
+        <option value="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
       </list>
     </option>
   </component>
@@ -551,11 +570,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="offline" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="sql" />
+              <option name="myItemId" value="query" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -577,7 +592,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="model" />
+              <option name="myItemId" value="offline" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="sql" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -601,19 +620,19 @@
     <property name="nodejs.mocha.mocha_node_package_dir" value="C:\Users\Papa\PHibernate\node_modules\mocha" />
   </component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\Papa\PHibernate\src\changeList\query" />
+      <recent name="C:\Users\Papa\PHibernate" />
+      <recent name="C:\Users\Papa\PHibernate\test" />
+      <recent name="C:\Users\Papa\PHibernate\node_modules\QueryDSL-TypeScript" />
+      <recent name="C:\Users\Papa\PHibernate\node_modules" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\Papa\PHibernate\src\localStore\webSql" />
       <recent name="C:\Users\Papa\PHibernate\src\localStore\sql" />
       <recent name="C:\Users\Papa\PHibernate\src\config" />
       <recent name="C:\Users\Papa\PHibernate\src\changeList" />
       <recent name="C:\Users\Papa\PHibernate\src" />
-    </key>
-    <key name="CopyFile.RECENT_KEYS">
-      <recent name="C:\Users\Papa\PHibernate" />
-      <recent name="C:\Users\Papa\PHibernate\test" />
-      <recent name="C:\Users\Papa\PHibernate\node_modules\QueryDSL-TypeScript" />
-      <recent name="C:\Users\Papa\PHibernate\node_modules" />
-      <recent name="C:\Users\Papa\PHibernate\core\repository" />
     </key>
   </component>
   <component name="RunManager" selected="Mocha.Mocha tests">
@@ -756,7 +775,7 @@
       <workItem from="1474339392365" duration="6335000" />
       <workItem from="1474435694315" duration="18759000" />
       <workItem from="1474590980674" duration="8500000" />
-      <workItem from="1474752964811" duration="10448000" />
+      <workItem from="1474752964811" duration="19229000" />
     </task>
     <servers />
   </component>
@@ -787,14 +806,14 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="520680000" />
+    <option name="totallyTimeSpent" value="529461000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="0" width="1932" height="1087" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TypeScript" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32704404" sideWeight="0.44942045" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12777191" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.12777191" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.59483665" order="7" side_tool="true" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3271028" sideWeight="0.40516332" order="1" side_tool="false" content_ui="tabs" />
@@ -851,20 +870,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/core/entity/metadata/ColumnDecorators.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="266">
-          <caret line="55" column="24" selection-start-line="55" selection-start-column="24" selection-end-line="55" selection-end-column="24" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/dao/EntityChangeDao.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="24" column="11" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/model/AbstractChangeRecord.ts" />
     <entry file="file://$PROJECT_DIR$/src/changeList/model/DateFieldChange.ts">
       <provider selected="true" editor-type-id="text-editor">
@@ -974,16 +979,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/config/PH.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="81" column="37" selection-start-line="81" selection-start-column="37" selection-end-line="81" selection-end-column="37" />
-          <folding>
-            <element signature="e#0#155#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/model/AbstractFieldChange.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="323">
@@ -1015,17 +1010,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityChange.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="181" column="49" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
-          <folding>
-            <element signature="e#0#215#0" expanded="false" />
-            <element signature="e#579#619#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1247,24 +1231,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/repository/EntityManager.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="489">
-          <caret line="189" column="0" selection-start-line="189" selection-start-column="0" selection-end-line="189" selection-end-column="0" />
-          <folding>
-            <element signature="e#42#133#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="391">
-          <caret line="76" column="12" selection-start-line="76" selection-start-column="12" selection-end-line="76" selection-end-column="12" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1276,11 +1242,63 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1037">
+          <caret line="67" column="37" selection-start-line="67" selection-start-column="37" selection-end-line="67" selection-end-column="37" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/package.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="2" column="34" selection-start-line="2" selection-start-column="34" selection-end-line="2" selection-end-column="34" />
+        <state relative-caret-position="221">
+          <caret line="13" column="26" selection-start-line="13" selection-start-column="26" selection-end-line="13" selection-end-column="26" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/src/core/entity/Entity.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="49" column="22" selection-start-line="49" selection-start-column="22" selection-end-line="49" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/node_modules/querydsl-typescript/lib/core/entity/Entity.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="212">
+          <caret line="31" column="30" selection-start-line="31" selection-start-column="30" selection-end-line="31" selection-end-column="30" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/config/PH.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="54">
+          <caret line="32" column="0" selection-start-line="32" selection-start-column="0" selection-end-line="32" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/repository/EntityManager.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="682">
+          <caret line="59" column="0" selection-start-line="59" selection-start-column="0" selection-end-line="63" selection-end-column="20" />
+          <folding>
+            <element signature="e#42#133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityChange.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2856">
+          <caret line="181" column="49" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
+          <folding>
+            <element signature="e#579#619#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>

@@ -30,14 +30,12 @@ export interface IEntityManager {
 
 	create<E>(
 		entityClass: {new (): E},
-		entity: E,
-		cascade?: CascadeType
+		entity: E
 	): Promise<E>;
 
 	delete<E>(
 		entityClass: {new (): E},
-		entity: E,
-		cascade?: CascadeType
+		entity: E
 	): Promise<E>;
 
 	find<E, IE extends IEntity>(
@@ -54,8 +52,7 @@ export interface IEntityManager {
 
 	save<E>(
 		entityClass: {new (): E},
-		entity: E,
-		cascade?: CascadeType
+		entity: E
 	): Promise<E>;
 
 	saveActiveChangeGroup():Promise<void>;
@@ -74,8 +71,7 @@ export interface IEntityManager {
 
 	update<E>(
 		entityClass: {new (): E},
-		entity: E,
-		cascade?: CascadeType
+		entity: E
 	): Promise<E>;
 }
 
