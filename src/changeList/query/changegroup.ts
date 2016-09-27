@@ -10,10 +10,11 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {ChangeGroup} from '../../../test/delta/model/changegroup.ts';
-import {PH, ProxyGenerator} from 'phibernate';
-import {EntityChange} from '../../../test/delta/model/entitychange.ts';
+import {ChangeGroup} from '../model/changegroup.ts';
+import {EntityChange} from '../model/entitychange.ts';
 import {IEntityChange, QEntityChange} from './entitychange.ts';
+import {PH} from "../../config/PH";
+import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IChangeGroup
@@ -87,7 +88,7 @@ export class QChangeGroup extends QEntity<QChangeGroup>
 	static searchOne(
 		entityClass: {new (): ChangeGroup},
 		queryDefinition:PHRawSQLQuery<IChangeGroup>,
-		subject?: Subject<ChangeGroup[]>
+		subject?: Subject<ChangeGroup>
 	): Observable<ChangeGroup> {
 			return PH.entityManager.searchOne<ChangeGroup, IChangeGroup>(ChangeGroup, queryDefinition, subject);
 	}

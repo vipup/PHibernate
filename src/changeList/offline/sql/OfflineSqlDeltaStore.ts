@@ -3,6 +3,7 @@ import {ILocalStoreAdaptor} from "../../../localStore/LocalStoreAdaptor";
 import {StubChangeGroup, IChangeGroup} from "../../model/ChangeGroup";
 import {IOfflineDeltaStoreConfig} from "../../../config/OfflineDeltaStoreConfig";
 import {IEntityChange} from "../../model/EntityChange";
+import {QChangeGroup} from "../../query/changegroup";
 /**
  * Created by Papa on 9/24/2016.
  */
@@ -13,6 +14,21 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		private localStore: ILocalStoreAdaptor,
 		public config:IOfflineDeltaStoreConfig
 	) {
+	}
+
+	async addRemoteChanges(
+		changeRecords:IChangeGroup[]
+	):Promise<IChangeGroup[]> {
+			let cg;
+			QChangeGroup.find({
+				select: {
+					id: null
+				},
+				from: [
+					cg = QChangeGroup.q
+				]
+			})
+			return null;
 	}
 
 	async addChange(

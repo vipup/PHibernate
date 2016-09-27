@@ -10,8 +10,9 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {BooleanFieldChange} from '../../../test/delta/model/booleanfieldchange.ts';
-import {PH, ProxyGenerator} from 'phibernate';
+import {BooleanFieldChange} from '../model/booleanfieldchange.ts';
+import {PH} from "../../config/PH";
+import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IBooleanFieldChange
@@ -76,7 +77,7 @@ export class QBooleanFieldChange extends QEntity<QBooleanFieldChange>
 	static searchOne(
 		entityClass: {new (): BooleanFieldChange},
 		queryDefinition:PHRawSQLQuery<IBooleanFieldChange>,
-		subject?: Subject<BooleanFieldChange[]>
+		subject?: Subject<BooleanFieldChange>
 	): Observable<BooleanFieldChange> {
 			return PH.entityManager.searchOne<BooleanFieldChange, IBooleanFieldChange>(BooleanFieldChange, queryDefinition, subject);
 	}

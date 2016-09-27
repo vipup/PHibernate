@@ -10,8 +10,9 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {DateFieldChange} from '../../../test/delta/model/datefieldchange.ts';
-import {PH, ProxyGenerator} from 'phibernate';
+import {DateFieldChange} from '../model/datefieldchange.ts';
+import {PH} from "../../config/PH";
+import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IDateFieldChange
@@ -76,7 +77,7 @@ export class QDateFieldChange extends QEntity<QDateFieldChange>
 	static searchOne(
 		entityClass: {new (): DateFieldChange},
 		queryDefinition:PHRawSQLQuery<IDateFieldChange>,
-		subject?: Subject<DateFieldChange[]>
+		subject?: Subject<DateFieldChange>
 	): Observable<DateFieldChange> {
 			return PH.entityManager.searchOne<DateFieldChange, IDateFieldChange>(DateFieldChange, queryDefinition, subject);
 	}

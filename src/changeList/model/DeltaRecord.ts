@@ -1,4 +1,4 @@
-import {Column, Id} from "querydsl-typescript";
+import {Column, Id, MappedSuperclass} from "querydsl-typescript";
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -6,6 +6,8 @@ import {Column, Id} from "querydsl-typescript";
 /**
  * Base record for all delta records
  */
+
+@MappedSuperclass()
 export abstract class DeltaRecord {
 
 	@Id()

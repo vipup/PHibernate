@@ -10,8 +10,9 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {NumberFieldChange} from '../../../test/delta/model/numberfieldchange.ts';
-import {PH, ProxyGenerator} from 'phibernate';
+import {NumberFieldChange} from '../model/numberfieldchange.ts';
+import {PH} from "../../config/PH";
+import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface INumberFieldChange
@@ -76,7 +77,7 @@ export class QNumberFieldChange extends QEntity<QNumberFieldChange>
 	static searchOne(
 		entityClass: {new (): NumberFieldChange},
 		queryDefinition:PHRawSQLQuery<INumberFieldChange>,
-		subject?: Subject<NumberFieldChange[]>
+		subject?: Subject<NumberFieldChange>
 	): Observable<NumberFieldChange> {
 			return PH.entityManager.searchOne<NumberFieldChange, INumberFieldChange>(NumberFieldChange, queryDefinition, subject);
 	}

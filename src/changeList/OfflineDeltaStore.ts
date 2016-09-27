@@ -1,12 +1,9 @@
-import {IDeltaStore} from "./DeltaStore";
-import {SharingAdaptor} from "delta-store";
 import {LocalStoreType} from "../localStore/LocalStoreApi";
 import {ILocalStoreAdaptor} from "../localStore/LocalStoreAdaptor";
 import {OfflineSqlDeltaStore} from "./offline/sql/OfflineSqlDeltaStore";
 import {IOfflineDeltaStoreConfig} from "../config/OfflineDeltaStoreConfig";
 import {IEntityChange} from "./model/EntityChange";
 import {IChangeGroup} from "./model/ChangeGroup";
-import {IChangeListConfig} from "../config/ChangeListConfig";
 /**
  * Created by Papa on 5/31/2016.
  */
@@ -14,6 +11,10 @@ import {IChangeListConfig} from "../config/ChangeListConfig";
 export interface IOfflineDeltaStore {
 
 	config:IOfflineDeltaStoreConfig;
+
+	addRemoteChanges(
+		changeRecords:IChangeGroup[]
+	):Promise<IChangeGroup[]>;
 
 	addChange(
 		changeRecord:IChangeGroup

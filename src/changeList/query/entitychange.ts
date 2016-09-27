@@ -10,18 +10,19 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {EntityChange} from '../../../test/delta/model/entitychange.ts';
-import {PH, ProxyGenerator} from 'phibernate';
-import {BooleanFieldChange} from '../../../test/delta/model/booleanfieldchange.ts';
+import {EntityChange} from '../model/entitychange.ts';
+import {BooleanFieldChange} from '../model/booleanfieldchange.ts';
 import {IBooleanFieldChange, QBooleanFieldChange} from './booleanfieldchange.ts';
-import {DateFieldChange} from '../../../test/delta/model/datefieldchange.ts';
+import {DateFieldChange} from '../model/datefieldchange.ts';
 import {IDateFieldChange, QDateFieldChange} from './datefieldchange.ts';
-import {NumberFieldChange} from '../../../test/delta/model/numberfieldchange.ts';
+import {NumberFieldChange} from '../model/numberfieldchange.ts';
 import {INumberFieldChange, QNumberFieldChange} from './numberfieldchange.ts';
-import {StringFieldChange} from '../../../test/delta/model/stringfieldchange.ts';
+import {StringFieldChange} from '../model/stringfieldchange.ts';
 import {IStringFieldChange, QStringFieldChange} from './stringfieldchange.ts';
-import {ChangeGroup} from '../../../test/delta/model/changegroup.ts';
+import {ChangeGroup} from '../model/changegroup.ts';
 import {IChangeGroup, QChangeGroup} from './changegroup.ts';
+import {PH} from "../../config/PH";
+import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IEntityChange
@@ -110,7 +111,7 @@ export class QEntityChange extends QEntity<QEntityChange>
 	static searchOne(
 		entityClass: {new (): EntityChange},
 		queryDefinition:PHRawSQLQuery<IEntityChange>,
-		subject?: Subject<EntityChange[]>
+		subject?: Subject<EntityChange>
 	): Observable<EntityChange> {
 			return PH.entityManager.searchOne<EntityChange, IEntityChange>(EntityChange, queryDefinition, subject);
 	}

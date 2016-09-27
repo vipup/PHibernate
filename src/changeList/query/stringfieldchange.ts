@@ -10,8 +10,9 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {StringFieldChange} from '../../../test/delta/model/stringfieldchange.ts';
-import {PH, ProxyGenerator} from 'phibernate';
+import {StringFieldChange} from '../model/stringfieldchange.ts';
+import {PH} from "../../config/PH";
+import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IStringFieldChange
@@ -76,7 +77,7 @@ export class QStringFieldChange extends QEntity<QStringFieldChange>
 	static searchOne(
 		entityClass: {new (): StringFieldChange},
 		queryDefinition:PHRawSQLQuery<IStringFieldChange>,
-		subject?: Subject<StringFieldChange[]>
+		subject?: Subject<StringFieldChange>
 	): Observable<StringFieldChange> {
 			return PH.entityManager.searchOne<StringFieldChange, IStringFieldChange>(StringFieldChange, queryDefinition, subject);
 	}
