@@ -10,12 +10,12 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {AbstractFieldChange} from '../model/abstractfieldchange.ts';
-import {IDeltaRecord, QDeltaRecord} from './deltarecord.ts';
+import {AbstractFieldChange} from '../model/abstractfieldchange';
+import {IDeltaRecord, QDeltaRecord} from './deltarecord';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
-import {EntityChange} from '../model/entitychange.ts';
-import {IEntityChange, QEntityChange} from './entitychange.ts';
+import {EntityChange} from '../model/entitychange';
+import {IEntityChange, QEntityChange} from './entitychange';
 
 //Entity Query
 export interface IAbstractFieldChange

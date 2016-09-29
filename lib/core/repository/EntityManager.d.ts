@@ -5,7 +5,7 @@ import { IDeltaStore } from "../../changeList/DeltaStore";
 import { IPersistenceConfig } from "../../config/PersistenceConfig";
 import { ILocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
 import { IOfflineDeltaStore } from "../../changeList/OfflineDeltaStore";
-import { IEntity, CascadeType, PHRawSQLQuery, PHSQLQuery } from "querydsl-typescript";
+import { IEntity, PHRawSQLQuery, PHSQLQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 export interface IEntityManager {
@@ -15,10 +15,10 @@ export interface IEntityManager {
     isOnline(): boolean;
     create<E>(entityClass: {
         new (): E;
-    }, entity: E, cascade?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
     delete<E>(entityClass: {
         new (): E;
-    }, entity: E, cascade?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
     find<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE): Promise<E[]>;
@@ -28,7 +28,7 @@ export interface IEntityManager {
     initialize(): Promise<any>;
     save<E>(entityClass: {
         new (): E;
-    }, entity: E, cascade?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
     saveActiveChangeGroup(): Promise<void>;
     search<E, IE extends IEntity>(entityClass: {
         new (): E;
@@ -38,7 +38,7 @@ export interface IEntityManager {
     }, iEntity: IE, subject?: Subject<E>): Observable<E>;
     update<E>(entityClass: {
         new (): E;
-    }, entity: E, cascade?: CascadeType): Promise<E>;
+    }, entity: E): Promise<E>;
 }
 export declare class EntityManager implements IEntityManager {
     config: IPersistenceConfig;

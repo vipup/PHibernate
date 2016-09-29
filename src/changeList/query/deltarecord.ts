@@ -10,7 +10,7 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {DeltaRecord} from '../model/deltarecord.ts';
+import {DeltaRecord} from '../model/deltarecord';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
 

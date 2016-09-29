@@ -7,6 +7,7 @@ import { IChangeGroup } from "./model/ChangeGroup";
  */
 export interface IOfflineDeltaStore {
     config: IOfflineDeltaStoreConfig;
+    addRemoteChanges(changeRecords: IChangeGroup[]): Promise<IChangeGroup[]>;
     addChange(changeRecord: IChangeGroup): Promise<IChangeGroup>;
     findChangesForEntitiesWithFieldsSinceTime(entityChanges: IEntityChange[]): Promise<IEntityChange[]>;
     findUnsyncedChanges(): Promise<IChangeGroup[]>;

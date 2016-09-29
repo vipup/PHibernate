@@ -10,8 +10,8 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {DateFieldChange} from '../model/datefieldchange.ts';
-import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange.ts';
+import {DateFieldChange} from '../model/datefieldchange';
+import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
 

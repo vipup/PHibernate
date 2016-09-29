@@ -10,20 +10,20 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IStringOperation,JSONStringOperation,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
-import {EntityChange} from '../model/entitychange.ts';
-import {IDeltaRecord, QDeltaRecord} from './deltarecord.ts';
+import {EntityChange} from '../model/entitychange';
+import {IDeltaRecord, QDeltaRecord} from './deltarecord';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
-import {BooleanFieldChange} from '../model/booleanfieldchange.ts';
-import {IBooleanFieldChange, QBooleanFieldChange} from './booleanfieldchange.ts';
-import {DateFieldChange} from '../model/datefieldchange.ts';
-import {IDateFieldChange, QDateFieldChange} from './datefieldchange.ts';
-import {NumberFieldChange} from '../model/numberfieldchange.ts';
-import {INumberFieldChange, QNumberFieldChange} from './numberfieldchange.ts';
-import {StringFieldChange} from '../model/stringfieldchange.ts';
-import {IStringFieldChange, QStringFieldChange} from './stringfieldchange.ts';
-import {ChangeGroup} from '../model/changegroup.ts';
-import {IChangeGroup, QChangeGroup} from './changegroup.ts';
+import {BooleanFieldChange} from '../model/booleanfieldchange';
+import {IBooleanFieldChange, QBooleanFieldChange} from './booleanfieldchange';
+import {DateFieldChange} from '../model/datefieldchange';
+import {IDateFieldChange, QDateFieldChange} from './datefieldchange';
+import {NumberFieldChange} from '../model/numberfieldchange';
+import {INumberFieldChange, QNumberFieldChange} from './numberfieldchange';
+import {StringFieldChange} from '../model/stringfieldchange';
+import {IStringFieldChange, QStringFieldChange} from './stringfieldchange';
+import {ChangeGroup} from '../model/changegroup';
+import {IChangeGroup, QChangeGroup} from './changegroup';
 
 //Entity Query
 export interface IEntityChange
