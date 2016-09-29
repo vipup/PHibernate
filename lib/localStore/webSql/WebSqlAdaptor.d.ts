@@ -3,7 +3,7 @@ import { IEntity, PHQuery, QEntity, SQLDialect } from "querydsl-typescript";
 import { Subject, Observable } from "rxjs";
 import { IdGeneration } from "../IdGenerator";
 import { SqlAdaptor, CascadeRecord } from "../SqlAdaptor";
-import { IChangeGroup } from "../../changeList/model/ChangeGroup";
+import { ChangeGroupApi } from "../../changeList/model/ChangeGroup";
 import { IEntityChange } from "../../changeList/model/EntityChange";
 import { IEntityManager } from "../../core/repository/EntityManager";
 export declare class WebSqlAdaptor extends SqlAdaptor {
@@ -21,10 +21,10 @@ export declare class WebSqlAdaptor extends SqlAdaptor {
     protected findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     handleError(error: any): void;
     initTable(transaction: any, lastEntityName: any, resolve: any, reject: any): void;
-    protected createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: IChangeGroup): Promise<void>;
-    protected deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: IChangeGroup): Promise<IEntityChange>;
+    protected createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<void>;
+    protected deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<IEntityChange>;
     private convertValueIn(value);
-    protected updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: IChangeGroup): Promise<void>;
+    protected updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<void>;
     search<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E>): Observable<E>;
     warn(message: string): void;

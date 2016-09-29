@@ -7,6 +7,16 @@ import {Column, Id, MappedSuperclass} from "querydsl-typescript";
  * Base record for all delta records
  */
 
+
+export interface DeltaRecordApi {
+
+	id: string;
+	createDateTime: Date;
+	createDeviceId: string;
+	createUserId: string;
+
+}
+
 @MappedSuperclass()
 export abstract class DeltaRecord {
 

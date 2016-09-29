@@ -19,7 +19,7 @@ import {PH} from "../../config/PH";
 import {EntityUtils} from "../../shared/EntityUtils";
 import {Subject} from "rxjs/Subject";
 import {Transactional} from "../metadata/decorators";
-import {ChangeGroup, StubChangeGroup, IChangeGroup} from "../../changeList/model/ChangeGroup";
+import {ChangeGroup, StubChangeGroup, ChangeGroupApi} from "../../changeList/model/ChangeGroup";
 
 export interface IEntityManager {
 
@@ -173,7 +173,7 @@ export class EntityManager implements IEntityManager {
 		operation: 'create' | 'delete' | 'persist' | 'update'
 	): Promise<E> {
 
-		let changeGroup: IChangeGroup;
+		let changeGroup: ChangeGroupApi;
 		await this.localStore[operation](entityClass, entity, this.localStore.activeChangeGroup);
 
 		return entity;

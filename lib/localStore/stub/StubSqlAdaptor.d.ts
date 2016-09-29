@@ -1,5 +1,5 @@
 import { SqlAdaptor, CascadeRecord } from "../SqlAdaptor";
-import { IChangeGroup } from "../../changeList/model/ChangeGroup";
+import { ChangeGroupApi } from "../../changeList/model/ChangeGroup";
 import { SQLDialect, QEntity, PHQuery, IEntity } from "querydsl-typescript";
 import { IEntityChange } from "../../changeList/model/EntityChange";
 import { Subject, Observable } from "rxjs";
@@ -14,9 +14,9 @@ export declare class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAda
     wrapInTransaction(callback: () => Promise<any>): Promise<any>;
     protected getDialect(): SQLDialect;
     protected findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
-    protected createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: IChangeGroup): Promise<void>;
-    protected deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: IChangeGroup): Promise<IEntityChange>;
-    protected updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: IChangeGroup): Promise<void>;
+    protected createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<void>;
+    protected deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<IEntityChange>;
+    protected updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<void>;
     search<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E>): Observable<E>;
     warn(message: string): void;

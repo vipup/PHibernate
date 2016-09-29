@@ -1,4 +1,3 @@
-import {ILocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {LocalStoreSetupInfo, LocalStoreType} from "../LocalStoreApi";
 import {IEntity, PHQuery, EntityMetadata, QEntity, SQLDialect} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
@@ -7,7 +6,7 @@ import {DDLManager} from "./DDLManager";
 import {IdGeneration} from "../IdGenerator";
 import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
-import {IChangeGroup, ChangeGroup} from "../../changeList/model/ChangeGroup";
+import {ChangeGroupApi, ChangeGroup} from "../../changeList/model/ChangeGroup";
 import {IEntityChange} from "../../changeList/model/EntityChange";
 import {IEntityManager} from "../../core/repository/EntityManager";
 
@@ -195,7 +194,7 @@ export class WebSqlAdaptor extends SqlAdaptor {
 		columnNames: string[],
 		values: any[],
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<void> {
 		let nativeValues = values.map((value) => this.convertValueIn(value));
 		let valuesBindString = values.map(() => '?').join(', ');
@@ -224,7 +223,7 @@ export class WebSqlAdaptor extends SqlAdaptor {
 		entity: any,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<IEntityChange> {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
@@ -285,7 +284,7 @@ export class WebSqlAdaptor extends SqlAdaptor {
 		idProperty: string,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<void> {
 		let setFragments: string[];
 		let nativeValues = values.map((value) => this.convertValueIn(value));

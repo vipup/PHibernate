@@ -1,5 +1,5 @@
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
-import {ChangeGroup, IChangeGroup} from "../../changeList/model/ChangeGroup";
+import {ChangeGroup, ChangeGroupApi} from "../../changeList/model/ChangeGroup";
 import {SQLDialect, QEntity, EntityMetadata, PHQuery, IEntity} from "querydsl-typescript";
 import {IEntityChange} from "../../changeList/model/EntityChange";
 import {Subject, Observable} from "rxjs";
@@ -61,7 +61,7 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 		columnNames: string[],
 		values: any[],
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<void> {
 		if (cascadeRecords.length) {
 			for (let i = 0; i < cascadeRecords.length; i++) {
@@ -76,7 +76,7 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 		entity: any,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<IEntityChange> {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
@@ -99,7 +99,7 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 		idProperty: string,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<void> {
 		if (cascadeRecords.length) {
 			for (let i = 0; i < cascadeRecords.length; i++) {

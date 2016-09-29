@@ -4,6 +4,12 @@
 /**
  * Base record for all delta records
  */
+export interface DeltaRecordApi {
+    id: string;
+    createDateTime: Date;
+    createDeviceId: string;
+    createUserId: string;
+}
 export declare abstract class DeltaRecord {
     id: string;
     createDeviceId: string;

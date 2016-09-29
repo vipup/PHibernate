@@ -19,7 +19,7 @@ import {PlatformUtils} from "../../shared/PlatformUtils";
 import {EntityProxy} from "../../core/proxy/Proxies";
 import {NameMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {LocalStoreType} from "../LocalStoreApi";
-import {IChangeGroup} from "../../changeList/model/ChangeGroup";
+import {ChangeGroupApi} from "../../changeList/model/ChangeGroup";
 
 declare function require(moduleName: string): any;
 
@@ -30,7 +30,7 @@ const PouchDB = require('pouchdb');
 
 export class PouchDbAdaptor implements ILocalStoreAdaptor {
 
-	activeChangeGroup:IChangeGroup;
+	activeChangeGroup:ChangeGroupApi;
 	localDB: pouchDB.IPouchDB;
 	type:LocalStoreType = LocalStoreType.POUCH_DB;
 

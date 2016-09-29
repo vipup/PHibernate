@@ -4,12 +4,12 @@ import { PHGraphQuery, IEntity, PouchDbGraphQuery } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from 'rxjs/Subject';
 import { LocalStoreType } from "../LocalStoreApi";
-import { IChangeGroup } from "../../changeList/model/ChangeGroup";
+import { ChangeGroupApi } from "../../changeList/model/ChangeGroup";
 /**
  * Created by Papa on 5/28/2016.
  */
 export declare class PouchDbAdaptor implements ILocalStoreAdaptor {
-    activeChangeGroup: IChangeGroup;
+    activeChangeGroup: ChangeGroupApi;
     localDB: pouchDB.IPouchDB;
     type: LocalStoreType;
     wrapInTransaction(callback: () => void): void;

@@ -7,7 +7,7 @@ import {PHMetadataUtils, NameMetadataUtils} from "../core/metadata/PHMetadataUti
 import {Observable, Subject} from "rxjs";
 import {IdGenerator, IdGeneration, getIdGenerator} from "./IdGenerator";
 import {UpdateCache} from "../core/repository/UpdateCache";
-import {IChangeGroup} from "../changeList/model/ChangeGroup";
+import {ChangeGroupApi} from "../changeList/model/ChangeGroup";
 import {IEntityChange} from "../changeList/model/EntityChange";
 import {IEntityManager} from "../core/repository/EntityManager";
 import {LocalStoreType, LocalStoreSetupInfo} from "./LocalStoreApi";
@@ -34,7 +34,7 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 
 	protected idGenerator: IdGenerator;
 
-	protected currentChangeGroup: IChangeGroup;
+	protected currentChangeGroup: ChangeGroupApi;
 
 	constructor(
 		protected entityManager: IEntityManager,
@@ -55,14 +55,14 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		}
 	}
 
-	get activeChangeGroup(): IChangeGroup {
+	get activeChangeGroup(): ChangeGroupApi {
 		return this.currentChangeGroup;
 	}
 
 	async create<E>(
 		entityName: string,
 		entity: E,
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<IEntityChange> {
 
 		let qEntity = PH.qEntityMap[entityName];
@@ -154,13 +154,13 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		columnNames: string[],
 		values: any[],
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	);
 
 	async delete<E>(
 		entityName: string,
 		entity: E,
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<IEntityChange> {
 
 		let qEntity = PH.qEntityMap[entityName];
@@ -255,13 +255,13 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		entity: any,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	);
 
 	async update<E>(
 		entityName: string,
 		entity: E,
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise<IEntityChange> {
 		/**
 		 * On an update operation, can a nested create contain an update?
@@ -415,7 +415,7 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		idProperty: string,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	);
 
 	async find < E, IE extends IEntity >(
@@ -455,7 +455,7 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 	async save<E>(
 		entityName: string,
 		entity: E,
-		changeGroup: IChangeGroup
+		changeGroup: ChangeGroupApi
 	): Promise < IEntityChange > {
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;

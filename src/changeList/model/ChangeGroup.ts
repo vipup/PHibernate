@@ -1,6 +1,6 @@
 import {CascadeType, Column, Entity, OneToMany, Table} from "querydsl-typescript";
 import {EntityChange, EntityChangeType, StubEntityChange, IEntityChange} from "./EntityChange";
-import {DeltaRecord} from "./DeltaRecord";
+import {DeltaRecord, DeltaRecordApi} from "./DeltaRecord";
 import {AbstractFieldChange} from "./AbstractFieldChange";
 import {IdGenerator} from "../../localStore/IdGenerator";
 import {PlatformUtils} from "../../shared/PlatformUtils";
@@ -15,7 +15,14 @@ export enum SyncStatus {
 	REMOTE_CHANGES_SYNC_PENDING
 }
 
-export interface IChangeGroup {
+export interface ChangeGroupApi extends DeltaRecordApi {
+
+	entityChanges: EntityChange[];
+	groupIndexInMillisecond: number;
+	numberOfEntitiesInGroup: number;
+	syncStatus: SyncStatus;
+	type: string;
+
 	addNewCreateEntityChange(
 		entityName: string,
 		entity: any,
@@ -38,7 +45,7 @@ export interface IChangeGroup {
 
 @Entity()
 @Table({name: "CHANGE_GROUP"})
-export class ChangeGroup extends DeltaRecord implements IChangeGroup {
+export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 
 	static getNewChangeGroup(
 		type: string,
@@ -62,7 +69,7 @@ export class ChangeGroup extends DeltaRecord implements IChangeGroup {
 	}
 
 	@Column({name: "TYPE"})
-	type:string;
+	type: string;
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'changeGroup'})
 	entityChanges: EntityChange[] = [];
@@ -145,7 +152,18 @@ export class ChangeGroup extends DeltaRecord implements IChangeGroup {
 	}
 }
 
-export class StubChangeGroup implements IChangeGroup {
+export class StubChangeGroup implements ChangeGroupApi {
+
+	id: string;
+	createDateTime: Date;
+	createDeviceId: string;
+	createUserId: string;
+
+	entityChanges: EntityChange[];
+	groupIndexInMillisecond: number;
+	numberOfEntitiesInGroup: number;
+	syncStatus: SyncStatus;
+	type: string;
 
 	addNewCreateEntityChange(
 		entityName: string,
