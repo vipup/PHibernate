@@ -5,6 +5,7 @@ import {IOfflineDeltaStoreConfig} from "../../../config/OfflineDeltaStoreConfig"
 import {IEntityChange} from "../../model/EntityChange";
 import {QChangeGroup} from "../../query/changegroup";
 import {and, or} from "querydsl-typescript";
+import {QEntityChange} from "../../query/entitychange";
 /**
  * Created by Papa on 9/24/2016.
  */
@@ -20,23 +21,36 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	async addRemoteChanges(
 		changeRecords: ChangeGroupApi[]
 	): Promise<ChangeGroupApi[]> {
-		let earliestDate = changeRecords.map((changeRecord) => changeRecord.createDateTime)
-			.reduce((previousDate, currentDate) => {
-				if (previousDate.getTime() > currentDate.getTime()) {
-					return currentDate;
-				}
-				return previousDate;
+		let entityIdMap: {[entityId: string]: boolean} = {};
+		let earliestDate = changeRecords.map((changeRecord) => {
+			changeRecord.entityChanges.forEach((entityChange) => {
+				entityChange.changedEntityId;
+				entityIdMap[entityChange.changedEntityId] = true;
 			});
-		let cg;
-		TODO: work here next
+			return changeRecord.createDateTime;
+		}).reduce((previousDate, currentDate) => {
+			if (previousDate.getTime() > currentDate.getTime()) {
+				return currentDate;
+			}
+			return previousDate;
+		});
+		let entityIds:string[] = [];
+		for(let entityId in entityIdMap) {
+			entityIds.push(entityId);
+		}
+		let cg:, ec;
 		let localChangeRecords = await QChangeGroup.find({
 			select: {
 				id: null
 			},
 			from: [
-				cg = QChangeGroup.from
+				cg = QChangeGroup.from,
+				ec = cg.entityChanges.innerJoin()
 			],
-			where: and(cg.createDateTime.greaterThanOrEquals(earliestDate))
+			where: and(
+				cg.createDateTime.greaterThanOrEquals(earliestDate),
+				ec.changedEntityId.isIn(entityIds)
+			)
 		});
 		return null;
 	}
