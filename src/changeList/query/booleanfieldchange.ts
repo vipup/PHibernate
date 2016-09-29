@@ -11,12 +11,13 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {BooleanFieldChange} from '../model/booleanfieldchange.ts';
-import {PH} from "../../config/PH";
-import {Observable, Subject} from "rxjs";
+import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange.ts';
+import {PH} from '../../config/PH';
+import {Observable, Subject} from 'rxjs';
 
 //Entity Query
 export interface IBooleanFieldChange
-    extends IEntity
+    extends IAbstractFieldChange
 {
 		// Properties
     newValue?: boolean;
@@ -28,33 +29,29 @@ export interface IBooleanFieldChange
 
 
 // Entity Query Implementation
-export class QBooleanFieldChange extends QEntity<QBooleanFieldChange>
+export class QBooleanFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<IQ>
 {
-	static q = new QBooleanFieldChange(true);  
-
-	// Static Field accessors
-	static newValue = QBooleanFieldChange.q.newValue;
-	static oldValue = QBooleanFieldChange.q.oldValue;
-
-	// Static Relation accessors
+	static from = new QBooleanFieldChange(BooleanFieldChange, 'BooleanFieldChange', 'BooleanFieldChange');  
 
 	// Fields
-	newValue = new QBooleanField<QBooleanFieldChange>(this, QBooleanFieldChange, 'BooleanFieldChange', 'newValue');
-	oldValue = new QBooleanField<QBooleanFieldChange>(this, QBooleanFieldChange, 'BooleanFieldChange', 'oldValue');
+	newValue = new QBooleanField<QBooleanFieldChange<IQ>>(this, <any>QBooleanFieldChange, 'BooleanFieldChange', 'newValue');
+	oldValue = new QBooleanField<QBooleanFieldChange<IQ>>(this, <any>QBooleanFieldChange, 'BooleanFieldChange', 'oldValue');
 
 	// Relations
 
 	constructor(
-		isTemplate:boolean = false
+	entityConstructor: {new(): any},
+	  entityName: string,
+		alias: string
 	) {
-		super(BooleanFieldChange, 'BooleanFieldChange', 'BooleanFieldChange');
+		super(entityConstructor, entityName, alias);
 	}
 
 	toJSON():any {
 		throw 'Not Implemented';
 	}
-
-	static async find(
+	
+			static async find(
 		queryDefinition:PHRawSQLQuery<IBooleanFieldChange>
 	):Promise<BooleanFieldChange[]> {
 			return await PH.entityManager.find<BooleanFieldChange, IBooleanFieldChange>(BooleanFieldChange, queryDefinition);
@@ -105,7 +102,7 @@ export class QBooleanFieldChange extends QEntity<QBooleanFieldChange>
 	):Promise<BooleanFieldChange> {
 			return await PH.entityManager.save<BooleanFieldChange>(BooleanFieldChange, entity);
 	}
-	
+
 }
 
-PH.addQEntity(BooleanFieldChange, QBooleanFieldChange.q);
+PH.addQEntity(BooleanFieldChange, QBooleanFieldChange.from);

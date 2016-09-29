@@ -11,14 +11,15 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {ChangeGroup} from '../model/changegroup.ts';
+import {IDeltaRecord, QDeltaRecord} from './deltarecord.ts';
+import {PH} from '../../config/PH';
+import {Observable, Subject} from 'rxjs';
 import {EntityChange} from '../model/entitychange.ts';
 import {IEntityChange, QEntityChange} from './entitychange.ts';
-import {PH} from "../../config/PH";
-import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IChangeGroup
-    extends IEntity
+    extends IDeltaRecord
 {
 		// Properties
     type?: string;
@@ -33,39 +34,32 @@ export interface IChangeGroup
 
 
 // Entity Query Implementation
-export class QChangeGroup extends QEntity<QChangeGroup>
+export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 {
-	static q = new QChangeGroup(true);  
-
-	// Static Field accessors
-	static type = QChangeGroup.q.type;
-	static numberOfEntitiesInGroup = QChangeGroup.q.numberOfEntitiesInGroup;
-	static groupIndexInMillisecond = QChangeGroup.q.groupIndexInMillisecond;
-	static syncStatus = QChangeGroup.q.syncStatus;
-
-	// Static Relation accessors
-	static entityChanges = QChangeGroup.q.entityChanges;
+	static from = new QChangeGroup(ChangeGroup, 'ChangeGroup', 'ChangeGroup');  
 
 	// Fields
-	type = new QStringField<QChangeGroup>(this, QChangeGroup, 'ChangeGroup', 'type');
-	numberOfEntitiesInGroup = new QNumberField<QChangeGroup>(this, QChangeGroup, 'ChangeGroup', 'numberOfEntitiesInGroup');
-	groupIndexInMillisecond = new QNumberField<QChangeGroup>(this, QChangeGroup, 'ChangeGroup', 'groupIndexInMillisecond');
-	syncStatus = new QNumberField<QChangeGroup>(this, QChangeGroup, 'ChangeGroup', 'syncStatus');
+	type = new QStringField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'type');
+	numberOfEntitiesInGroup = new QNumberField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'numberOfEntitiesInGroup');
+	groupIndexInMillisecond = new QNumberField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'groupIndexInMillisecond');
+	syncStatus = new QNumberField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'syncStatus');
 
 	// Relations
-	entityChanges = new QRelation<QEntityChange, EntityChange, QChangeGroup>(this, QChangeGroup, RelationType.ONE_TO_MANY, 'EntityChange', 'entityChanges', EntityChange, QEntityChange);
+	entityChanges = new QRelation<QEntityChange<IQ>, EntityChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, 'EntityChange', 'entityChanges', EntityChange, QEntityChange);
 
 	constructor(
-		isTemplate:boolean = false
+	entityConstructor: {new(): any},
+	  entityName: string,
+		alias: string
 	) {
-		super(ChangeGroup, 'ChangeGroup', 'ChangeGroup');
+		super(entityConstructor, entityName, alias);
 	}
 
 	toJSON():any {
 		throw 'Not Implemented';
 	}
-
-	static async find(
+	
+			static async find(
 		queryDefinition:PHRawSQLQuery<IChangeGroup>
 	):Promise<ChangeGroup[]> {
 			return await PH.entityManager.find<ChangeGroup, IChangeGroup>(ChangeGroup, queryDefinition);
@@ -116,7 +110,7 @@ export class QChangeGroup extends QEntity<QChangeGroup>
 	):Promise<ChangeGroup> {
 			return await PH.entityManager.save<ChangeGroup>(ChangeGroup, entity);
 	}
-	
+
 }
 
-PH.addQEntity(ChangeGroup, QChangeGroup.q);
+PH.addQEntity(ChangeGroup, QChangeGroup.from);

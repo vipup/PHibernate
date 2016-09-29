@@ -11,12 +11,13 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {NumberFieldChange} from '../model/numberfieldchange.ts';
-import {PH} from "../../config/PH";
-import {Observable, Subject} from "rxjs";
+import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange.ts';
+import {PH} from '../../config/PH';
+import {Observable, Subject} from 'rxjs';
 
 //Entity Query
 export interface INumberFieldChange
-    extends IEntity
+    extends IAbstractFieldChange
 {
 		// Properties
     newValue?: number;
@@ -28,33 +29,29 @@ export interface INumberFieldChange
 
 
 // Entity Query Implementation
-export class QNumberFieldChange extends QEntity<QNumberFieldChange>
+export class QNumberFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<IQ>
 {
-	static q = new QNumberFieldChange(true);  
-
-	// Static Field accessors
-	static newValue = QNumberFieldChange.q.newValue;
-	static oldValue = QNumberFieldChange.q.oldValue;
-
-	// Static Relation accessors
+	static from = new QNumberFieldChange(NumberFieldChange, 'NumberFieldChange', 'NumberFieldChange');  
 
 	// Fields
-	newValue = new QNumberField<QNumberFieldChange>(this, QNumberFieldChange, 'NumberFieldChange', 'newValue');
-	oldValue = new QNumberField<QNumberFieldChange>(this, QNumberFieldChange, 'NumberFieldChange', 'oldValue');
+	newValue = new QNumberField<QNumberFieldChange<IQ>>(this, <any>QNumberFieldChange, 'NumberFieldChange', 'newValue');
+	oldValue = new QNumberField<QNumberFieldChange<IQ>>(this, <any>QNumberFieldChange, 'NumberFieldChange', 'oldValue');
 
 	// Relations
 
 	constructor(
-		isTemplate:boolean = false
+	entityConstructor: {new(): any},
+	  entityName: string,
+		alias: string
 	) {
-		super(NumberFieldChange, 'NumberFieldChange', 'NumberFieldChange');
+		super(entityConstructor, entityName, alias);
 	}
 
 	toJSON():any {
 		throw 'Not Implemented';
 	}
-
-	static async find(
+	
+			static async find(
 		queryDefinition:PHRawSQLQuery<INumberFieldChange>
 	):Promise<NumberFieldChange[]> {
 			return await PH.entityManager.find<NumberFieldChange, INumberFieldChange>(NumberFieldChange, queryDefinition);
@@ -105,7 +102,7 @@ export class QNumberFieldChange extends QEntity<QNumberFieldChange>
 	):Promise<NumberFieldChange> {
 			return await PH.entityManager.save<NumberFieldChange>(NumberFieldChange, entity);
 	}
-	
+
 }
 
-PH.addQEntity(NumberFieldChange, QNumberFieldChange.q);
+PH.addQEntity(NumberFieldChange, QNumberFieldChange.from);

@@ -11,12 +11,13 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {DateFieldChange} from '../model/datefieldchange.ts';
-import {PH} from "../../config/PH";
-import {Observable, Subject} from "rxjs";
+import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange.ts';
+import {PH} from '../../config/PH';
+import {Observable, Subject} from 'rxjs';
 
 //Entity Query
 export interface IDateFieldChange
-    extends IEntity
+    extends IAbstractFieldChange
 {
 		// Properties
     newValue?: Date;
@@ -28,33 +29,29 @@ export interface IDateFieldChange
 
 
 // Entity Query Implementation
-export class QDateFieldChange extends QEntity<QDateFieldChange>
+export class QDateFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<IQ>
 {
-	static q = new QDateFieldChange(true);  
-
-	// Static Field accessors
-	static newValue = QDateFieldChange.q.newValue;
-	static oldValue = QDateFieldChange.q.oldValue;
-
-	// Static Relation accessors
+	static from = new QDateFieldChange(DateFieldChange, 'DateFieldChange', 'DateFieldChange');  
 
 	// Fields
-	newValue = new QDateField<QDateFieldChange>(this, QDateFieldChange, 'DateFieldChange', 'newValue');
-	oldValue = new QDateField<QDateFieldChange>(this, QDateFieldChange, 'DateFieldChange', 'oldValue');
+	newValue = new QDateField<QDateFieldChange<IQ>>(this, <any>QDateFieldChange, 'DateFieldChange', 'newValue');
+	oldValue = new QDateField<QDateFieldChange<IQ>>(this, <any>QDateFieldChange, 'DateFieldChange', 'oldValue');
 
 	// Relations
 
 	constructor(
-		isTemplate:boolean = false
+	entityConstructor: {new(): any},
+	  entityName: string,
+		alias: string
 	) {
-		super(DateFieldChange, 'DateFieldChange', 'DateFieldChange');
+		super(entityConstructor, entityName, alias);
 	}
 
 	toJSON():any {
 		throw 'Not Implemented';
 	}
-
-	static async find(
+	
+			static async find(
 		queryDefinition:PHRawSQLQuery<IDateFieldChange>
 	):Promise<DateFieldChange[]> {
 			return await PH.entityManager.find<DateFieldChange, IDateFieldChange>(DateFieldChange, queryDefinition);
@@ -105,7 +102,7 @@ export class QDateFieldChange extends QEntity<QDateFieldChange>
 	):Promise<DateFieldChange> {
 			return await PH.entityManager.save<DateFieldChange>(DateFieldChange, entity);
 	}
-	
+
 }
 
-PH.addQEntity(DateFieldChange, QDateFieldChange.q);
+PH.addQEntity(DateFieldChange, QDateFieldChange.from);

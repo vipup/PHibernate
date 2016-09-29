@@ -11,6 +11,9 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {EntityChange} from '../model/entitychange.ts';
+import {IDeltaRecord, QDeltaRecord} from './deltarecord.ts';
+import {PH} from '../../config/PH';
+import {Observable, Subject} from 'rxjs';
 import {BooleanFieldChange} from '../model/booleanfieldchange.ts';
 import {IBooleanFieldChange, QBooleanFieldChange} from './booleanfieldchange.ts';
 import {DateFieldChange} from '../model/datefieldchange.ts';
@@ -21,12 +24,10 @@ import {StringFieldChange} from '../model/stringfieldchange.ts';
 import {IStringFieldChange, QStringFieldChange} from './stringfieldchange.ts';
 import {ChangeGroup} from '../model/changegroup.ts';
 import {IChangeGroup, QChangeGroup} from './changegroup.ts';
-import {PH} from "../../config/PH";
-import {Observable, Subject} from "rxjs";
 
 //Entity Query
 export interface IEntityChange
-    extends IEntity
+    extends IDeltaRecord
 {
 		// Properties
     entityName?: string;
@@ -46,49 +47,37 @@ export interface IEntityChange
 
 
 // Entity Query Implementation
-export class QEntityChange extends QEntity<QEntityChange>
+export class QEntityChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 {
-	static q = new QEntityChange(true);  
-
-	// Static Field accessors
-	static entityName = QEntityChange.q.entityName;
-	static changeType = QEntityChange.q.changeType;
-	static changedEntityId = QEntityChange.q.changedEntityId;
-	static entityChangeIdInGroup = QEntityChange.q.entityChangeIdInGroup;
-	static numberOfFieldsInEntity = QEntityChange.q.numberOfFieldsInEntity;
-
-	// Static Relation accessors
-	static booleanFieldChanges = QEntityChange.q.booleanFieldChanges;
-	static dateFieldChanges = QEntityChange.q.dateFieldChanges;
-	static numberFieldChanges = QEntityChange.q.numberFieldChanges;
-	static stringFieldChanges = QEntityChange.q.stringFieldChanges;
-	static changeGroup = QEntityChange.q.changeGroup;
+	static from = new QEntityChange(EntityChange, 'EntityChange', 'EntityChange');  
 
 	// Fields
-	entityName = new QStringField<QEntityChange>(this, QEntityChange, 'EntityChange', 'entityName');
-	changeType = new QNumberField<QEntityChange>(this, QEntityChange, 'EntityChange', 'changeType');
-	changedEntityId = new QStringField<QEntityChange>(this, QEntityChange, 'EntityChange', 'changedEntityId');
-	entityChangeIdInGroup = new QNumberField<QEntityChange>(this, QEntityChange, 'EntityChange', 'entityChangeIdInGroup');
-	numberOfFieldsInEntity = new QNumberField<QEntityChange>(this, QEntityChange, 'EntityChange', 'numberOfFieldsInEntity');
+	entityName = new QStringField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'entityName');
+	changeType = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'changeType');
+	changedEntityId = new QStringField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'changedEntityId');
+	entityChangeIdInGroup = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'entityChangeIdInGroup');
+	numberOfFieldsInEntity = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'numberOfFieldsInEntity');
 
 	// Relations
-	booleanFieldChanges = new QRelation<QBooleanFieldChange, BooleanFieldChange, QEntityChange>(this, QEntityChange, RelationType.ONE_TO_MANY, 'BooleanFieldChange', 'booleanFieldChanges', BooleanFieldChange, QBooleanFieldChange);
-	dateFieldChanges = new QRelation<QDateFieldChange, DateFieldChange, QEntityChange>(this, QEntityChange, RelationType.ONE_TO_MANY, 'DateFieldChange', 'dateFieldChanges', DateFieldChange, QDateFieldChange);
-	numberFieldChanges = new QRelation<QNumberFieldChange, NumberFieldChange, QEntityChange>(this, QEntityChange, RelationType.ONE_TO_MANY, 'NumberFieldChange', 'numberFieldChanges', NumberFieldChange, QNumberFieldChange);
-	stringFieldChanges = new QRelation<QStringFieldChange, StringFieldChange, QEntityChange>(this, QEntityChange, RelationType.ONE_TO_MANY, 'StringFieldChange', 'stringFieldChanges', StringFieldChange, QStringFieldChange);
-	changeGroup = new QRelation<QChangeGroup, ChangeGroup, QEntityChange>(this, QEntityChange, RelationType.MANY_TO_ONE, 'ChangeGroup', 'changeGroup', ChangeGroup, QChangeGroup);
+	booleanFieldChanges = new QRelation<QBooleanFieldChange<IQ>, BooleanFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'BooleanFieldChange', 'booleanFieldChanges', BooleanFieldChange, QBooleanFieldChange);
+	dateFieldChanges = new QRelation<QDateFieldChange<IQ>, DateFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'DateFieldChange', 'dateFieldChanges', DateFieldChange, QDateFieldChange);
+	numberFieldChanges = new QRelation<QNumberFieldChange<IQ>, NumberFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'NumberFieldChange', 'numberFieldChanges', NumberFieldChange, QNumberFieldChange);
+	stringFieldChanges = new QRelation<QStringFieldChange<IQ>, StringFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'StringFieldChange', 'stringFieldChanges', StringFieldChange, QStringFieldChange);
+	changeGroup = new QRelation<QChangeGroup<IQ>, ChangeGroup, QEntityChange<any>>(this, <any>QEntityChange, RelationType.MANY_TO_ONE, 'ChangeGroup', 'changeGroup', ChangeGroup, QChangeGroup);
 
 	constructor(
-		isTemplate:boolean = false
+	entityConstructor: {new(): any},
+	  entityName: string,
+		alias: string
 	) {
-		super(EntityChange, 'EntityChange', 'EntityChange');
+		super(entityConstructor, entityName, alias);
 	}
 
 	toJSON():any {
 		throw 'Not Implemented';
 	}
-
-	static async find(
+	
+			static async find(
 		queryDefinition:PHRawSQLQuery<IEntityChange>
 	):Promise<EntityChange[]> {
 			return await PH.entityManager.find<EntityChange, IEntityChange>(EntityChange, queryDefinition);
@@ -139,7 +128,7 @@ export class QEntityChange extends QEntity<QEntityChange>
 	):Promise<EntityChange> {
 			return await PH.entityManager.save<EntityChange>(EntityChange, entity);
 	}
-	
+
 }
 
-PH.addQEntity(EntityChange, QEntityChange.q);
+PH.addQEntity(EntityChange, QEntityChange.from);

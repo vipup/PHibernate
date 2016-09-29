@@ -11,12 +11,13 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		PHRawSQLQuery,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {StringFieldChange} from '../model/stringfieldchange.ts';
+import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange.ts';
 import {PH} from "../../config/PH";
-import {Observable, Subject} from "rxjs";
+import {Observable, Subject} from 'rxjs';
 
 //Entity Query
 export interface IStringFieldChange
-    extends IEntity
+    extends IAbstractFieldChange
 {
 		// Properties
     newValue?: string;
@@ -28,33 +29,29 @@ export interface IStringFieldChange
 
 
 // Entity Query Implementation
-export class QStringFieldChange extends QEntity<QStringFieldChange>
+export class QStringFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<IQ>
 {
-	static q = new QStringFieldChange(true);  
-
-	// Static Field accessors
-	static newValue = QStringFieldChange.q.newValue;
-	static oldValue = QStringFieldChange.q.oldValue;
-
-	// Static Relation accessors
+	static from = new QStringFieldChange(StringFieldChange, 'StringFieldChange', 'StringFieldChange');  
 
 	// Fields
-	newValue = new QStringField<QStringFieldChange>(this, QStringFieldChange, 'StringFieldChange', 'newValue');
-	oldValue = new QStringField<QStringFieldChange>(this, QStringFieldChange, 'StringFieldChange', 'oldValue');
+	newValue = new QStringField<QStringFieldChange<IQ>>(this, <any>QStringFieldChange, 'StringFieldChange', 'newValue');
+	oldValue = new QStringField<QStringFieldChange<IQ>>(this, <any>QStringFieldChange, 'StringFieldChange', 'oldValue');
 
 	// Relations
 
 	constructor(
-		isTemplate:boolean = false
+	entityConstructor: {new(): any},
+	  entityName: string,
+		alias: string
 	) {
-		super(StringFieldChange, 'StringFieldChange', 'StringFieldChange');
+		super(entityConstructor, entityName, alias);
 	}
 
 	toJSON():any {
 		throw 'Not Implemented';
 	}
-
-	static async find(
+	
+			static async find(
 		queryDefinition:PHRawSQLQuery<IStringFieldChange>
 	):Promise<StringFieldChange[]> {
 			return await PH.entityManager.find<StringFieldChange, IStringFieldChange>(StringFieldChange, queryDefinition);
@@ -105,7 +102,7 @@ export class QStringFieldChange extends QEntity<QStringFieldChange>
 	):Promise<StringFieldChange> {
 			return await PH.entityManager.save<StringFieldChange>(StringFieldChange, entity);
 	}
-	
+
 }
 
-PH.addQEntity(StringFieldChange, QStringFieldChange.q);
+PH.addQEntity(StringFieldChange, QStringFieldChange.from);
