@@ -6,9 +6,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js" afterPath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js.map" afterPath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js.map" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" afterPath="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" />
     </list>
     <ignored path="PHibernate.iws" />
@@ -28,14 +25,14 @@
     <favorites_list name="PHibernate" />
   </component>
   <component name="FileEditorManager">
-    <splitter split-orientation="horizontal" split-proportion="0.4830918">
+    <splitter split-orientation="horizontal" split-proportion="0.48062953">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
           <file leaf-file-name="OfflineSqlDeltaStore.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="272">
-                  <caret line="40" column="11" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="11" />
+                <state relative-caret-position="187">
+                  <caret line="82" column="16" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
                   <folding>
                     <element signature="e#0#59#0" expanded="true" />
                     <element signature="n#!!doc;n#OfflineSqlDeltaStore#0" expanded="false" />
@@ -664,7 +661,7 @@
       <workItem from="1474590980674" duration="8500000" />
       <workItem from="1474752964811" duration="19229000" />
       <workItem from="1474987417516" duration="2839000" />
-      <workItem from="1475064919584" duration="5509000" />
+      <workItem from="1475064919584" duration="8297000" />
     </task>
     <servers />
   </component>
@@ -695,7 +692,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="537809000" />
+    <option name="totallyTimeSpent" value="540597000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1932" height="1092" extended-state="0" />
@@ -1160,8 +1157,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="272">
-          <caret line="40" column="11" selection-start-line="40" selection-start-column="11" selection-end-line="40" selection-end-column="11" />
+        <state relative-caret-position="187">
+          <caret line="82" column="16" selection-start-line="82" selection-start-column="16" selection-end-line="82" selection-end-column="16" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
             <element signature="n#!!doc;n#OfflineSqlDeltaStore#0" expanded="false" />
