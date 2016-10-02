@@ -20,6 +20,11 @@ export interface ChangeGroupWithOrigin {
 	origin: ChangeGroupOrigin;
 }
 
+export interface OrderedEntityChange {
+	order: number;
+	entityChange: EntityChange;
+}
+
 export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 
 	constructor(
@@ -40,7 +45,6 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 			});
 			changeGroup.entityChanges.sort(this.sortEntityChanges);
 			changeGroup.entityChanges.forEach((entityChange) => {
-				entityChange.changedEntityId;
 				entityIdMap[entityChange.changedEntityId] = true;
 			});
 			return changeGroup.createDateTime;
@@ -76,8 +80,35 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 				ec.changedEntityId.isIn(entityIds)
 			)
 		});
-		changeGroups.sort(this.sortChangeGroups);
-		localChangeGroups.sort(this.sortChangeGroups);
+		let localChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = localChangeGroups.map((changeGroup) => {
+			changeGroup.entityChanges.sort(this.sortEntityChanges);
+			return {
+			origin: ChangeGroupOrigin.LOCAL,
+			changeGroup: changeGroup
+		}});
+
+		let changeGroupsWithOrigin = remoteChangeGroupsWithOrigin.concat(localChangeGroupsWithOrigin);
+		changeGroupsWithOrigin.sort(this.sortChangeGroupsWithOrigin);
+
+		let entityChangeMap: {[type: string]: {[id: string]: OrderedEntityChange}} = {};
+
+		let currentEntityChange
+
+		let foundFirstRemoteCG: boolean = false;
+		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
+			switch (changeGroupWithOrigin.origin) {
+				case ChangeGroupOrigin.LOCAL:
+					// Ignore any local changes before any remote changes
+					if (!foundFirstRemoteCG) {
+						return;
+					}
+					break;
+				case ChangeGroupOrigin.REMOTE:
+					foundFirstRemoteCG = true;
+					this.addChangedEntities(changeGroupWithOrigin.changeGroup, entityChangeMap);
+					break;
+			}
+		});
 
 		if (localChangeGroups.length) {
 			this.filterOutOverwrittenChanges(changeGroups, localChangeGroups)

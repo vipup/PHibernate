@@ -6,94 +6,6 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/DeltaStore.js.map" afterPath="$PROJECT_DIR$/lib/changeList/DeltaStore.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/OfflineDeltaStore.js.map" afterPath="$PROJECT_DIR$/lib/changeList/OfflineDeltaStore.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/dao/ChangeGroupDao.js.map" afterPath="$PROJECT_DIR$/lib/changeList/dao/ChangeGroupDao.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/dao/EntityChangeDao.js.map" afterPath="$PROJECT_DIR$/lib/changeList/dao/EntityChangeDao.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/AbstractFieldChange.js" afterPath="$PROJECT_DIR$/lib/changeList/model/AbstractFieldChange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/AbstractFieldChange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/AbstractFieldChange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/BooleanFieldChange.js" afterPath="$PROJECT_DIR$/lib/changeList/model/BooleanFieldChange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/BooleanFieldChange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/BooleanFieldChange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/ChangeGroup.js" afterPath="$PROJECT_DIR$/lib/changeList/model/ChangeGroup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/ChangeGroup.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/ChangeGroup.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/DateFieldChange.js" afterPath="$PROJECT_DIR$/lib/changeList/model/DateFieldChange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/DateFieldChange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/DateFieldChange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/DeltaRecord.js" afterPath="$PROJECT_DIR$/lib/changeList/model/DeltaRecord.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/DeltaRecord.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/DeltaRecord.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/EntityChange.js" afterPath="$PROJECT_DIR$/lib/changeList/model/EntityChange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/EntityChange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/EntityChange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/NumberFieldChange.js" afterPath="$PROJECT_DIR$/lib/changeList/model/NumberFieldChange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/NumberFieldChange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/NumberFieldChange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/StringFieldChange.js" afterPath="$PROJECT_DIR$/lib/changeList/model/StringFieldChange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/model/StringFieldChange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/model/StringFieldChange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js" afterPath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js.map" afterPath="$PROJECT_DIR$/lib/changeList/offline/sql/OfflineSqlDeltaStore.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/changegroup.js" afterPath="$PROJECT_DIR$/lib/changeList/query/changegroup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/changegroup.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/changegroup.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/deltarecord.js" afterPath="$PROJECT_DIR$/lib/changeList/query/deltarecord.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/deltarecord.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/deltarecord.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/entitychange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/entitychange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/entitychange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/entitychange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/ChangeListConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/ChangeListConfig.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/DeltaStoreConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/DeltaStoreConfig.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.js" afterPath="$PROJECT_DIR$/lib/config/EntityConfig.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/EntityConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/EntityConfig.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/LocalStoreConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/LocalStoreConfig.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/OfflineDeltaStoreConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/OfflineDeltaStoreConfig.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/PH.js" afterPath="$PROJECT_DIR$/lib/config/PH.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/PH.js.map" afterPath="$PROJECT_DIR$/lib/config/PH.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/config/PersistenceConfig.js.map" afterPath="$PROJECT_DIR$/lib/config/PersistenceConfig.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/MetadataUtils.js.map" afterPath="$PROJECT_DIR$/lib/core/metadata/MetadataUtils.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/PHMetadataUtils.js.map" afterPath="$PROJECT_DIR$/lib/core/metadata/PHMetadataUtils.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.d.ts" afterPath="$PROJECT_DIR$/lib/core/metadata/decorators.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/metadata/decorators.js.map" afterPath="$PROJECT_DIR$/lib/core/metadata/decorators.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js.map" afterPath="$PROJECT_DIR$/lib/core/proxy/ProxyGenerator.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/DSLParser.js.map" afterPath="$PROJECT_DIR$/lib/core/query/DSLParser.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/MethodNameParser.js.map" afterPath="$PROJECT_DIR$/lib/core/query/MethodNameParser.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.js" afterPath="$PROJECT_DIR$/lib/core/query/QueryState.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/QueryState.js.map" afterPath="$PROJECT_DIR$/lib/core/query/QueryState.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/query/QuerySubject.js.map" afterPath="$PROJECT_DIR$/lib/core/query/QuerySubject.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/ChangeToQueryRegistry.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/ChangeToQueryRegistry.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.js" afterPath="$PROJECT_DIR$/lib/core/repository/EntityManager.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManager.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/EntityManager.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/EntityManagerInitializer.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/EntityManagerInitializer.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.js" afterPath="$PROJECT_DIR$/lib/core/repository/Repository.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/Repository.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/Repository.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/core/repository/UpdateCache.js.map" afterPath="$PROJECT_DIR$/lib/core/repository/UpdateCache.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/index.js.map" afterPath="$PROJECT_DIR$/lib/index.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/IdGenerator.js.map" afterPath="$PROJECT_DIR$/lib/localStore/IdGenerator.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/KnexSqlAdaptor.js.map" afterPath="$PROJECT_DIR$/lib/localStore/KnexSqlAdaptor.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/LocalStore.js.map" afterPath="$PROJECT_DIR$/lib/localStore/LocalStore.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.d.ts" afterPath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.js.map" afterPath="$PROJECT_DIR$/lib/localStore/LocalStoreApi.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/SqlAdaptor.js.map" afterPath="$PROJECT_DIR$/lib/localStore/SqlAdaptor.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js" afterPath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js.map" afterPath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbAdaptor.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbApi.js.map" afterPath="$PROJECT_DIR$/lib/localStore/pouchDb/PouchDbApi.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/stub/StubSqlAdaptor.js.map" afterPath="$PROJECT_DIR$/lib/localStore/stub/StubSqlAdaptor.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/webSql/DDLManager.js.map" afterPath="$PROJECT_DIR$/lib/localStore/webSql/DDLManager.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/webSql/SqlStorage.js" afterPath="$PROJECT_DIR$/lib/localStore/webSql/SqlStorage.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/webSql/SqlStorage.js.map" afterPath="$PROJECT_DIR$/lib/localStore/webSql/SqlStorage.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/webSql/WebSqlAdaptor.js" afterPath="$PROJECT_DIR$/lib/localStore/webSql/WebSqlAdaptor.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/localStore/webSql/WebSqlAdaptor.js.map" afterPath="$PROJECT_DIR$/lib/localStore/webSql/WebSqlAdaptor.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/shared/DateUtils.js.map" afterPath="$PROJECT_DIR$/lib/shared/DateUtils.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/shared/EntityUtils.js.map" afterPath="$PROJECT_DIR$/lib/shared/EntityUtils.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/shared/PlatformUtils.js.map" afterPath="$PROJECT_DIR$/lib/shared/PlatformUtils.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/shared/UserUtils.js.map" afterPath="$PROJECT_DIR$/lib/shared/UserUtils.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/store/RecordState.js.map" afterPath="$PROJECT_DIR$/lib/store/RecordState.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/package.json" afterPath="$PROJECT_DIR$/package.json" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" afterPath="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" />
     </list>
     <ignored path="PHibernate.iws" />
@@ -119,8 +31,8 @@
           <file leaf-file-name="OfflineSqlDeltaStore.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="191">
-                  <caret line="62" column="20" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
+                <state relative-caret-position="306">
+                  <caret line="94" column="27" selection-start-line="94" selection-start-column="27" selection-end-line="94" selection-end-column="27" />
                   <folding>
                     <element signature="e#0#59#0" expanded="true" />
                     <element signature="e#514#554#0" expanded="false" />
@@ -158,8 +70,8 @@
           <file leaf-file-name="EntityChange.ts" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityChange.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="2075">
-                  <caret line="181" column="49" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
+                <state relative-caret-position="69">
+                  <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
                   <folding>
                     <element signature="e#579#619#0" expanded="false" />
                   </folding>
@@ -740,7 +652,7 @@
       <workItem from="1474752964811" duration="19229000" />
       <workItem from="1474987417516" duration="2839000" />
       <workItem from="1475064919584" duration="8297000" />
-      <workItem from="1475413791362" duration="2733000" />
+      <workItem from="1475413791362" duration="3717000" />
     </task>
     <servers />
   </component>
@@ -771,7 +683,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="543330000" />
+    <option name="totallyTimeSpent" value="544314000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -1212,8 +1124,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityChange.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2075">
-          <caret line="181" column="49" selection-start-line="181" selection-start-column="49" selection-end-line="181" selection-end-column="49" />
+        <state relative-caret-position="69">
+          <caret line="63" column="0" selection-start-line="63" selection-start-column="0" selection-end-line="63" selection-end-column="0" />
           <folding>
             <element signature="e#579#619#0" expanded="false" />
           </folding>
@@ -1222,8 +1134,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="191">
-          <caret line="62" column="20" selection-start-line="62" selection-start-column="20" selection-end-line="62" selection-end-column="20" />
+        <state relative-caret-position="306">
+          <caret line="94" column="27" selection-start-line="94" selection-start-column="27" selection-end-line="94" selection-end-column="27" />
           <folding>
             <element signature="e#0#59#0" expanded="true" />
             <element signature="e#514#554#0" expanded="false" />
