@@ -2,8 +2,8 @@
  * Created by Papa on 4/17/2016.
  */
 import { GenerationType, AccessType } from "querydsl-typescript";
-export declare const PH_VISIBLE_FOR: string;
-export declare const PH_EDITABLE_FOR: string;
+export declare const PH_VISIBLE_FOR = "__ph_visible_for__";
+export declare const PH_EDITABLE_FOR = "__ph_editable_for__";
 export interface SequenceGeneratorConfiguration {
     name: string;
     sequenceName: string;

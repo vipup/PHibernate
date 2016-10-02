@@ -15,8 +15,8 @@ export declare enum LocalStoreType {
     SQLITE_CORDOVA = 1,
 }
 export declare namespace localStore.type {
-    const POUCH_DB: string;
-    const WEB_SQL: string;
+    const POUCH_DB = "POUCH_DB";
+    const WEB_SQL = "WEB_SQL";
     function getName(localStoreType: LocalStoreType): string;
     function getValue(localStoreTypeName: string): LocalStoreType;
 }

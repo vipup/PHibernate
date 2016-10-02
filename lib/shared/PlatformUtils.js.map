@@ -1,1 +1,1 @@
-{"version":3,"file":"PlatformUtils.js","sourceRoot":"","sources":["../../src/shared/PlatformUtils.ts"],"names":[],"mappings":"AAAA;;GAEG;;AAEH;IAEC,OAAO,gBAAgB;QACtB,MAAM,CAAC,KAAK,CAAC;IACd,CAAC;AAEF,CAAC;AANY,qBAAa,gBAMzB,CAAA"}
+{"version":3,"file":"PlatformUtils.js","sourceRoot":"","sources":["../../src/shared/PlatformUtils.ts"],"names":[],"mappings":"AAAA;;GAEG;;AAEH;IAEC,MAAM,CAAC,gBAAgB;QACtB,MAAM,CAAC,KAAK,CAAC;IACd,CAAC;CAED;AAND,sCAMC"}

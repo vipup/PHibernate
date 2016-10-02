@@ -10,6 +10,16 @@ import {QEntityChange} from "../../query/entitychange";
  * Created by Papa on 9/24/2016.
  */
 
+export enum ChangeGroupOrigin {
+	LOCAL,
+	REMOTE
+}
+
+export interface ChangeGroupWithOrigin {
+	changeGroup: ChangeGroupApi;
+	origin: ChangeGroupOrigin;
+}
+
 export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 
 	constructor(
@@ -22,7 +32,12 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		changeGroups: ChangeGroupApi[]
 	): Promise<ChangeGroupApi[]> {
 		let entityIdMap: {[entityId: string]: boolean} = {};
+		let remoteChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = [];
 		let earliestDate = changeGroups.map((changeGroup) => {
+			remoteChangeGroupsWithOrigin.push({
+				origin: ChangeGroupOrigin.REMOTE,
+				changeGroup: changeGroup
+			});
 			changeGroup.entityChanges.sort(this.sortEntityChanges);
 			changeGroup.entityChanges.forEach((entityChange) => {
 				entityChange.changedEntityId;
@@ -43,7 +58,14 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		let cg, ec;
 		let localChangeGroups = await QChangeGroup.find({
 			select: {
-				id: null
+				'*': null,
+				entityChanges: {
+					'*': null,
+					booleanFieldChanges: {},
+					dateFieldChanges: {},
+					numberFieldChanges: {},
+					stringFieldChanges: {}
+				},
 			},
 			from: [
 				cg = QChangeGroup.from,
@@ -79,11 +101,15 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 			while (currLocalCGIndex < localChangeGroups.length) {
 				let localChangeGroup = localChangeGroups[currLocalCGIndex];
 
-				if(this.sortChangeGroups(changeGroup, localChangeGroup) > 0) {
+				if (this.sortChangeGroups(changeGroup, localChangeGroup) > 0) {
 					break;
 				}
 			}
 		});
+	}
+
+	private sortChangeGroupsWithOrigin(cgo1: ChangeGroupWithOrigin, cgo2: ChangeGroupWithOrigin) {
+		return this.sortChangeGroups(cgo1.changeGroup, cgo2.changeGroup);
 	}
 
 	private sortChangeGroups(cg1: ChangeGroupApi, cg2: ChangeGroupApi): number {
