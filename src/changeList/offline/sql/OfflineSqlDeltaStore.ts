@@ -2,10 +2,11 @@ import {IOfflineDeltaStore} from "../../OfflineDeltaStore";
 import {ILocalStoreAdaptor} from "../../../localStore/LocalStoreAdaptor";
 import {StubChangeGroup, ChangeGroupApi} from "../../model/ChangeGroup";
 import {IOfflineDeltaStoreConfig} from "../../../config/OfflineDeltaStoreConfig";
-import {IEntityChange, EntityChange} from "../../model/EntityChange";
+import {IEntityChange, EntityChange, EntityChangeType} from "../../model/EntityChange";
 import {QChangeGroup} from "../../query/changegroup";
 import {and, or} from "querydsl-typescript";
 import {QEntityChange} from "../../query/entitychange";
+import {Transactional} from "../../../core/metadata/decorators";
 /**
  * Created by Papa on 9/24/2016.
  */
@@ -33,16 +34,28 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	) {
 	}
 
+	/**
+	 * Remote updates (do not code any optimizations until there is a test suite in place)
+	 In a single Transaction:
+	 1)  Find all local change records for each remotely changed entity since the first remote records
+	 2)  Filter out any remote changes that are already in the local store
+	 3)  Save remaining remote Change Groups
+	 4)  Add all local and remote changes into a single list and order
+	 5)  Prune all deleted entities from the point of their deletion forward
+	 6)  Re-execute all pruned ChangeGroups in order
+	 7)  Notify all matching attached queries of changes
+
+	 * @param changeGroups
+	 * @returns {ChangeGroupApi[]}
+	 */
+	@Transactional()
 	async addRemoteChanges(
 		changeGroups: ChangeGroupApi[]
-	): Promise<ChangeGroupApi[]> {
+	): Promise<void> {
 		let entityIdMap: {[entityId: string]: boolean} = {};
-		let remoteChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = [];
+		let remoteChangeGroupMap: {[id: string]: ChangeGroupApi} = {};
 		let earliestDate = changeGroups.map((changeGroup) => {
-			remoteChangeGroupsWithOrigin.push({
-				origin: ChangeGroupOrigin.REMOTE,
-				changeGroup: changeGroup
-			});
+			remoteChangeGroupMap[changeGroup.id] = changeGroup;
 			changeGroup.entityChanges.sort(this.sortEntityChanges);
 			changeGroup.entityChanges.forEach((entityChange) => {
 				entityIdMap[entityChange.changedEntityId] = true;
@@ -58,7 +71,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		for (let entityId in entityIdMap) {
 			entityIds.push(entityId);
 		}
-		// Find all local records for these entities since the time of the first incoming change
+		// 1) Find all local records for these entities since the time of the first incoming change
 		let cg, ec;
 		let localChangeGroups = await QChangeGroup.find({
 			select: {
@@ -80,41 +93,73 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 				ec.changedEntityId.isIn(entityIds)
 			)
 		});
+		// 2)  Filter out any remote changes that are already in the local store
 		let localChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = localChangeGroups.map((changeGroup) => {
+			delete remoteChangeGroupMap[changeGroup.id];
 			changeGroup.entityChanges.sort(this.sortEntityChanges);
 			return {
-			origin: ChangeGroupOrigin.LOCAL,
-			changeGroup: changeGroup
-		}});
+				origin: ChangeGroupOrigin.LOCAL,
+				changeGroup: changeGroup
+			}
+		});
+		// 3)  Save remaining remote Change Groups
+		let remoteChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = [];
+		for(let id in remoteChangeGroupMap) {
+			let remoteChangeGroup = remoteChangeGroupMap[id];
+			this.addChange(remoteChangeGroup);
+			remoteChangeGroupsWithOrigin.push({
+				origin: ChangeGroupOrigin.REMOTE,
+				changeGroup: remoteChangeGroup
+			});
+		}
 
+		// 4)  Add all local and remote changes into a single list and order
 		let changeGroupsWithOrigin = remoteChangeGroupsWithOrigin.concat(localChangeGroupsWithOrigin);
 		changeGroupsWithOrigin.sort(this.sortChangeGroupsWithOrigin);
 
-		let entityChangeMap: {[type: string]: {[id: string]: OrderedEntityChange}} = {};
-
-		let currentEntityChange
-
-		let foundFirstRemoteCG: boolean = false;
-		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
+		// 4a)  Impl detail: Ignore all local changes before the first remote change group
+		let lastPriorLocalChangeIndex = -1;
+		changeGroupsWithOrigin.some((changeGroupWithOrigin) => {
 			switch (changeGroupWithOrigin.origin) {
 				case ChangeGroupOrigin.LOCAL:
 					// Ignore any local changes before any remote changes
-					if (!foundFirstRemoteCG) {
-						return;
-					}
-					break;
+					lastPriorLocalChangeIndex++;
+					return false;
 				case ChangeGroupOrigin.REMOTE:
-					foundFirstRemoteCG = true;
-					this.addChangedEntities(changeGroupWithOrigin.changeGroup, entityChangeMap);
-					break;
+					return true;
 			}
 		});
+		changeGroupsWithOrigin = changeGroupsWithOrigin.slice(lastPriorLocalChangeIndex + 1, changeGroupsWithOrigin.length);
 
-		if (localChangeGroups.length) {
-			this.filterOutOverwrittenChanges(changeGroups, localChangeGroups)
-		}
+		// 5)  Prune all deleted entities from the point of their deletion forward
+		let deletedEntityMap: {[type: string]: {[id: string]: EntityChange}} = {};
+		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
+			let entityChanges = changeGroupWithOrigin.changeGroup.entityChanges;
+			for (let i = entityChanges.length - 1; i >= 0; i--) {
+				let entityChange = entityChanges[i];
+				let deletedEntitiesOfType = deletedEntityMap[entityChange.entityName];
+				if (!deletedEntitiesOfType) {
+					deletedEntitiesOfType = {};
+					deletedEntityMap[entityChange.entityName] = deletedEntitiesOfType;
+				}
+				if (deletedEntitiesOfType[entityChange.changedEntityId]) {
+					entityChanges.splice(i, 1);
+					continue;
+				}
+				if (entityChange.changeType === EntityChangeType.DELETE) {
+					deletedEntitiesOfType[entityChange.changedEntityId] = entityChange;
+				}
+			}
+		});
+		// 6)  Re-execute all pruned ChangeGroups in order
 
-		return changeGroups;
+		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
+			changeGroupWithOrigin.changeGroup;
+
+		});
+
+		// 7)  Notify all matching attached queries of changes
+
 	}
 
 	/**

@@ -14,7 +14,7 @@ export interface IOfflineDeltaStore {
 
 	addRemoteChanges(
 		changeRecords:ChangeGroupApi[]
-	):Promise<ChangeGroupApi[]>;
+	):Promise<void>;
 
 	addChange(
 		changeRecord:ChangeGroupApi
