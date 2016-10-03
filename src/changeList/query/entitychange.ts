@@ -59,11 +59,11 @@ export class QEntityChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	numberOfFieldsInEntity = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'numberOfFieldsInEntity');
 
 	// Relations
-	booleanFieldChanges = new QRelation<QBooleanFieldChange<IQ>, BooleanFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'BooleanFieldChange', 'booleanFieldChanges', BooleanFieldChange, QBooleanFieldChange);
-	dateFieldChanges = new QRelation<QDateFieldChange<IQ>, DateFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'DateFieldChange', 'dateFieldChanges', DateFieldChange, QDateFieldChange);
-	numberFieldChanges = new QRelation<QNumberFieldChange<IQ>, NumberFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'NumberFieldChange', 'numberFieldChanges', NumberFieldChange, QNumberFieldChange);
-	stringFieldChanges = new QRelation<QStringFieldChange<IQ>, StringFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'StringFieldChange', 'stringFieldChanges', StringFieldChange, QStringFieldChange);
-	changeGroup = new QRelation<QChangeGroup<IQ>, ChangeGroup, QEntityChange<any>>(this, <any>QEntityChange, RelationType.MANY_TO_ONE, 'ChangeGroup', 'changeGroup', ChangeGroup, QChangeGroup);
+	booleanFieldChanges = new QRelation<QBooleanFieldChange<IQ>, BooleanFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QNumberField, 'BooleanFieldChange', 'booleanFieldChanges', BooleanFieldChange, QBooleanFieldChange);
+	dateFieldChanges = new QRelation<QDateFieldChange<IQ>, DateFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QNumberField, 'DateFieldChange', 'dateFieldChanges', DateFieldChange, QDateFieldChange);
+	numberFieldChanges = new QRelation<QNumberFieldChange<IQ>, NumberFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QNumberField, 'NumberFieldChange', 'numberFieldChanges', NumberFieldChange, QNumberFieldChange);
+	stringFieldChanges = new QRelation<QStringFieldChange<IQ>, StringFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QNumberField, 'StringFieldChange', 'stringFieldChanges', StringFieldChange, QStringFieldChange);
+	changeGroup = new QRelation<QChangeGroup<IQ>, ChangeGroup, QEntityChange<any>>(this, <any>QEntityChange, RelationType.MANY_TO_ONE, QNumberField, 'ChangeGroup', 'changeGroup', ChangeGroup, QChangeGroup);
 
 	constructor(
 	entityConstructor: {new(): any},

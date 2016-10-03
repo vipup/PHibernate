@@ -292,7 +292,7 @@ export class WebSqlAdaptor extends SqlAdaptor {
 			setFragments.push(`${columnNames[i]} = ?`);
 		}
 		let tableName = PHMetadataUtils.getTableName(qEntity);
-		let sql = `UPDATE ${tableName} SET ${setFragments.join(', ')}  WHERE ${idProperty} = ?`;
+		let sql = `UPDATE ${tableName} SET ${setFragments.join(', \n')}  WHERE ${idProperty} = ?`;
 		nativeValues.push(idValue);
 		if (cascadeRecords.length) {
 			let startTransaction = false;

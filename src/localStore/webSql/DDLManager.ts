@@ -1,6 +1,5 @@
 import {PH} from "../../config/PH";
-import {EntityMetadata} from "querydsl-typescript";
-import {MetadataUtils} from "../../core/metadata/MetadataUtils";
+import {EntityMetadata, MetadataUtils} from "querydsl-typescript";
 /**
  * Created by Papa on 8/31/2016.
  */

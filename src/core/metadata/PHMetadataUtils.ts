@@ -2,8 +2,7 @@ import {PH} from "../../config/PH";
 /**
  * Created by Papa on 9/2/2016.
  */
-import {IQEntity, EntityMetadata, QEntity, OneToManyElements} from "querydsl-typescript";
-import {MetadataUtils, OneToManyConfigAndProperty} from "./MetadataUtils";
+import {IQEntity, EntityMetadata, MetadataUtils, OneToManyConfigAndProperty, QEntity, OneToManyElements} from "querydsl-typescript";
 
 /**
  * Provides an entry point into MetadataUtils when what is available is the QEntity
