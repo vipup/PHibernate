@@ -1,111 +1,91 @@
 import {
-	CascadeType, Column, Entity, IQEntity, IQField, JoinColumn, JSONBaseOperation, ManyToOne,
+	CascadeType, Column, Entity, IQEntity, IQField, JSONBaseOperation,
 	IOperation, OneToMany, QBooleanField, QDateField, QNumberField, QStringField,
 	Table
 } from "querydsl-typescript";
-import {ChangeGroup} from "./ChangeGroup";
 import {BooleanFieldChange} from "./BooleanFieldChange";
 import {DateFieldChange} from "./DateFieldChange";
 import {NumberFieldChange} from "./NumberFieldChange";
 import {StringFieldChange} from "./StringFieldChange";
 import {AbstractFieldChange} from "./AbstractFieldChange";
-import {DeltaRecord} from "./DeltaRecord";
+import {
+	AbstractEntityChange, IAbstractEntityChange,
+	StubAbstractEntityChange
+} from "./AbstractEntityChange";
 /**
  * Created by Papa on 9/15/2016.
  */
 
-export enum EntityChangeType {
-	CREATE,
-	DELETE,
-	UPDATE
-}
+export interface IEntityChange extends IAbstractEntityChange {
 
-export interface IEntityChange {
+	changedEntityId: string;
+	numberOfFieldsInEntity: number;
+	booleanFieldChanges: BooleanFieldChange[];
+	dateFieldChanges: DateFieldChange[];
+	numberFieldChanges: NumberFieldChange[];
+	stringFieldChanges: StringFieldChange[];
 
 	addNewFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any,
-		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
-	):AbstractFieldChange;
+		fieldName: string,
+		oldValue: any,
+		newValue: any,
+		field: IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
+	): AbstractFieldChange;
 
 	addNewBooleanFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any
-	):BooleanFieldChange;
+		fieldName: string,
+		oldValue: any,
+		newValue: any
+	): BooleanFieldChange;
 
 	addNewDateFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any
-	):DateFieldChange;
+		fieldName: string,
+		oldValue: any,
+		newValue: any
+	): DateFieldChange;
 
 	addNewNumberFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any
-	):NumberFieldChange;
+		fieldName: string,
+		oldValue: any,
+		newValue: any
+	): NumberFieldChange;
 
 	addNewStringFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any
-	):StringFieldChange;
+		fieldName: string,
+		oldValue: any,
+		newValue: any
+	): StringFieldChange;
 
 }
 
 @Entity()
 @Table({name: "ENTITY_CHANGE"})
-export class EntityChange extends DeltaRecord implements IEntityChange {
-
-	@Column({name: "ENTITY_NAME"})
-	entityName:string;
-
-	@Column({name: "CHANGE_TYPE"})
-	changeType:EntityChangeType;
+export class EntityChange extends AbstractEntityChange implements IEntityChange {
 
 	@Column({name: "CHANGED_ENTITY_ID"})
-	changedEntityId:string;
-
-	@Column({name: "ENTITY_CHANGE_ID_IN_GROUP"})
-	entityChangeIdInGroup:number;
+	changedEntityId: string;
 
 	@Column({name: "NUM_FIELDS_IN_ENTITY"})
-	numberOfFieldsInEntity:number = 0;
+	numberOfFieldsInEntity: number = 0;
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
-	booleanFieldChanges:BooleanFieldChange[] = [];
+	booleanFieldChanges: BooleanFieldChange[] = [];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
-	dateFieldChanges:DateFieldChange[] = [];
+	dateFieldChanges: DateFieldChange[] = [];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
-	numberFieldChanges:NumberFieldChange[] = [];
+	numberFieldChanges: NumberFieldChange[] = [];
 
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'entityChange'})
-	stringFieldChanges:StringFieldChange[] = [];
-
-	@ManyToOne()
-	@JoinColumn({name: "CHANGE_GROUP_ID", nullable: false})
-	changeGroup:ChangeGroup;
-
-	static getEntityChangeId(
-		entityIdInGroup:number,
-		createDeviceId:string,
-		createDateTime:Date,
-		createUserId:string,
-		indexInMillisecond:number
-	):string {
-		return `${entityIdInGroup}_${createDeviceId}_${createDateTime.getTime()}_${indexInMillisecond}_${createUserId}`;
-	}
+	stringFieldChanges: StringFieldChange[] = [];
 
 	addNewFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any,
-		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
-	):AbstractFieldChange {
+		fieldName: string,
+		oldValue: any,
+		newValue: any,
+		field: IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
+	): AbstractFieldChange {
 		if (field instanceof QBooleanField) {
 			return this.addNewBooleanFieldChange(fieldName, oldValue, newValue);
 		} else if (field instanceof QDateField) {
@@ -118,10 +98,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewBooleanFieldChange(
-		fieldName:string,
-		oldValue:boolean,
-		newValue:boolean
-	):BooleanFieldChange {
+		fieldName: string,
+		oldValue: boolean,
+		newValue: boolean
+	): BooleanFieldChange {
 		let booleanFieldChange = new BooleanFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, booleanFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -132,10 +112,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewDateFieldChange(
-		fieldName:string,
-		oldValue:Date,
-		newValue:Date
-	):DateFieldChange {
+		fieldName: string,
+		oldValue: Date,
+		newValue: Date
+	): DateFieldChange {
 		let dateFieldChange = new DateFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, dateFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -146,10 +126,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewNumberFieldChange(
-		fieldName:string,
-		oldValue:number,
-		newValue:number
-	):NumberFieldChange {
+		fieldName: string,
+		oldValue: number,
+		newValue: number
+	): NumberFieldChange {
 		let numberFieldChange = new NumberFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, numberFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -160,10 +140,10 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	addNewStringFieldChange(
-		fieldName:string,
-		oldValue:string,
-		newValue:string
-	):StringFieldChange {
+		fieldName: string,
+		oldValue: string,
+		newValue: string
+	): StringFieldChange {
 		let stringFieldChange = new StringFieldChange();
 		let fieldChange = this.addNewFieldChangeInternal(fieldName, stringFieldChange);
 		fieldChange.oldValue = oldValue;
@@ -174,9 +154,9 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 	}
 
 	private addNewFieldChangeInternal<C extends AbstractFieldChange>(
-		fieldName:string,
-		fieldChange:C
-	):C {
+		fieldName: string,
+		fieldChange: C
+	): C {
 		fieldChange.createDateTime = this.createDateTime;
 		fieldChange.createDeviceId = this.createDeviceId;
 		fieldChange.createUserId = this.createUserId;
@@ -190,14 +170,21 @@ export class EntityChange extends DeltaRecord implements IEntityChange {
 
 }
 
-export class StubEntityChange implements IEntityChange {
+export class StubEntityChange extends StubAbstractEntityChange implements IEntityChange {
+
+	changedEntityId: string;
+	numberOfFieldsInEntity: number;
+	booleanFieldChanges: BooleanFieldChange[];
+	dateFieldChanges: DateFieldChange[];
+	numberFieldChanges: NumberFieldChange[];
+	stringFieldChanges: StringFieldChange[];
 
 	addNewFieldChange(
-		fieldName:string,
-		oldValue:any,
-		newValue:any,
-		field:IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
-	):AbstractFieldChange {
+		fieldName: string,
+		oldValue: any,
+		newValue: any,
+		field: IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
+	): AbstractFieldChange {
 		if (field instanceof QBooleanField) {
 			return this.addNewBooleanFieldChange(fieldName, oldValue, newValue);
 		} else if (field instanceof QDateField) {
@@ -210,34 +197,34 @@ export class StubEntityChange implements IEntityChange {
 	}
 
 	addNewBooleanFieldChange(
-		fieldName:string,
-		oldValue:boolean,
-		newValue:boolean
-	):BooleanFieldChange {
+		fieldName: string,
+		oldValue: boolean,
+		newValue: boolean
+	): BooleanFieldChange {
 		return new BooleanFieldChange();
 	}
 
 	addNewDateFieldChange(
-		fieldName:string,
-		oldValue:Date,
-		newValue:Date
-	):DateFieldChange {
+		fieldName: string,
+		oldValue: Date,
+		newValue: Date
+	): DateFieldChange {
 		return new DateFieldChange();
 	}
 
 	addNewNumberFieldChange(
-		fieldName:string,
-		oldValue:number,
-		newValue:number
-	):NumberFieldChange {
+		fieldName: string,
+		oldValue: number,
+		newValue: number
+	): NumberFieldChange {
 		return new NumberFieldChange();
 	}
 
 	addNewStringFieldChange(
-		fieldName:string,
-		oldValue:string,
-		newValue:string
-	):StringFieldChange {
+		fieldName: string,
+		oldValue: string,
+		newValue: string
+	): StringFieldChange {
 		return new StringFieldChange();
 	}
 

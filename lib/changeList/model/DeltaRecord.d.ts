@@ -11,10 +11,10 @@ export interface DeltaRecordApi {
     createUserId: string;
 }
 export declare abstract class DeltaRecord {
+    static getDRId<DB extends DeltaRecord>(dbRecord: DB, indexInMillisecond: number): string;
+    static getId(createDeviceId: string, createDateTime: Date, createUserId: string, indexInMillisecond: number): string;
     id: string;
     createDeviceId: string;
     createDateTime: Date;
     createUserId: string;
-    static getDRId<DB extends DeltaRecord>(dbRecord: DB, indexInMillisecond: number): string;
-    static getId(createDeviceId: string, createDateTime: Date, createUserId: string, indexInMillisecond: number): string;
 }

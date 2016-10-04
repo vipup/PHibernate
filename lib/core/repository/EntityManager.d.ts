@@ -5,7 +5,7 @@ import { IDeltaStore } from "../../changeList/DeltaStore";
 import { IPersistenceConfig } from "../../config/PersistenceConfig";
 import { ILocalStoreAdaptor } from "../../localStore/LocalStoreAdaptor";
 import { IOfflineDeltaStore } from "../../changeList/OfflineDeltaStore";
-import { IEntity, PHRawSQLQuery, PHSQLQuery } from "querydsl-typescript";
+import { IEntity, PHRawSQLQuery, PHSQLQuery, PHRawSQLDelete, PHSQLDelete, PHRawSQLUpdate, PHSQLUpdate } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from "rxjs/Subject";
 export interface IEntityManager {
@@ -58,12 +58,20 @@ export declare class EntityManager implements IEntityManager {
     delete<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
+    deleteWhere<E, IE extends IEntity>(entityClass: {
+        new (): E;
+    }, phRawDelete: PHRawSQLDelete<IE>): Promise<E[]>;
+    getPHSQLDelete<E, IE extends IEntity>(qEntity: any, phRawDelete: PHRawSQLDelete<IE>): PHSQLDelete<IE>;
     save<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
     update<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
+    updateWhere<E, IE extends IEntity>(entityClass: {
+        new (): E;
+    }, phRawUpdate: PHRawSQLUpdate<IE>): Promise<E[]>;
+    getPHSQLUpdate<E, IE extends IEntity>(qEntity: any, phRawUpdate: PHRawSQLUpdate<IE>): PHSQLUpdate<IE>;
     private persistEntity<E>(entityClass, entity, operation);
     saveActiveChangeGroup(): Promise<void>;
     private ensureId<E>(entity);

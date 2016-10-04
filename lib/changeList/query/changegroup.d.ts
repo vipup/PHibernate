@@ -3,13 +3,16 @@ import { ChangeGroup } from '../model/changegroup';
 import { IDeltaRecord, QDeltaRecord } from './deltarecord';
 import { Observable, Subject } from 'rxjs';
 import { EntityChange } from '../model/entitychange';
+import { EntityWhereChange } from "../model/EntityWhereChange";
 import { IEntityChange, QEntityChange } from './entitychange';
+import { IEntityWhereChange } from './entitywherechange';
 export interface IChangeGroup extends IDeltaRecord {
     type?: string;
     numberOfEntitiesInGroup?: number;
     groupIndexInMillisecond?: number;
     syncStatus?: number;
     entityChanges?: IEntityChange;
+    entityWhereChanges?: IEntityWhereChange;
 }
 export declare class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ> {
     static from: QChangeGroup<IQEntity>;
@@ -18,6 +21,7 @@ export declare class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ> 
     groupIndexInMillisecond: QNumberField<QChangeGroup<IQ>>;
     syncStatus: QNumberField<QChangeGroup<IQ>>;
     entityChanges: QRelation<QEntityChange<IQ>, EntityChange, QChangeGroup<any>>;
+    entityWhereChanges: QRelation<any, EntityWhereChange, QChangeGroup<any>>;
     constructor(entityConstructor: {
         new (): any;
     }, entityName: string, alias: string);

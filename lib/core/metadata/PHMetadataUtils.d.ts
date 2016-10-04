@@ -1,8 +1,7 @@
 /**
  * Created by Papa on 9/2/2016.
  */
-import { IQEntity, OneToManyElements } from "querydsl-typescript";
-import { OneToManyConfigAndProperty } from "./MetadataUtils";
+import { IQEntity, OneToManyConfigAndProperty, OneToManyElements } from "querydsl-typescript";
 /**
  * Provides an entry point into MetadataUtils when what is available is the QEntity
  */

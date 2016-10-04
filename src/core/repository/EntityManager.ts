@@ -12,7 +12,7 @@ import {getOfflineDeltaStore, IOfflineDeltaStore} from "../../changeList/Offline
 import {EntityProxy} from "../proxy/Proxies";
 import {
 	QEntity, IEntity, IEntityQuery, RelationRecord, RelationType, CascadeType,
-	PHGraphQuery, PHRawSQLQuery, PHSQLQuery
+	PHGraphQuery, PHRawSQLQuery, PHSQLQuery, PHRawSQLDelete, PHSQLDelete, PHRawSQLUpdate, PHSQLUpdate
 } from "querydsl-typescript";
 import {Observable} from "rxjs/Observable";
 import {PH} from "../../config/PH";
@@ -152,6 +152,27 @@ export class EntityManager implements IEntityManager {
 		return this.persistEntity(entityClass, entity, 'delete');
 	}
 
+	async deleteWhere<E, IE extends IEntity>(
+		entityClass: {new (): E},
+		phRawDelete: PHRawSQLDelete<IE>
+	): Promise<E[]> {
+		let qEntity = PH.getQEntityFromEntityClass(entityClass);
+		let phSqlDelete = this.getPHSQLDelete(qEntity, phRawDelete);
+		return await <any>this.localStore.deleteWhere(qEntity.__entityName__, phSqlDelete, this.localStore.activeChangeGroup);
+	}
+
+	getPHSQLDelete<E, IE extends IEntity>(
+		qEntity: any,
+		phRawDelete: PHRawSQLDelete<IE>
+	): PHSQLDelete<IE> {
+		let qEntityMap: {[entityName: string]: QEntity<any>} = PH.qEntityMap;
+		let entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}} = PH.entitiesRelationPropertyMap;
+		let entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}} = PH.entitiesPropertyTypeMap;
+		let phSqlDelete: PHSQLDelete<IE> = new PHSQLDelete(phRawDelete, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+
+		return phSqlDelete;
+	}
+
 	async save<E>(
 		entityClass: {new (): E},
 		entity: E
@@ -164,6 +185,27 @@ export class EntityManager implements IEntityManager {
 		entity: E
 	): Promise<E> {
 		return this.persistEntity(entityClass, entity, 'update');
+	}
+
+	async updateWhere<E, IE extends IEntity>(
+		entityClass: {new (): E},
+		phRawUpdate: PHRawSQLUpdate<IE>
+	): Promise<E[]> {
+		let qEntity = PH.getQEntityFromEntityClass(entityClass);
+		let phSqlUpdate = this.getPHSQLUpdate(qEntity, phRawUpdate);
+		return await <any>this.localStore.updateWhere(qEntity.__entityName__, phSqlUpdate, this.localStore.activeChangeGroup);
+	}
+
+	getPHSQLUpdate<E, IE extends IEntity>(
+		qEntity: any,
+		phRawUpdate: PHRawSQLUpdate<IE>
+	): PHSQLUpdate<IE> {
+		let qEntityMap: {[entityName: string]: QEntity<any>} = PH.qEntityMap;
+		let entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}} = PH.entitiesRelationPropertyMap;
+		let entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}} = PH.entitiesPropertyTypeMap;
+		let phSqlUpdate: PHSQLUpdate<IE> = new PHSQLUpdate(phRawUpdate, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+
+		return phSqlUpdate;
 	}
 
 	@Transactional()

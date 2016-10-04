@@ -1,10 +1,14 @@
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
 import {ChangeGroup, ChangeGroupApi} from "../../changeList/model/ChangeGroup";
-import {SQLDialect, QEntity, EntityMetadata, PHQuery, IEntity} from "querydsl-typescript";
+import {
+	SQLDialect, QEntity, EntityMetadata, PHQuery, IEntity, SQLStringDelete,
+	SQLStringUpdate
+} from "querydsl-typescript";
 import {IEntityChange} from "../../changeList/model/EntityChange";
 import {Subject, Observable} from "rxjs";
 import {ILocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {LocalStoreSetupInfo} from "../LocalStoreApi";
+import {IEntityWhereChange} from "../../changeList/model/EntityWhereChange";
 /**
  * Created by Papa on 9/20/2016.
  */
@@ -92,6 +96,15 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 		return entityChange;
 	}
 
+	protected async deleteWhereNative<IE extends IEntity>(
+		sqlStringDelete: SQLStringDelete<IE>,
+		changeGroup: ChangeGroupApi
+	):Promise<IEntityWhereChange> {
+		let entityChange = changeGroup.addNewDeleteWhereEntityChange(sqlStringDelete.qEntity.__entityName__, sqlStringDelete.phJsonDelete);
+
+		return entityChange;
+	}
+
 	protected async updateNative(
 		qEntity: QEntity<any>,
 		columnNames: string[],
@@ -116,6 +129,15 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 				}
 			}
 		}
+	}
+
+	protected async updateWhereNative<IE extends IEntity>(
+		sqlStringUpdate: SQLStringUpdate<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<IEntityWhereChange> {
+		let entityChange = changeGroup.addNewUpdateWhereEntityChange(sqlStringUpdate.qEntity.__entityName__, sqlStringUpdate.phJsonUpdate);
+
+		return entityChange;
 	}
 
 	search < E, IE extends IEntity >(

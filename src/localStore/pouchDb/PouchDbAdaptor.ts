@@ -7,7 +7,7 @@ import {
 	IEntity,
 	PouchDbGraphQuery,
 	OneToManyElements,
-	EntityMetadata
+	EntityMetadata, PHSQLDelete, PHSQLUpdate
 } from "querydsl-typescript";
 import {EntityUtils} from "../../shared/EntityUtils";
 import {DateUtils} from "../../shared/DateUtils";
@@ -75,6 +75,14 @@ export class PouchDbAdaptor implements ILocalStoreAdaptor {
 		let deleteRecord = await this.localDB.remove(record);
 
 		return entity;
+	}
+
+	async deleteWhere<IE extends IEntity>(
+		entityName: string,
+		phSqlDelete: PHSQLDelete<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<void> {
+		throw `Not Implemented`;
 	}
 
 	searchOne<IE extends IEntity, E>(
@@ -292,6 +300,14 @@ export class PouchDbAdaptor implements ILocalStoreAdaptor {
 		record._rev = updateRecord.rev;
 
 		return <any>record;
+	}
+
+	async updateWhere<IE extends IEntity>(
+		entityName: string,
+		phSqlUpdate: PHSQLUpdate<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<void> {
+		throw `Not Implemented`;
 	}
 
 }

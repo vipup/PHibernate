@@ -1,7 +1,7 @@
 import {PH} from "../config/PH";
 import {
 	EntityMetadata, RelationType, CascadeType, IEntity, PHQuery, QEntity, QDateField,
-	SQLStringQuery, PHSQLQuery, SQLDialect
+	SQLStringQuery, PHSQLQuery, SQLDialect, SQLStringDelete, PHSQLDelete, PHSQLUpdate, SQLStringUpdate
 } from "querydsl-typescript";
 import {PHMetadataUtils, NameMetadataUtils} from "../core/metadata/PHMetadataUtils";
 import {Observable, Subject} from "rxjs";
@@ -12,6 +12,9 @@ import {IEntityChange} from "../changeList/model/EntityChange";
 import {IEntityManager} from "../core/repository/EntityManager";
 import {LocalStoreType, LocalStoreSetupInfo} from "./LocalStoreApi";
 import {ILocalStoreAdaptor} from "./LocalStoreAdaptor";
+import {PHDelete} from "querydsl-typescript/lib/query/PHQuery";
+import {IAbstractEntityChange} from "../changeList/model/AbstractEntityChange";
+import {IEntityWhereChange} from "../changeList/model/EntityWhereChange";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -258,6 +261,20 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		changeGroup: ChangeGroupApi
 	);
 
+	async deleteWhere<IE extends IEntity>(
+		entityName: string,
+		phSqlDelete: PHSQLDelete<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<void> {
+		let sqlStringDelete: SQLStringDelete<IE> = new SQLStringDelete<IE>(phSqlDelete.toSQL(), phSqlDelete.qEntity, phSqlDelete.qEntityMap, phSqlDelete.entitiesRelationPropertyMap, phSqlDelete.entitiesPropertyTypeMap, this.getDialect());
+		await this.deleteWhereNative(sqlStringDelete, changeGroup);
+	}
+
+	protected abstract async deleteWhereNative<IE extends IEntity>(
+		sqlStringDelete: SQLStringDelete<IE>,
+		changeGroup: ChangeGroupApi
+	):Promise<IEntityWhereChange>;
+
 	async update<E>(
 		entityName: string,
 		entity: E,
@@ -418,12 +435,25 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		changeGroup: ChangeGroupApi
 	);
 
+	async updateWhere<IE extends IEntity>(
+		entityName: string,
+		phSqlUpdate: PHSQLUpdate<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<void> {
+		let sqlStringUpdate: SQLStringUpdate<IE> = new SQLStringUpdate<IE>(phSqlUpdate.toSQL(), phSqlUpdate.qEntity, phSqlUpdate.qEntityMap, phSqlUpdate.entitiesRelationPropertyMap, phSqlUpdate.entitiesPropertyTypeMap, this.getDialect());
+		await this.updateWhereNative(sqlStringUpdate, changeGroup);
+	}
+
+	protected abstract async updateWhereNative<IE extends IEntity>(
+		sqlStringUpdate: SQLStringUpdate<IE>,
+		changeGroup: ChangeGroupApi
+	):Promise<IEntityWhereChange>;
+
 	async find < E, IE extends IEntity >(
 		entityName: string,
 		phSqlQuery: PHSQLQuery < IE >
 	): Promise < E[] > {
-		let qEntity = PH.qEntityMap[entityName];
-		let query: SQLStringQuery<IE> = new SQLStringQuery<IE>(phSqlQuery.toSQL(), qEntity, PH.qEntityMap, PH.entitiesRelationPropertyMap, PH.entitiesPropertyTypeMap, this.getDialect());
+		let query: SQLStringQuery<IE> = new SQLStringQuery<IE>(phSqlQuery.toSQL(), phSqlQuery.qEntity, phSqlQuery.qEntityMap, phSqlQuery.entitiesRelationPropertyMap, phSqlQuery.entitiesPropertyTypeMap, this.getDialect());
 		let parameters = [];
 		let sql = query.toSQL(true, parameters);
 		let rawResults = await this.findNative(sql, parameters);

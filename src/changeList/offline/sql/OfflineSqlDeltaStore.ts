@@ -2,11 +2,16 @@ import {IOfflineDeltaStore} from "../../OfflineDeltaStore";
 import {ILocalStoreAdaptor} from "../../../localStore/LocalStoreAdaptor";
 import {StubChangeGroup, ChangeGroupApi} from "../../model/ChangeGroup";
 import {IOfflineDeltaStoreConfig} from "../../../config/OfflineDeltaStoreConfig";
-import {IEntityChange, EntityChange, EntityChangeType} from "../../model/EntityChange";
+import {IEntityChange, EntityChange} from "../../model/EntityChange";
 import {QChangeGroup} from "../../query/changegroup";
-import {and, or} from "querydsl-typescript";
+import {
+	and, or, QEntity, RelationRecord, PHJsonSQLUpdate, IEntity, PHSQLUpdate,
+	PHSQLDelete, PHJsonSQLDelete
+} from "querydsl-typescript";
 import {QEntityChange} from "../../query/entitychange";
 import {Transactional} from "../../../core/metadata/decorators";
+import {EntityChangeType} from "../../model/AbstractEntityChange";
+import {PHUpdate} from "querydsl-typescript/lib/query/PHQuery";
 /**
  * Created by Papa on 9/24/2016.
  */
@@ -24,6 +29,40 @@ export interface ChangeGroupWithOrigin {
 export interface OrderedEntityChange {
 	order: number;
 	entityChange: EntityChange;
+}
+
+class PHRemoteSQLUpdate<IE extends IEntity> extends PHSQLUpdate<IE> {
+
+	constructor(
+		public phJsonSqlQuery: PHJsonSQLUpdate<IE>,
+		qEntity: QEntity<any>,
+		qEntityMap: {[entityName: string]: QEntity<any>},
+		entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}},
+		entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}}
+	) {
+		super(null, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+	}
+
+	toSQL(): PHJsonSQLUpdate<IE> {
+		return this.phJsonSqlQuery;
+	}
+}
+
+class PHRemoteSQLDelete<IE extends IEntity> extends PHSQLDelete<IE> {
+
+	constructor(
+		public phJsonSqlQuery: PHJsonSQLDelete<IE>,
+		qEntity: QEntity<any>,
+		qEntityMap: {[entityName: string]: QEntity<any>},
+		entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}},
+		entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}}
+	) {
+		super(null, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
+	}
+
+	toSQL(): PHJsonSQLDelete<IE> {
+		return this.phJsonSqlQuery;
+	}
 }
 
 export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
@@ -104,7 +143,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		});
 		// 3)  Save remaining remote Change Groups
 		let remoteChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = [];
-		for(let id in remoteChangeGroupMap) {
+		for (let id in remoteChangeGroupMap) {
 			let remoteChangeGroup = remoteChangeGroupMap[id];
 			this.addChange(remoteChangeGroup);
 			remoteChangeGroupsWithOrigin.push({

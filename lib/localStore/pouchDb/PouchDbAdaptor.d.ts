@@ -1,6 +1,6 @@
 import { ILocalStoreAdaptor } from "../LocalStoreAdaptor";
 import { PouchDbStoreSetupInfo } from "./PouchDbApi";
-import { PHGraphQuery, IEntity, PouchDbGraphQuery } from "querydsl-typescript";
+import { PHGraphQuery, IEntity, PouchDbGraphQuery, PHSQLDelete, PHSQLUpdate } from "querydsl-typescript";
 import { Observable } from "rxjs/Observable";
 import { Subject } from 'rxjs/Subject';
 import { LocalStoreType } from "../LocalStoreApi";
@@ -16,6 +16,7 @@ export declare class PouchDbAdaptor implements ILocalStoreAdaptor {
     initialize(setupInfo: PouchDbStoreSetupInfo): Promise<any>;
     create<E>(entityName: string, entity: E): Promise<E>;
     delete<E>(entityName: string, entity: E): Promise<E>;
+    deleteWhere<IE extends IEntity>(entityName: string, phSqlDelete: PHSQLDelete<IE>, changeGroup: ChangeGroupApi): Promise<void>;
     searchOne<IE extends IEntity, E>(entityName: string, phQuery: PHGraphQuery<IE>, subject?: Subject<E>): Observable<E>;
     search<IE extends IEntity, E>(entityName: string, phQuery: PHGraphQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
     find<IE extends IEntity, E>(entityName: string, phQuery: PHGraphQuery<IE>): Promise<E[]>;
@@ -25,4 +26,5 @@ export declare class PouchDbAdaptor implements ILocalStoreAdaptor {
     findOne<IE extends IEntity, E>(entityName: string, phQuery: PHGraphQuery<IE>): Promise<E>;
     save<E>(entityName: string, entity: E): Promise<E>;
     update<E>(entityName: string, entity: E): Promise<E>;
+    updateWhere<IE extends IEntity>(entityName: string, phSqlUpdate: PHSQLUpdate<IE>, changeGroup: ChangeGroupApi): Promise<void>;
 }

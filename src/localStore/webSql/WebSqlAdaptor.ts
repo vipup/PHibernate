@@ -1,5 +1,8 @@
 import {LocalStoreSetupInfo, LocalStoreType} from "../LocalStoreApi";
-import {IEntity, PHQuery, EntityMetadata, QEntity, SQLDialect} from "querydsl-typescript";
+import {
+	IEntity, PHQuery, EntityMetadata, QEntity, SQLDialect, SQLStringDelete,
+	SQLStringUpdate
+} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
 import {PH} from "../../config/PH";
 import {DDLManager} from "./DDLManager";
@@ -9,6 +12,7 @@ import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
 import {ChangeGroupApi, ChangeGroup} from "../../changeList/model/ChangeGroup";
 import {IEntityChange} from "../../changeList/model/EntityChange";
 import {IEntityManager} from "../../core/repository/EntityManager";
+import {IEntityWhereChange} from "../../changeList/model/EntityWhereChange";
 
 /**
  * Created by Papa on 8/30/2016.
@@ -242,13 +246,25 @@ export class WebSqlAdaptor extends SqlAdaptor {
 		let entityChange = changeGroup.addNewDeleteEntityChange(qEntity.__entityName__, entity, entityMetadata.idProperty);
 		let tableName = PHMetadataUtils.getTableName(qEntity);
 		let idColumnName = PHMetadataUtils.getPropertyColumnName(entityMetadata.idProperty, qEntity);
-		let sql = `DELETE FROM ${tableName} where ${idColumnName} = ?`;
+		let sql = `DELETE FROM ${tableName} WHERE ${idColumnName} = ?`;
 
 		await this.query(sql, [idValue], startTransaction);
 
 		if (startTransaction && !transactionExists) {
 			this.currentTransaction = null;
 		}
+
+		return entityChange;
+	}
+
+	protected async deleteWhereNative<IE extends IEntity>(
+		sqlStringDelete: SQLStringDelete<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<IEntityWhereChange> {
+		let entityChange = changeGroup.addNewDeleteWhereEntityChange(sqlStringDelete.qEntity.__entityName__, sqlStringDelete.phJsonDelete);
+		let parameters = [];
+		let sql = sqlStringDelete.toSQL(true, parameters);
+		await this.query(sql, parameters, false);
 
 		return entityChange;
 	}
@@ -319,6 +335,18 @@ export class WebSqlAdaptor extends SqlAdaptor {
 		} else {
 			await this.query(sql, values);
 		}
+	}
+
+	protected async updateWhereNative<IE extends IEntity>(
+		sqlStringUpdate: SQLStringUpdate<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<IEntityWhereChange> {
+		let entityChange = changeGroup.addNewUpdateWhereEntityChange(sqlStringUpdate.qEntity.__entityName__, sqlStringUpdate.phJsonUpdate);
+		let parameters = [];
+		let sql = sqlStringUpdate.toSQL(true, parameters);
+		await this.query(sql, parameters, false);
+
+		return entityChange;
 	}
 
 	search < E, IE extends IEntity >(

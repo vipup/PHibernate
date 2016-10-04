@@ -38,7 +38,7 @@ export class QAbstractFieldChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	propertyName = new QStringField<QAbstractFieldChange<IQ>>(this, <any>QAbstractFieldChange, 'AbstractFieldChange', 'propertyName');
 
 	// Relations
-	entityChange = new QRelation<QEntityChange<IQ>, EntityChange, QAbstractFieldChange<any>>(this, <any>QAbstractFieldChange, RelationType.MANY_TO_ONE, 'EntityChange', 'entityChange', EntityChange, QEntityChange);
+	entityChange = new QRelation<QEntityChange<IQ>, EntityChange, QAbstractFieldChange<any>>(this, <any>QAbstractFieldChange, RelationType.MANY_TO_ONE, QStringField, 'EntityChange', 'entityChange', EntityChange, QEntityChange);
 
 	constructor(
 	entityConstructor: {new(): any},

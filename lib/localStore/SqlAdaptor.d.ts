@@ -1,4 +1,4 @@
-import { IEntity, PHQuery, QEntity, PHSQLQuery, SQLDialect } from "querydsl-typescript";
+import { IEntity, PHQuery, QEntity, PHSQLQuery, SQLDialect, SQLStringDelete, PHSQLDelete, PHSQLUpdate, SQLStringUpdate } from "querydsl-typescript";
 import { Observable, Subject } from "rxjs";
 import { IdGenerator, IdGeneration } from "./IdGenerator";
 import { ChangeGroupApi } from "../changeList/model/ChangeGroup";
@@ -6,6 +6,7 @@ import { IEntityChange } from "../changeList/model/EntityChange";
 import { IEntityManager } from "../core/repository/EntityManager";
 import { LocalStoreType, LocalStoreSetupInfo } from "./LocalStoreApi";
 import { ILocalStoreAdaptor } from "./LocalStoreAdaptor";
+import { IEntityWhereChange } from "../changeList/model/EntityWhereChange";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -33,8 +34,12 @@ export declare abstract class SqlAdaptor implements ILocalStoreAdaptor {
     protected abstract createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): any;
     delete<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<IEntityChange>;
     protected abstract deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): any;
+    deleteWhere<IE extends IEntity>(entityName: string, phSqlDelete: PHSQLDelete<IE>, changeGroup: ChangeGroupApi): Promise<void>;
+    protected abstract deleteWhereNative<IE extends IEntity>(sqlStringDelete: SQLStringDelete<IE>, changeGroup: ChangeGroupApi): Promise<IEntityWhereChange>;
     update<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<IEntityChange>;
     protected abstract updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): any;
+    updateWhere<IE extends IEntity>(entityName: string, phSqlUpdate: PHSQLUpdate<IE>, changeGroup: ChangeGroupApi): Promise<void>;
+    protected abstract updateWhereNative<IE extends IEntity>(sqlStringUpdate: SQLStringUpdate<IE>, changeGroup: ChangeGroupApi): Promise<IEntityWhereChange>;
     find<E, IE extends IEntity>(entityName: string, phSqlQuery: PHSQLQuery<IE>): Promise<E[]>;
     protected abstract getDialect(): SQLDialect;
     protected abstract findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;

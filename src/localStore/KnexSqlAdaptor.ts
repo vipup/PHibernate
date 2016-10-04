@@ -3,6 +3,7 @@ import {IEntity, PHQuery} from "querydsl-typescript";
 import {Subject, Observable} from "rxjs";
 import {LocalStoreSetupInfo, LocalStoreType} from "./LocalStoreApi";
 import {ChangeGroupApi} from "../changeList/model/ChangeGroup";
+import {PHDelete, PHUpdate} from "querydsl-typescript/lib/query/PHQuery";
 /**
  * Created by Papa on 8/31/2016.
  */
@@ -31,6 +32,14 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 		entity: E
 	): Promise<E> {
 		return null;
+	}
+
+	deleteWhere<IE extends IEntity>(
+		entityName: string,
+		phDelete: PHDelete<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<void> {
+			return null;
 	}
 
 	find<E, IE extends IEntity>(
@@ -74,5 +83,13 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 		entity: E
 	): Promise<E> {
 		return null;
+	}
+
+	updateWhere<IE extends IEntity>(
+		entityName: string,
+		phUpdate: PHUpdate<IE>,
+		changeGroup: ChangeGroupApi
+	): Promise<void> {
+			return null;
 	}
 }

@@ -7,7 +7,7 @@ import { ChangeGroupApi } from "./model/ChangeGroup";
  */
 export interface IOfflineDeltaStore {
     config: IOfflineDeltaStoreConfig;
-    addRemoteChanges(changeRecords: ChangeGroupApi[]): Promise<ChangeGroupApi[]>;
+    addRemoteChanges(changeRecords: ChangeGroupApi[]): Promise<void>;
     addChange(changeRecord: ChangeGroupApi): Promise<ChangeGroupApi>;
     findChangesForEntitiesWithFieldsSinceTime(entityChanges: IEntityChange[]): Promise<IEntityChange[]>;
     findUnsyncedChanges(): Promise<ChangeGroupApi[]>;

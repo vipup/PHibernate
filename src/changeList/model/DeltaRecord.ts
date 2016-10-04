@@ -20,19 +20,6 @@ export interface DeltaRecordApi {
 @MappedSuperclass()
 export abstract class DeltaRecord {
 
-	@Id()
-	@Column({name: 'ID'})
-	id: string;
-
-	@Column({name: 'CREATE_DEVICE_ID'})
-	createDeviceId: string;
-
-	@Column({name: 'CREATE_DATE_TIME'})
-	createDateTime: Date;
-
-	@Column({name: 'CREATE_USER_ID'})
-	createUserId: string;
-
 	static getDRId<DB extends DeltaRecord>(
 		dbRecord: DB,
 		indexInMillisecond: number
@@ -48,5 +35,18 @@ export abstract class DeltaRecord {
 	) {
 		return `${createDeviceId}_${createDateTime.getTime()}_${indexInMillisecond}_${createUserId}`;
 	}
+
+	@Id()
+	@Column({name: 'ID'})
+	id: string;
+
+	@Column({name: 'CREATE_DEVICE_ID'})
+	createDeviceId: string;
+
+	@Column({name: 'CREATE_DATE_TIME'})
+	createDateTime: Date;
+
+	@Column({name: 'CREATE_USER_ID'})
+	createUserId: string;
 
 }

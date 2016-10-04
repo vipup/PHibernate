@@ -15,7 +15,9 @@ import {IDeltaRecord, QDeltaRecord} from './deltarecord';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
 import {EntityChange} from '../model/entitychange';
+import {EntityWhereChange} from "../model/EntityWhereChange";
 import {IEntityChange, QEntityChange} from './entitychange';
+import {IEntityWhereChange, QEntityWhereChange} from './entitywherechange';
 
 //Entity Query
 export interface IChangeGroup
@@ -29,6 +31,7 @@ export interface IChangeGroup
 
 		// Relations
     entityChanges?: IEntityChange
+    entityWhereChanges?: IEntityWhereChange
 
 }
 
@@ -45,7 +48,8 @@ export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	syncStatus = new QNumberField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'syncStatus');
 
 	// Relations
-	entityChanges = new QRelation<QEntityChange<IQ>, EntityChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, 'EntityChange', 'entityChanges', EntityChange, QEntityChange);
+	entityChanges = new QRelation<QEntityChange<IQ>, EntityChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, QStringField, 'EntityChange', 'entityChanges', EntityChange, QEntityChange);
+	entityWhereChanges = new QRelation<QEntityWhereChange<IQ>, EntityWhereChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, QStringField, 'EntityWhereChange', 'entityWhereChanges', EntityWhereChange, QEntityWhereChange);
 
 	constructor(
 	entityConstructor: {new(): any},

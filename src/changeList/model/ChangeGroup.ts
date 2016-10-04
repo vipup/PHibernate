@@ -1,10 +1,15 @@
-import {CascadeType, Column, Entity, OneToMany, Table} from "querydsl-typescript";
-import {EntityChange, EntityChangeType, StubEntityChange, IEntityChange} from "./EntityChange";
+import {
+	CascadeType, Column, Entity, OneToMany, Table, PHJsonSQLDelete, IEntity,
+	PHJsonSQLUpdate
+} from "querydsl-typescript";
+import {EntityChange, StubEntityChange, IEntityChange} from "./EntityChange";
 import {DeltaRecord, DeltaRecordApi} from "./DeltaRecord";
 import {AbstractFieldChange} from "./AbstractFieldChange";
 import {IdGenerator} from "../../localStore/IdGenerator";
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {UserUtils} from "../../shared/UserUtils";
+import {EntityWhereChange, StubWhereEntityChange, IEntityWhereChange} from "./EntityWhereChange";
+import {EntityChangeType, AbstractEntityChange} from "./AbstractEntityChange";
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -36,11 +41,21 @@ export interface ChangeGroupApi extends DeltaRecordApi {
 		idProperty: string
 	): IEntityChange;
 
+	addNewDeleteWhereEntityChange<IE extends IEntity>(
+		entityName: string,
+		phJsonSqlDelete: PHJsonSQLDelete<IE>
+	): IEntityWhereChange;
+
 	addNewUpdateEntityChange(
 		entityName: string,
 		entity: any,
 		idProperty: string
 	): IEntityChange;
+
+	addNewUpdateWhereEntityChange<IE extends IEntity>(
+		entityName: string,
+		phJsonSqlUpdate: PHJsonSQLUpdate<IE>
+	): IEntityWhereChange;
 }
 
 @Entity()
@@ -74,6 +89,9 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'changeGroup'})
 	entityChanges: EntityChange[] = [];
 
+	@OneToMany({cascade: CascadeType.ALL, mappedBy: 'changeGroup'})
+	entityWhereChanges: EntityWhereChange[] = [];
+
 	@Column({name: "NUM_ENTITIES_IN_GROUP"})
 	numberOfEntitiesInGroup: number = 0;
 
@@ -89,7 +107,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		idProperty: string,
 		idGenerator: IdGenerator
 	): IEntityChange {
-		if (entity instanceof ChangeGroup || entity instanceof EntityChange || entity instanceof AbstractFieldChange) {
+		if (entity instanceof ChangeGroup || entity instanceof AbstractEntityChange || entity instanceof AbstractFieldChange) {
 			return new StubEntityChange();
 		}
 		let entityChange = this.addNewEntityChange(entityName);
@@ -105,7 +123,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		entity: any,
 		idProperty: string
 	): IEntityChange {
-		if (entity instanceof ChangeGroup || entity instanceof EntityChange || entity instanceof AbstractFieldChange) {
+		if (entity instanceof ChangeGroup || entity instanceof AbstractEntityChange || entity instanceof AbstractFieldChange) {
 			return new StubEntityChange();
 		}
 
@@ -114,6 +132,17 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		entityChange.changedEntityId = entity[idProperty];
 
 		return entityChange;
+	}
+
+	addNewDeleteWhereEntityChange<IE extends IEntity>(
+		entityName: string,
+		phJsonSqlDelete: PHJsonSQLDelete<IE>
+	): IEntityWhereChange {
+		let entityWhereChange = this.addNewEntityWhereChange(entityName);
+		entityWhereChange.changeType = EntityChangeType.DELETE_WHERE;
+		entityWhereChange.queryJson = JSON.stringify(phJsonSqlDelete);
+
+		return entityWhereChange;
 	}
 
 	addNewUpdateEntityChange(
@@ -132,23 +161,52 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		return entityChange;
 	}
 
+	addNewUpdateWhereEntityChange<IE extends IEntity>(
+		entityName: string,
+		phJsonSqlUpdate: PHJsonSQLUpdate<IE>
+	): IEntityWhereChange {
+		let entityWhereChange = this.addNewEntityWhereChange(entityName);
+		entityWhereChange.changeType = EntityChangeType.UPDATE_WHERE;
+		entityWhereChange.queryJson = JSON.stringify(phJsonSqlUpdate);
+
+		return entityWhereChange;
+	}
+
 	private addNewEntityChange(
 		entityName: string
 	): EntityChange {
 		let entityChange = new EntityChange();
-		entityChange.entityChangeIdInGroup = ++this.numberOfEntitiesInGroup;
+		this.setupAbstractEntityChange(entityName, entityChange);
 		this.entityChanges.push(entityChange);
-
-		entityChange.changeGroup = this;
-		entityChange.createDateTime = this.createDateTime;
-		entityChange.createDeviceId = this.createDeviceId;
-		entityChange.createUserId = this.createUserId;
-		entityChange.entityName = entityName;
-		entityChange.id = EntityChange.getEntityChangeId(entityChange.entityChangeIdInGroup, this.createDeviceId,
-			this.createDateTime, this.createUserId, this.groupIndexInMillisecond);
 		entityChange.numberOfFieldsInEntity = 0;
 
 		return entityChange;
+	}
+
+	private addNewEntityWhereChange(
+		entityName: string
+	): EntityWhereChange {
+		let entityWhereChange = new EntityWhereChange();
+		this.setupAbstractEntityChange(entityName, entityWhereChange);
+		this.entityWhereChanges.push(entityWhereChange);
+
+		return entityWhereChange;
+	}
+
+	private setupAbstractEntityChange(
+		entityName: string,
+		abstractEntityChange: AbstractEntityChange
+	): void {
+		abstractEntityChange.entityChangeIdInGroup = ++this.numberOfEntitiesInGroup;
+
+		abstractEntityChange.changeGroup = this;
+		abstractEntityChange.createDateTime = this.createDateTime;
+		abstractEntityChange.createDeviceId = this.createDeviceId;
+		abstractEntityChange.createUserId = this.createUserId;
+		abstractEntityChange.entityName = entityName;
+		abstractEntityChange.id = AbstractEntityChange.getEntityChangeId(abstractEntityChange.entityChangeIdInGroup, this.createDeviceId,
+			this.createDateTime, this.createUserId, this.groupIndexInMillisecond);
+
 	}
 }
 
@@ -182,12 +240,26 @@ export class StubChangeGroup implements ChangeGroupApi {
 		return new StubEntityChange();
 	}
 
+	addNewDeleteWhereEntityChange<IE extends IEntity>(
+		entityName: string,
+		phJsonSqlDelete: PHJsonSQLDelete<IE>
+	): IEntityWhereChange {
+		return new StubWhereEntityChange();
+	}
+
 	addNewUpdateEntityChange(
 		entityName: string,
 		entity: any,
 		idProperty: string
 	): IEntityChange {
 		return new StubEntityChange();
+	}
+
+	addNewUpdateWhereEntityChange<IE extends IEntity>(
+		entityName: string,
+		phJsonSqlUpdate: PHJsonSQLUpdate<IE>
+	): IEntityWhereChange {
+		return new StubWhereEntityChange();
 	}
 
 }
