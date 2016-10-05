@@ -61,6 +61,14 @@ export class PHMetadataUtils {
 		return MetadataUtils.getIdValue(entityObject, entityMetadata);
 	}
 
+	static getIdFieldName<IQE extends IQEntity>(
+		qEntity: IQE
+	): string {
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+
+		return entityMetadata.idProperty;
+	}
+
 	static getTableName<IQE extends IQEntity>(
 		qEntity: IQE
 	): string {
@@ -108,6 +116,12 @@ export class NameMetadataUtils {
 		entityObject: any
 	): string {
 		return PHMetadataUtils.getIdValue(this.getQEntity(entityName), entityObject);
+	}
+
+	static getIdFieldName(
+		entityName: string
+	): string {
+		return PHMetadataUtils.getIdFieldName(this.getQEntity(entityName));
 	}
 
 	static getOneToManyConfig(

@@ -2,11 +2,11 @@ import { IEntity, PHQuery, QEntity, PHSQLQuery, SQLDialect, SQLStringDelete, PHS
 import { Observable, Subject } from "rxjs";
 import { IdGenerator, IdGeneration } from "./IdGenerator";
 import { ChangeGroupApi } from "../changeList/model/ChangeGroup";
-import { IEntityChange } from "../changeList/model/EntityChange";
+import { EntityChangeApi } from "../changeList/model/EntityChange";
 import { IEntityManager } from "../core/repository/EntityManager";
 import { LocalStoreType, LocalStoreSetupInfo } from "./LocalStoreApi";
 import { ILocalStoreAdaptor } from "./LocalStoreAdaptor";
-import { IEntityWhereChange } from "../changeList/model/EntityWhereChange";
+import { EntityWhereChangeApi } from "../changeList/model/EntityWhereChange";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -30,21 +30,23 @@ export declare abstract class SqlAdaptor implements ILocalStoreAdaptor {
     abstract wrapInTransaction(callback: () => Promise<any>): Promise<any>;
     private verifyChangeGroup();
     readonly activeChangeGroup: ChangeGroupApi;
-    create<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<IEntityChange>;
+    create<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<EntityChangeApi>;
     protected abstract createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): any;
-    delete<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<IEntityChange>;
+    insert<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<EntityChangeApi>;
+    protected abstract insertNative(qEntity: QEntity<any>, columnNames: string[], values: any[]): any;
+    delete<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<EntityChangeApi>;
     protected abstract deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): any;
-    deleteWhere<IE extends IEntity>(entityName: string, phSqlDelete: PHSQLDelete<IE>, changeGroup: ChangeGroupApi): Promise<void>;
-    protected abstract deleteWhereNative<IE extends IEntity>(sqlStringDelete: SQLStringDelete<IE>, changeGroup: ChangeGroupApi): Promise<IEntityWhereChange>;
-    update<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<IEntityChange>;
+    deleteWhere<IE extends IEntity>(entityName: string, phSqlDelete: PHSQLDelete<IE>, changeGroup: ChangeGroupApi): Promise<EntityWhereChangeApi>;
+    protected abstract deleteWhereNative<IE extends IEntity>(sqlStringDelete: SQLStringDelete<IE>, changeGroup: ChangeGroupApi): Promise<EntityWhereChangeApi>;
+    update<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<EntityChangeApi>;
     protected abstract updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): any;
-    updateWhere<IE extends IEntity>(entityName: string, phSqlUpdate: PHSQLUpdate<IE>, changeGroup: ChangeGroupApi): Promise<void>;
-    protected abstract updateWhereNative<IE extends IEntity>(sqlStringUpdate: SQLStringUpdate<IE>, changeGroup: ChangeGroupApi): Promise<IEntityWhereChange>;
+    updateWhere<IE extends IEntity>(entityName: string, phSqlUpdate: PHSQLUpdate<IE>, changeGroup: ChangeGroupApi): Promise<EntityWhereChangeApi>;
+    protected abstract updateWhereNative<IE extends IEntity>(sqlStringUpdate: SQLStringUpdate<IE>, changeGroup: ChangeGroupApi): Promise<EntityWhereChangeApi>;
     find<E, IE extends IEntity>(entityName: string, phSqlQuery: PHSQLQuery<IE>): Promise<E[]>;
     protected abstract getDialect(): SQLDialect;
     protected abstract findNative(sqlQuery: string, parameters: any[]): Promise<any[]>;
     findOne<E, IE extends IEntity>(entityName: string, phSqlQuery: PHSQLQuery<IE>): Promise<E>;
-    save<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<IEntityChange>;
+    save<E>(entityName: string, entity: E, changeGroup: ChangeGroupApi): Promise<EntityChangeApi>;
     search<E, IE extends IEntity>(entityName: string, phSqlQuery: PHSQLQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E>): Observable<E>;
     warn(message: string): void;

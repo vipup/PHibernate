@@ -9,14 +9,14 @@ import {NumberFieldChange} from "./NumberFieldChange";
 import {StringFieldChange} from "./StringFieldChange";
 import {AbstractFieldChange} from "./AbstractFieldChange";
 import {
-	AbstractEntityChange, IAbstractEntityChange,
+	AbstractEntityChange, AbstractEntityChangeApi,
 	StubAbstractEntityChange
 } from "./AbstractEntityChange";
 /**
  * Created by Papa on 9/15/2016.
  */
 
-export interface IEntityChange extends IAbstractEntityChange {
+export interface EntityChangeApi extends AbstractEntityChangeApi {
 
 	changedEntityId: string;
 	numberOfFieldsInEntity: number;
@@ -27,6 +27,7 @@ export interface IEntityChange extends IAbstractEntityChange {
 
 	addNewFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any,
 		field: IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
@@ -34,24 +35,28 @@ export interface IEntityChange extends IAbstractEntityChange {
 
 	addNewBooleanFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any
 	): BooleanFieldChange;
 
 	addNewDateFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any
 	): DateFieldChange;
 
 	addNewNumberFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any
 	): NumberFieldChange;
 
 	addNewStringFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any
 	): StringFieldChange;
@@ -60,7 +65,7 @@ export interface IEntityChange extends IAbstractEntityChange {
 
 @Entity()
 @Table({name: "ENTITY_CHANGE"})
-export class EntityChange extends AbstractEntityChange implements IEntityChange {
+export class EntityChange extends AbstractEntityChange implements EntityChangeApi {
 
 	@Column({name: "CHANGED_ENTITY_ID"})
 	changedEntityId: string;
@@ -82,28 +87,30 @@ export class EntityChange extends AbstractEntityChange implements IEntityChange 
 
 	addNewFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any,
 		field: IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
 	): AbstractFieldChange {
 		if (field instanceof QBooleanField) {
-			return this.addNewBooleanFieldChange(fieldName, oldValue, newValue);
+			return this.addNewBooleanFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		} else if (field instanceof QDateField) {
-			return this.addNewDateFieldChange(fieldName, oldValue, newValue);
+			return this.addNewDateFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		} else if (field instanceof QNumberField) {
-			return this.addNewNumberFieldChange(fieldName, oldValue, newValue);
+			return this.addNewNumberFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		} else if (field instanceof QStringField) {
-			return this.addNewStringFieldChange(fieldName, oldValue, newValue);
+			return this.addNewStringFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		}
 	}
 
 	addNewBooleanFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: boolean,
 		newValue: boolean
 	): BooleanFieldChange {
 		let booleanFieldChange = new BooleanFieldChange();
-		let fieldChange = this.addNewFieldChangeInternal(fieldName, booleanFieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, entityRelationName, booleanFieldChange);
 		fieldChange.oldValue = oldValue;
 		fieldChange.newValue = newValue;
 		this.booleanFieldChanges.push(fieldChange);
@@ -113,11 +120,12 @@ export class EntityChange extends AbstractEntityChange implements IEntityChange 
 
 	addNewDateFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: Date,
 		newValue: Date
 	): DateFieldChange {
 		let dateFieldChange = new DateFieldChange();
-		let fieldChange = this.addNewFieldChangeInternal(fieldName, dateFieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, entityRelationName, dateFieldChange);
 		fieldChange.oldValue = oldValue;
 		fieldChange.newValue = newValue;
 		this.dateFieldChanges.push(fieldChange);
@@ -127,11 +135,12 @@ export class EntityChange extends AbstractEntityChange implements IEntityChange 
 
 	addNewNumberFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: number,
 		newValue: number
 	): NumberFieldChange {
 		let numberFieldChange = new NumberFieldChange();
-		let fieldChange = this.addNewFieldChangeInternal(fieldName, numberFieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, entityRelationName, numberFieldChange);
 		fieldChange.oldValue = oldValue;
 		fieldChange.newValue = newValue;
 		this.numberFieldChanges.push(fieldChange);
@@ -141,11 +150,12 @@ export class EntityChange extends AbstractEntityChange implements IEntityChange 
 
 	addNewStringFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: string,
 		newValue: string
 	): StringFieldChange {
 		let stringFieldChange = new StringFieldChange();
-		let fieldChange = this.addNewFieldChangeInternal(fieldName, stringFieldChange);
+		let fieldChange = this.addNewFieldChangeInternal(fieldName, entityRelationName, stringFieldChange);
 		fieldChange.oldValue = oldValue;
 		fieldChange.newValue = newValue;
 		this.stringFieldChanges.push(fieldChange);
@@ -155,8 +165,10 @@ export class EntityChange extends AbstractEntityChange implements IEntityChange 
 
 	private addNewFieldChangeInternal<C extends AbstractFieldChange>(
 		fieldName: string,
+		entityRelationName: string,
 		fieldChange: C
 	): C {
+		fieldChange.entityRelationName = entityRelationName;
 		fieldChange.createDateTime = this.createDateTime;
 		fieldChange.createDeviceId = this.createDeviceId;
 		fieldChange.createUserId = this.createUserId;
@@ -170,7 +182,7 @@ export class EntityChange extends AbstractEntityChange implements IEntityChange 
 
 }
 
-export class StubEntityChange extends StubAbstractEntityChange implements IEntityChange {
+export class StubEntityChange extends StubAbstractEntityChange implements EntityChangeApi {
 
 	changedEntityId: string;
 	numberOfFieldsInEntity: number;
@@ -181,23 +193,25 @@ export class StubEntityChange extends StubAbstractEntityChange implements IEntit
 
 	addNewFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: any,
 		newValue: any,
 		field: IQField<IQEntity, any, JSONBaseOperation, IOperation<any, JSONBaseOperation>>
 	): AbstractFieldChange {
 		if (field instanceof QBooleanField) {
-			return this.addNewBooleanFieldChange(fieldName, oldValue, newValue);
+			return this.addNewBooleanFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		} else if (field instanceof QDateField) {
-			return this.addNewDateFieldChange(fieldName, oldValue, newValue);
+			return this.addNewDateFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		} else if (field instanceof QNumberField) {
-			return this.addNewNumberFieldChange(fieldName, oldValue, newValue);
+			return this.addNewNumberFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		} else if (field instanceof QStringField) {
-			return this.addNewStringFieldChange(fieldName, oldValue, newValue);
+			return this.addNewStringFieldChange(fieldName, entityRelationName, oldValue, newValue);
 		}
 	}
 
 	addNewBooleanFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: boolean,
 		newValue: boolean
 	): BooleanFieldChange {
@@ -206,6 +220,7 @@ export class StubEntityChange extends StubAbstractEntityChange implements IEntit
 
 	addNewDateFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: Date,
 		newValue: Date
 	): DateFieldChange {
@@ -214,6 +229,7 @@ export class StubEntityChange extends StubAbstractEntityChange implements IEntit
 
 	addNewNumberFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: number,
 		newValue: number
 	): NumberFieldChange {
@@ -222,6 +238,7 @@ export class StubEntityChange extends StubAbstractEntityChange implements IEntit
 
 	addNewStringFieldChange(
 		fieldName: string,
+		entityRelationName: string,
 		oldValue: string,
 		newValue: string
 	): StringFieldChange {

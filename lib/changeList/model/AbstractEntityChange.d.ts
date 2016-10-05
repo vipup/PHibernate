@@ -10,7 +10,7 @@ export declare enum EntityChangeType {
     UPDATE = 3,
     UPDATE_WHERE = 4,
 }
-export interface IAbstractEntityChange {
+export interface AbstractEntityChangeApi {
     entityName: string;
     changeType: EntityChangeType;
     entityChangeIdInGroup: number;
@@ -23,7 +23,7 @@ export declare class AbstractEntityChange extends DeltaRecord {
     entityChangeIdInGroup: number;
     changeGroup: ChangeGroup;
 }
-export declare class StubAbstractEntityChange implements IAbstractEntityChange {
+export declare class StubAbstractEntityChange implements AbstractEntityChangeApi {
     entityName: string;
     changeType: EntityChangeType;
     entityChangeIdInGroup: number;

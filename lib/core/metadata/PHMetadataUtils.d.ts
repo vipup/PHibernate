@@ -10,6 +10,7 @@ export declare class PHMetadataUtils {
     static getPropertyColumnName<IQE extends IQEntity>(propertyName: string, qEntity: IQE): string;
     static getJoinColumnName<IQE extends IQEntity>(propertyName: string, qEntity: IQE): string;
     static getIdValue<IQE extends IQEntity>(entityObject: any, qEntity: IQE): string;
+    static getIdFieldName<IQE extends IQEntity>(qEntity: IQE): string;
     static getTableName<IQE extends IQEntity>(qEntity: IQE): string;
     static getOneToManyConfig<IQE extends IQEntity>(propertyName: string, qEntity: IQE): OneToManyElements;
 }
@@ -20,6 +21,7 @@ export declare class NameMetadataUtils {
     static getRelatedOneToManyConfig(manyToOnePropertyName: string, entityName: string): OneToManyConfigAndProperty;
     static getPropertyColumnName(propertyName: string, entityName: string): string;
     static getIdValue(entityName: string, entityObject: any): string;
+    static getIdFieldName(entityName: string): string;
     static getOneToManyConfig(propertyName: string, entityName: string): OneToManyElements;
     static getTableName(entityName: string): string;
     static getQEntity(entityName: string): IQEntity;

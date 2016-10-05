@@ -3,6 +3,8 @@ import {Observable} from "rxjs/Observable";
 import {Subject} from "rxjs/Subject";
 import {ChangeGroupApi} from "../changeList/model/ChangeGroup";
 import {PHDelete, PHUpdate} from "querydsl-typescript/lib/query/PHQuery";
+import {EntityWhereChangeApi} from "../changeList/model/EntityWhereChange";
+import {EntityChangeApi} from "../changeList/model/EntityChange";
 
 /**
  * Created by Papa on 6/10/2016.
@@ -18,23 +20,29 @@ export interface IStoreAdaptor {
 
 	wrapInTransaction(callback: ()=>void);
 
+	insert<E>(
+		entityName: string,
+		entity: E,
+		changeGroup: ChangeGroupApi
+	): Promise<EntityChangeApi>;
+
 	create<E>(
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<E>;
+	): Promise<EntityChangeApi>;
 
 	delete<E>(
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<E>;
+	): Promise<EntityChangeApi>;
 
 	deleteWhere<IE extends IEntity>(
 		entityName: string,
 		phDelete: PHDelete<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void>;
+	): Promise<EntityWhereChangeApi>;
 
 	find<E, IE extends IEntity>(
 		entityName: string,
@@ -54,7 +62,7 @@ export interface IStoreAdaptor {
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<E>;
+	): Promise<EntityChangeApi>;
 
 	search<E, IE extends IEntity>(
 		entityName: string,
@@ -72,12 +80,12 @@ export interface IStoreAdaptor {
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<E>;
+	): Promise<EntityChangeApi>;
 
 	updateWhere<IE extends IEntity>(
 		entityName: string,
 		phUpdate: PHUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void>;
+	): Promise<EntityWhereChangeApi>;
 
 }

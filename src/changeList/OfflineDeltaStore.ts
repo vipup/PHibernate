@@ -2,7 +2,7 @@ import {LocalStoreType} from "../localStore/LocalStoreApi";
 import {ILocalStoreAdaptor} from "../localStore/LocalStoreAdaptor";
 import {OfflineSqlDeltaStore} from "./offline/sql/OfflineSqlDeltaStore";
 import {IOfflineDeltaStoreConfig} from "../config/OfflineDeltaStoreConfig";
-import {IEntityChange} from "./model/EntityChange";
+import {EntityChangeApi} from "./model/EntityChange";
 import {ChangeGroupApi} from "./model/ChangeGroup";
 /**
  * Created by Papa on 5/31/2016.
@@ -21,8 +21,8 @@ export interface IOfflineDeltaStore {
 	):Promise<ChangeGroupApi>;
 
 	findChangesForEntitiesWithFieldsSinceTime(
-		entityChanges:IEntityChange[]
-	):Promise<IEntityChange[]>;
+		entityChanges:EntityChangeApi[]
+	):Promise<EntityChangeApi[]>;
 
 	findUnsyncedChanges():Promise<ChangeGroupApi[]>;
 

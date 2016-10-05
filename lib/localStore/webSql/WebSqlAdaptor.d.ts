@@ -4,9 +4,9 @@ import { Subject, Observable } from "rxjs";
 import { IdGeneration } from "../IdGenerator";
 import { SqlAdaptor, CascadeRecord } from "../SqlAdaptor";
 import { ChangeGroupApi } from "../../changeList/model/ChangeGroup";
-import { IEntityChange } from "../../changeList/model/EntityChange";
+import { EntityChangeApi } from "../../changeList/model/EntityChange";
 import { IEntityManager } from "../../core/repository/EntityManager";
-import { IEntityWhereChange } from "../../changeList/model/EntityWhereChange";
+import { EntityWhereChangeApi } from "../../changeList/model/EntityWhereChange";
 export declare class WebSqlAdaptor extends SqlAdaptor {
     static BACKUP_LOCAL: number;
     static BACKUP_LIBRARY: number;
@@ -23,11 +23,12 @@ export declare class WebSqlAdaptor extends SqlAdaptor {
     handleError(error: any): void;
     initTable(transaction: any, lastEntityName: any, resolve: any, reject: any): void;
     protected createNative(qEntity: QEntity<any>, columnNames: string[], values: any[], cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<void>;
-    protected deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<IEntityChange>;
-    protected deleteWhereNative<IE extends IEntity>(sqlStringDelete: SQLStringDelete<IE>, changeGroup: ChangeGroupApi): Promise<IEntityWhereChange>;
+    protected insertNative(qEntity: QEntity<any>, columnNames: string[], values: any[]): Promise<void>;
+    protected deleteNative(qEntity: QEntity<any>, entity: any, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<EntityChangeApi>;
+    protected deleteWhereNative<IE extends IEntity>(sqlStringDelete: SQLStringDelete<IE>, changeGroup: ChangeGroupApi): Promise<EntityWhereChangeApi>;
     private convertValueIn(value);
     protected updateNative(qEntity: QEntity<any>, columnNames: string[], values: any[], idProperty: string, idValue: number | string, cascadeRecords: CascadeRecord[], changeGroup: ChangeGroupApi): Promise<void>;
-    protected updateWhereNative<IE extends IEntity>(sqlStringUpdate: SQLStringUpdate<IE>, changeGroup: ChangeGroupApi): Promise<IEntityWhereChange>;
+    protected updateWhereNative<IE extends IEntity>(sqlStringUpdate: SQLStringUpdate<IE>, changeGroup: ChangeGroupApi): Promise<EntityWhereChangeApi>;
     search<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E[]>): Observable<E[]>;
     searchOne<E, IE extends IEntity>(entityName: string, phQuery: PHQuery<IE>, subject?: Subject<E>): Observable<E>;
     warn(message: string): void;

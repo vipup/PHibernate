@@ -13,12 +13,18 @@ export interface IEntityManager {
     goOnline(): Promise<any>;
     initialize(): Promise<any>;
     isOnline(): boolean;
+    insert<E>(entityClass: {
+        new (): E;
+    }, entity: E): Promise<E>;
     create<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
     delete<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
+    deleteWhere<E, IE extends IEntity>(entityClass: {
+        new (): E;
+    }, phRawDelete: PHRawSQLDelete<IE>): Promise<number>;
     find<E, IE extends IEntity>(entityClass: {
         new (): E;
     }, iEntity: IE): Promise<E[]>;
@@ -39,6 +45,9 @@ export interface IEntityManager {
     update<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
+    updateWhere<E, IE extends IEntity>(entityClass: {
+        new (): E;
+    }, phRawUpdate: PHRawSQLUpdate<IE>): Promise<number>;
 }
 export declare class EntityManager implements IEntityManager {
     config: IPersistenceConfig;
@@ -52,6 +61,9 @@ export declare class EntityManager implements IEntityManager {
     goOffline(): void;
     goOnline(): Promise<any>;
     isOnline(): boolean;
+    insert<E>(entityClass: {
+        new (): E;
+    }, entity: E): Promise<E>;
     create<E>(entityClass: {
         new (): E;
     }, entity: E): Promise<E>;
@@ -60,7 +72,7 @@ export declare class EntityManager implements IEntityManager {
     }, entity: E): Promise<E>;
     deleteWhere<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, phRawDelete: PHRawSQLDelete<IE>): Promise<E[]>;
+    }, phRawDelete: PHRawSQLDelete<IE>): Promise<number>;
     getPHSQLDelete<E, IE extends IEntity>(qEntity: any, phRawDelete: PHRawSQLDelete<IE>): PHSQLDelete<IE>;
     save<E>(entityClass: {
         new (): E;
@@ -70,7 +82,7 @@ export declare class EntityManager implements IEntityManager {
     }, entity: E): Promise<E>;
     updateWhere<E, IE extends IEntity>(entityClass: {
         new (): E;
-    }, phRawUpdate: PHRawSQLUpdate<IE>): Promise<E[]>;
+    }, phRawUpdate: PHRawSQLUpdate<IE>): Promise<number>;
     getPHSQLUpdate<E, IE extends IEntity>(qEntity: any, phRawUpdate: PHRawSQLUpdate<IE>): PHSQLUpdate<IE>;
     private persistEntity<E>(entityClass, entity, operation);
     saveActiveChangeGroup(): Promise<void>;

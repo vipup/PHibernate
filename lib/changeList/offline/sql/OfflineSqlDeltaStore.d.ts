@@ -2,7 +2,7 @@ import { IOfflineDeltaStore } from "../../OfflineDeltaStore";
 import { ILocalStoreAdaptor } from "../../../localStore/LocalStoreAdaptor";
 import { ChangeGroupApi } from "../../model/ChangeGroup";
 import { IOfflineDeltaStoreConfig } from "../../../config/OfflineDeltaStoreConfig";
-import { IEntityChange, EntityChange } from "../../model/EntityChange";
+import { EntityChangeApi, EntityChange } from "../../model/EntityChange";
 /**
  * Created by Papa on 9/24/2016.
  */
@@ -47,7 +47,7 @@ export declare class OfflineSqlDeltaStore implements IOfflineDeltaStore {
     private sortChangeGroups(cg1, cg2);
     private sortEntityChanges(ec1, ec2);
     addChange(changeRecord: ChangeGroupApi): Promise<ChangeGroupApi>;
-    findChangesForEntitiesWithFieldsSinceTime(entityChanges: IEntityChange[]): Promise<IEntityChange[]>;
+    findChangesForEntitiesWithFieldsSinceTime(entityChanges: EntityChangeApi[]): Promise<EntityChangeApi[]>;
     findUnsyncedChanges(): Promise<ChangeGroupApi[]>;
     markChangesAsSynced(changeGroups: ChangeGroupApi[]): Promise<void>;
 }

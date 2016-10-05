@@ -2,7 +2,7 @@ import {IOfflineDeltaStore} from "../../OfflineDeltaStore";
 import {ILocalStoreAdaptor} from "../../../localStore/LocalStoreAdaptor";
 import {StubChangeGroup, ChangeGroupApi} from "../../model/ChangeGroup";
 import {IOfflineDeltaStoreConfig} from "../../../config/OfflineDeltaStoreConfig";
-import {IEntityChange, EntityChange} from "../../model/EntityChange";
+import {EntityChangeApi, EntityChange} from "../../model/EntityChange";
 import {QChangeGroup} from "../../query/changegroup";
 import {
 	and, or, QEntity, RelationRecord, PHJsonSQLUpdate, IEntity, PHSQLUpdate,
@@ -284,8 +284,8 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	}
 
 	async findChangesForEntitiesWithFieldsSinceTime(
-		entityChanges: IEntityChange[]
-	): Promise<IEntityChange[]> {
+		entityChanges: EntityChangeApi[]
+	): Promise<EntityChangeApi[]> {
 		return null;
 	}
 

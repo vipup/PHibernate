@@ -10,9 +10,9 @@ import {IdGeneration} from "../IdGenerator";
 import {PHMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {SqlAdaptor, CascadeRecord} from "../SqlAdaptor";
 import {ChangeGroupApi, ChangeGroup} from "../../changeList/model/ChangeGroup";
-import {IEntityChange} from "../../changeList/model/EntityChange";
+import {EntityChangeApi} from "../../changeList/model/EntityChange";
 import {IEntityManager} from "../../core/repository/EntityManager";
-import {IEntityWhereChange} from "../../changeList/model/EntityWhereChange";
+import {EntityWhereChangeApi} from "../../changeList/model/EntityWhereChange";
 
 /**
  * Created by Papa on 8/30/2016.
@@ -222,13 +222,25 @@ export class WebSqlAdaptor extends SqlAdaptor {
 		}
 	}
 
+	protected async insertNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[]
+	): Promise<void> {
+		let nativeValues = values.map((value) => this.convertValueIn(value));
+		let valuesBindString = values.map(() => '?').join(', ');
+		let tableName = PHMetadataUtils.getTableName(qEntity);
+		let sql = `INSERT INTO ${tableName} (${columnNames.join(', ')}) VALUES (${valuesBindString})`;
+		await this.query(sql, nativeValues);
+	}
+
 	protected async deleteNative(
 		qEntity: QEntity<any>,
 		entity: any,
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityChange> {
+	): Promise<EntityChangeApi> {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
 		let startTransaction = false;
@@ -260,11 +272,11 @@ export class WebSqlAdaptor extends SqlAdaptor {
 	protected async deleteWhereNative<IE extends IEntity>(
 		sqlStringDelete: SQLStringDelete<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityWhereChange> {
-		let entityChange = changeGroup.addNewDeleteWhereEntityChange(sqlStringDelete.qEntity.__entityName__, sqlStringDelete.phJsonDelete);
+	): Promise<EntityWhereChangeApi> {
 		let parameters = [];
 		let sql = sqlStringDelete.toSQL(true, parameters);
 		await this.query(sql, parameters, false);
+		let entityChange = changeGroup.addNewDeleteWhereEntityChange(sqlStringDelete.qEntity.__entityName__, -1, sqlStringDelete.phJsonDelete);
 
 		return entityChange;
 	}
@@ -340,11 +352,11 @@ export class WebSqlAdaptor extends SqlAdaptor {
 	protected async updateWhereNative<IE extends IEntity>(
 		sqlStringUpdate: SQLStringUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityWhereChange> {
-		let entityChange = changeGroup.addNewUpdateWhereEntityChange(sqlStringUpdate.qEntity.__entityName__, sqlStringUpdate.phJsonUpdate);
+	): Promise<EntityWhereChangeApi> {
 		let parameters = [];
 		let sql = sqlStringUpdate.toSQL(true, parameters);
 		await this.query(sql, parameters, false);
+		let entityChange = changeGroup.addNewUpdateWhereEntityChange(sqlStringUpdate.qEntity.__entityName__, -1, sqlStringUpdate.phJsonUpdate);
 
 		return entityChange;
 	}

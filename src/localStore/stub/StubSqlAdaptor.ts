@@ -4,11 +4,11 @@ import {
 	SQLDialect, QEntity, EntityMetadata, PHQuery, IEntity, SQLStringDelete,
 	SQLStringUpdate
 } from "querydsl-typescript";
-import {IEntityChange} from "../../changeList/model/EntityChange";
+import {EntityChangeApi} from "../../changeList/model/EntityChange";
 import {Subject, Observable} from "rxjs";
 import {ILocalStoreAdaptor} from "../LocalStoreAdaptor";
 import {LocalStoreSetupInfo} from "../LocalStoreApi";
-import {IEntityWhereChange} from "../../changeList/model/EntityWhereChange";
+import {EntityWhereChangeApi} from "../../changeList/model/EntityWhereChange";
 /**
  * Created by Papa on 9/20/2016.
  */
@@ -81,7 +81,7 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 		idValue: number | string,
 		cascadeRecords: CascadeRecord[],
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityChange> {
+	): Promise<EntityChangeApi> {
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
 		if (cascadeRecords.length) {
@@ -99,10 +99,18 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 	protected async deleteWhereNative<IE extends IEntity>(
 		sqlStringDelete: SQLStringDelete<IE>,
 		changeGroup: ChangeGroupApi
-	):Promise<IEntityWhereChange> {
-		let entityChange = changeGroup.addNewDeleteWhereEntityChange(sqlStringDelete.qEntity.__entityName__, sqlStringDelete.phJsonDelete);
+	):Promise<EntityWhereChangeApi> {
+		let entityChange = changeGroup.addNewDeleteWhereEntityChange(sqlStringDelete.qEntity.__entityName__, -1, sqlStringDelete.phJsonDelete);
 
 		return entityChange;
+	}
+
+	protected async insertNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[]
+	): Promise<void> {
+			return null;
 	}
 
 	protected async updateNative(
@@ -134,8 +142,8 @@ export class StubSqlAdaptor extends SqlAdaptor implements ILocalStoreAdaptor {
 	protected async updateWhereNative<IE extends IEntity>(
 		sqlStringUpdate: SQLStringUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityWhereChange> {
-		let entityChange = changeGroup.addNewUpdateWhereEntityChange(sqlStringUpdate.qEntity.__entityName__, sqlStringUpdate.phJsonUpdate);
+	): Promise<EntityWhereChangeApi> {
+		let entityChange = changeGroup.addNewUpdateWhereEntityChange(sqlStringUpdate.qEntity.__entityName__, -1, sqlStringUpdate.phJsonUpdate);
 
 		return entityChange;
 	}

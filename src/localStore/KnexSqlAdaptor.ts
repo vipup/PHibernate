@@ -4,6 +4,8 @@ import {Subject, Observable} from "rxjs";
 import {LocalStoreSetupInfo, LocalStoreType} from "./LocalStoreApi";
 import {ChangeGroupApi} from "../changeList/model/ChangeGroup";
 import {PHDelete, PHUpdate} from "querydsl-typescript/lib/query/PHQuery";
+import {EntityWhereChangeApi} from "../changeList/model/EntityWhereChange";
+import {EntityChangeApi} from "../changeList/model/EntityChange";
 /**
  * Created by Papa on 8/31/2016.
  */
@@ -20,17 +22,24 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 	wrapInTransaction(callback: ()=>void) {
 	}
 
+	insert<E>(
+		entityName: string,
+		entity: E
+	): Promise<EntityChangeApi> {
+		return null;
+	}
+
 	create<E>(
 		entityName: string,
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		return null;
 	}
 
 	delete<E>(
 		entityName: string,
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		return null;
 	}
 
@@ -38,7 +47,7 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 		entityName: string,
 		phDelete: PHDelete<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void> {
+	): Promise<EntityWhereChangeApi> {
 			return null;
 	}
 
@@ -59,7 +68,7 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 
 	save<E>(
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		return null;
 	}
 
@@ -81,7 +90,7 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 
 	update<E>(
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		return null;
 	}
 
@@ -89,7 +98,7 @@ export abstract class KnexSqlAdaptor implements ILocalStoreAdaptor {
 		entityName: string,
 		phUpdate: PHUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void> {
+	): Promise<EntityWhereChangeApi> {
 			return null;
 	}
 }

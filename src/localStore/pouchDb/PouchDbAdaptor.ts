@@ -20,6 +20,8 @@ import {EntityProxy} from "../../core/proxy/Proxies";
 import {NameMetadataUtils} from "../../core/metadata/PHMetadataUtils";
 import {LocalStoreType} from "../LocalStoreApi";
 import {ChangeGroupApi} from "../../changeList/model/ChangeGroup";
+import {EntityWhereChangeApi} from "../../changeList/model/EntityWhereChange";
+import {EntityChangeApi} from "../../changeList/model/EntityChange";
 
 declare function require(moduleName: string): any;
 
@@ -51,10 +53,20 @@ export class PouchDbAdaptor implements ILocalStoreAdaptor {
 		});
 	}
 
+
+
+	insert<E>(
+		entityName: string,
+		entity: E,
+		changeGroup: ChangeGroupApi
+	): Promise<EntityChangeApi> {
+		throw 'Not Implemented';
+	}
+
 	async create<E>(
 		entityName:string,
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		let nowTimeStamp = DateUtils.getNowTimeStamp();
 		let macAddress = PlatformUtils.getDeviceAddress();
 
@@ -70,18 +82,18 @@ export class PouchDbAdaptor implements ILocalStoreAdaptor {
 	async delete<E>(
 		entityName:string,
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		let record: PouchDbRecord = <any>entity;
 		let deleteRecord = await this.localDB.remove(record);
 
-		return entity;
+		return null;
 	}
 
 	async deleteWhere<IE extends IEntity>(
 		entityName: string,
 		phSqlDelete: PHSQLDelete<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void> {
+	): Promise<EntityWhereChangeApi> {
 		throw `Not Implemented`;
 	}
 
@@ -281,7 +293,7 @@ export class PouchDbAdaptor implements ILocalStoreAdaptor {
 	async save<E>(
 		entityName:string,
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		let record: PouchDbRecord = <any>entity;
 		if (record._id && record._rev) {
 			return await this.update(entityName, entity);
@@ -293,20 +305,20 @@ export class PouchDbAdaptor implements ILocalStoreAdaptor {
 	async update<E>(
 		entityName:string,
 		entity: E
-	): Promise<E> {
+	): Promise<EntityChangeApi> {
 		let record: PouchDbRecord = <any>entity;
 		record.lastUpdateTime = new Date();
 		let updateRecord = await this.localDB.put(record);
 		record._rev = updateRecord.rev;
 
-		return <any>record;
+		return null;
 	}
 
 	async updateWhere<IE extends IEntity>(
 		entityName: string,
 		phSqlUpdate: PHSQLUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void> {
+	): Promise<EntityWhereChangeApi> {
 		throw `Not Implemented`;
 	}
 

@@ -22,6 +22,7 @@ export interface IAbstractFieldChange
     extends IDeltaRecord
 {
 		// Properties
+		entityRelationName?: string;
     propertyName?: string;
 
 		// Relations
@@ -35,6 +36,7 @@ export class QAbstractFieldChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 {
 	
 	// Fields
+	entityRelationName = new QStringField<QAbstractFieldChange<IQ>>(this, <any>QAbstractFieldChange, 'AbstractFieldChange', 'entityRelationName');
 	propertyName = new QStringField<QAbstractFieldChange<IQ>>(this, <any>QAbstractFieldChange, 'AbstractFieldChange', 'propertyName');
 
 	// Relations

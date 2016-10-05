@@ -1,8 +1,8 @@
 import { PHJsonSQLDelete, IEntity, PHJsonSQLUpdate } from "querydsl-typescript";
-import { EntityChange, IEntityChange } from "./EntityChange";
+import { EntityChange, EntityChangeApi } from "./EntityChange";
 import { DeltaRecord, DeltaRecordApi } from "./DeltaRecord";
 import { IdGenerator } from "../../localStore/IdGenerator";
-import { EntityWhereChange, IEntityWhereChange } from "./EntityWhereChange";
+import { EntityWhereChange, EntityWhereChangeApi } from "./EntityWhereChange";
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -17,11 +17,11 @@ export interface ChangeGroupApi extends DeltaRecordApi {
     numberOfEntitiesInGroup: number;
     syncStatus: SyncStatus;
     type: string;
-    addNewCreateEntityChange(entityName: string, entity: any, idProperty: string, idGenerator: IdGenerator): IEntityChange;
-    addNewDeleteEntityChange(entityName: string, entity: any, idProperty: string): IEntityChange;
-    addNewDeleteWhereEntityChange<IE extends IEntity>(entityName: string, phJsonSqlDelete: PHJsonSQLDelete<IE>): IEntityWhereChange;
-    addNewUpdateEntityChange(entityName: string, entity: any, idProperty: string): IEntityChange;
-    addNewUpdateWhereEntityChange<IE extends IEntity>(entityName: string, phJsonSqlUpdate: PHJsonSQLUpdate<IE>): IEntityWhereChange;
+    addNewCreateEntityChange(entityName: string, entity: any, idProperty: string, idGenerator: IdGenerator): EntityChangeApi;
+    addNewDeleteEntityChange(entityName: string, entity: any, idProperty: string): EntityChangeApi;
+    addNewDeleteWhereEntityChange<IE extends IEntity>(entityName: string, numberOfAffectedRecords: number, phJsonSqlDelete: PHJsonSQLDelete<IE>): EntityWhereChangeApi;
+    addNewUpdateEntityChange(entityName: string, entity: any, idProperty: string): EntityChangeApi;
+    addNewUpdateWhereEntityChange<IE extends IEntity>(entityName: string, numberOfAffectedRecords: number, phJsonSqlUpdate: PHJsonSQLUpdate<IE>): EntityWhereChangeApi;
 }
 export declare class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
     static getNewChangeGroup(type: string, idGenerator: IdGenerator): ChangeGroup;
@@ -31,13 +31,13 @@ export declare class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
     numberOfEntitiesInGroup: number;
     groupIndexInMillisecond: number;
     syncStatus: SyncStatus;
-    addNewCreateEntityChange(entityName: string, entity: any, idProperty: string, idGenerator: IdGenerator): IEntityChange;
-    addNewDeleteEntityChange(entityName: string, entity: any, idProperty: string): IEntityChange;
-    addNewDeleteWhereEntityChange<IE extends IEntity>(entityName: string, phJsonSqlDelete: PHJsonSQLDelete<IE>): IEntityWhereChange;
-    addNewUpdateEntityChange(entityName: string, entity: any, idProperty: string): IEntityChange;
-    addNewUpdateWhereEntityChange<IE extends IEntity>(entityName: string, phJsonSqlUpdate: PHJsonSQLUpdate<IE>): IEntityWhereChange;
+    addNewCreateEntityChange(entityName: string, entity: any, idProperty: string, idGenerator: IdGenerator): EntityChangeApi;
+    addNewDeleteEntityChange(entityName: string, entity: any, idProperty: string): EntityChangeApi;
+    addNewDeleteWhereEntityChange<IE extends IEntity>(entityName: string, numberOfAffectedRecords: number, phJsonSqlDelete: PHJsonSQLDelete<IE>): EntityWhereChangeApi;
+    addNewUpdateEntityChange(entityName: string, entity: any, idProperty: string): EntityChangeApi;
+    addNewUpdateWhereEntityChange<IE extends IEntity>(entityName: string, numberOfAffectedRecords: number, phJsonSqlUpdate: PHJsonSQLUpdate<IE>): EntityWhereChangeApi;
     private addNewEntityChange(entityName);
-    private addNewEntityWhereChange(entityName);
+    private addNewEntityWhereChange(entityName, numberOfAffectedRecords);
     private setupAbstractEntityChange(entityName, abstractEntityChange);
 }
 export declare class StubChangeGroup implements ChangeGroupApi {
@@ -50,9 +50,9 @@ export declare class StubChangeGroup implements ChangeGroupApi {
     numberOfEntitiesInGroup: number;
     syncStatus: SyncStatus;
     type: string;
-    addNewCreateEntityChange(entityName: string, entity: any, idProperty: string, idGenerator: IdGenerator): IEntityChange;
-    addNewDeleteEntityChange(entityName: string, entity: any, idProperty: string): IEntityChange;
-    addNewDeleteWhereEntityChange<IE extends IEntity>(entityName: string, phJsonSqlDelete: PHJsonSQLDelete<IE>): IEntityWhereChange;
-    addNewUpdateEntityChange(entityName: string, entity: any, idProperty: string): IEntityChange;
-    addNewUpdateWhereEntityChange<IE extends IEntity>(entityName: string, phJsonSqlUpdate: PHJsonSQLUpdate<IE>): IEntityWhereChange;
+    addNewCreateEntityChange(entityName: string, entity: any, idProperty: string, idGenerator: IdGenerator): EntityChangeApi;
+    addNewDeleteEntityChange(entityName: string, entity: any, idProperty: string): EntityChangeApi;
+    addNewDeleteWhereEntityChange<IE extends IEntity>(entityName: string, numberOfAffectedRecords: number, phJsonSqlDelete: PHJsonSQLDelete<IE>): EntityWhereChangeApi;
+    addNewUpdateEntityChange(entityName: string, entity: any, idProperty: string): EntityChangeApi;
+    addNewUpdateWhereEntityChange<IE extends IEntity>(entityName: string, numberOfAffectedRecords: number, phJsonSqlUpdate: PHJsonSQLUpdate<IE>): EntityWhereChangeApi;
 }

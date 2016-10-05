@@ -28,6 +28,11 @@ export interface IEntityManager {
 	initialize(): Promise<any>;
 	isOnline(): boolean;
 
+	insert<E>(
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E>;
+
 	create<E>(
 		entityClass: {new (): E},
 		entity: E
@@ -37,6 +42,11 @@ export interface IEntityManager {
 		entityClass: {new (): E},
 		entity: E
 	): Promise<E>;
+
+	deleteWhere<E, IE extends IEntity>(
+		entityClass: {new (): E},
+		phRawDelete: PHRawSQLDelete<IE>
+	): Promise<number>;
 
 	find<E, IE extends IEntity>(
 		entityClass: {new (): E},
@@ -73,6 +83,11 @@ export interface IEntityManager {
 		entityClass: {new (): E},
 		entity: E
 	): Promise<E>;
+
+	updateWhere<E, IE extends IEntity>(
+		entityClass: {new (): E},
+		phRawUpdate: PHRawSQLUpdate<IE>
+	): Promise<number>;
 }
 
 export class EntityManager implements IEntityManager {
@@ -138,6 +153,13 @@ export class EntityManager implements IEntityManager {
 		return true;
 	}
 
+	async insert<E>(
+		entityClass: {new (): E},
+		entity: E
+	): Promise<E> {
+		return this.persistEntity(entityClass, entity, 'insert');
+	}
+
 	async create<E>(
 		entityClass: {new (): E},
 		entity: E
@@ -152,13 +174,16 @@ export class EntityManager implements IEntityManager {
 		return this.persistEntity(entityClass, entity, 'delete');
 	}
 
+	@Transactional()
 	async deleteWhere<E, IE extends IEntity>(
 		entityClass: {new (): E},
 		phRawDelete: PHRawSQLDelete<IE>
-	): Promise<E[]> {
+	): Promise<number> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let phSqlDelete = this.getPHSQLDelete(qEntity, phRawDelete);
-		return await <any>this.localStore.deleteWhere(qEntity.__entityName__, phSqlDelete, this.localStore.activeChangeGroup);
+		let changeRecord = await this.localStore.deleteWhere(qEntity.__entityName__, phSqlDelete, this.localStore.activeChangeGroup);
+
+		return changeRecord.numberOfAffectedRecords;
 	}
 
 	getPHSQLDelete<E, IE extends IEntity>(
@@ -177,7 +202,7 @@ export class EntityManager implements IEntityManager {
 		entityClass: {new (): E},
 		entity: E
 	): Promise<E> {
-		return this.persistEntity(entityClass, entity, 'persist');
+		return this.persistEntity(entityClass, entity, 'save');
 	}
 
 	async update<E>(
@@ -187,13 +212,16 @@ export class EntityManager implements IEntityManager {
 		return this.persistEntity(entityClass, entity, 'update');
 	}
 
+	@Transactional()
 	async updateWhere<E, IE extends IEntity>(
 		entityClass: {new (): E},
 		phRawUpdate: PHRawSQLUpdate<IE>
-	): Promise<E[]> {
+	): Promise<number> {
 		let qEntity = PH.getQEntityFromEntityClass(entityClass);
 		let phSqlUpdate = this.getPHSQLUpdate(qEntity, phRawUpdate);
-		return await <any>this.localStore.updateWhere(qEntity.__entityName__, phSqlUpdate, this.localStore.activeChangeGroup);
+		let changeRecord = await this.localStore.updateWhere(qEntity.__entityName__, phSqlUpdate, this.localStore.activeChangeGroup);
+
+		return changeRecord.numberOfAffectedRecords;
 	}
 
 	getPHSQLUpdate<E, IE extends IEntity>(
@@ -212,7 +240,7 @@ export class EntityManager implements IEntityManager {
 	private async persistEntity<E>(
 		entityClass: {new (): E},
 		entity: E,
-		operation: 'create' | 'delete' | 'persist' | 'update'
+		operation: 'insert' | 'create' | 'delete' | 'save' | 'update'
 	): Promise<E> {
 
 		let changeGroup: ChangeGroupApi;

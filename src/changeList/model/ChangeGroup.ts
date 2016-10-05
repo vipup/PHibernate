@@ -2,13 +2,13 @@ import {
 	CascadeType, Column, Entity, OneToMany, Table, PHJsonSQLDelete, IEntity,
 	PHJsonSQLUpdate
 } from "querydsl-typescript";
-import {EntityChange, StubEntityChange, IEntityChange} from "./EntityChange";
+import {EntityChange, StubEntityChange, EntityChangeApi} from "./EntityChange";
 import {DeltaRecord, DeltaRecordApi} from "./DeltaRecord";
 import {AbstractFieldChange} from "./AbstractFieldChange";
 import {IdGenerator} from "../../localStore/IdGenerator";
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {UserUtils} from "../../shared/UserUtils";
-import {EntityWhereChange, StubWhereEntityChange, IEntityWhereChange} from "./EntityWhereChange";
+import {EntityWhereChange, StubWhereEntityChange, EntityWhereChangeApi} from "./EntityWhereChange";
 import {EntityChangeType, AbstractEntityChange} from "./AbstractEntityChange";
 /**
  * Created by Papa on 9/15/2016.
@@ -33,29 +33,31 @@ export interface ChangeGroupApi extends DeltaRecordApi {
 		entity: any,
 		idProperty: string,
 		idGenerator: IdGenerator
-	): IEntityChange;
+	): EntityChangeApi;
 
 	addNewDeleteEntityChange(
 		entityName: string,
 		entity: any,
 		idProperty: string
-	): IEntityChange;
+	): EntityChangeApi;
 
 	addNewDeleteWhereEntityChange<IE extends IEntity>(
 		entityName: string,
+		numberOfAffectedRecords: number,
 		phJsonSqlDelete: PHJsonSQLDelete<IE>
-	): IEntityWhereChange;
+	): EntityWhereChangeApi;
 
 	addNewUpdateEntityChange(
 		entityName: string,
 		entity: any,
 		idProperty: string
-	): IEntityChange;
+	): EntityChangeApi;
 
 	addNewUpdateWhereEntityChange<IE extends IEntity>(
 		entityName: string,
+		numberOfAffectedRecords: number,
 		phJsonSqlUpdate: PHJsonSQLUpdate<IE>
-	): IEntityWhereChange;
+	): EntityWhereChangeApi;
 }
 
 @Entity()
@@ -106,7 +108,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		entity: any,
 		idProperty: string,
 		idGenerator: IdGenerator
-	): IEntityChange {
+	): EntityChangeApi {
 		if (entity instanceof ChangeGroup || entity instanceof AbstractEntityChange || entity instanceof AbstractFieldChange) {
 			return new StubEntityChange();
 		}
@@ -122,7 +124,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		entityName: string,
 		entity: any,
 		idProperty: string
-	): IEntityChange {
+	): EntityChangeApi {
 		if (entity instanceof ChangeGroup || entity instanceof AbstractEntityChange || entity instanceof AbstractFieldChange) {
 			return new StubEntityChange();
 		}
@@ -136,9 +138,10 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 
 	addNewDeleteWhereEntityChange<IE extends IEntity>(
 		entityName: string,
+		numberOfAffectedRecords: number,
 		phJsonSqlDelete: PHJsonSQLDelete<IE>
-	): IEntityWhereChange {
-		let entityWhereChange = this.addNewEntityWhereChange(entityName);
+	): EntityWhereChangeApi {
+		let entityWhereChange = this.addNewEntityWhereChange(entityName, numberOfAffectedRecords);
 		entityWhereChange.changeType = EntityChangeType.DELETE_WHERE;
 		entityWhereChange.queryJson = JSON.stringify(phJsonSqlDelete);
 
@@ -149,7 +152,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		entityName: string,
 		entity: any,
 		idProperty: string
-	): IEntityChange {
+	): EntityChangeApi {
 		if (entity instanceof ChangeGroup || entity instanceof EntityChange || entity instanceof AbstractFieldChange) {
 			return new StubEntityChange();
 		}
@@ -163,9 +166,10 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 
 	addNewUpdateWhereEntityChange<IE extends IEntity>(
 		entityName: string,
+		numberOfAffectedRecords: number,
 		phJsonSqlUpdate: PHJsonSQLUpdate<IE>
-	): IEntityWhereChange {
-		let entityWhereChange = this.addNewEntityWhereChange(entityName);
+	): EntityWhereChangeApi {
+		let entityWhereChange = this.addNewEntityWhereChange(entityName, numberOfAffectedRecords);
 		entityWhereChange.changeType = EntityChangeType.UPDATE_WHERE;
 		entityWhereChange.queryJson = JSON.stringify(phJsonSqlUpdate);
 
@@ -184,10 +188,12 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 	}
 
 	private addNewEntityWhereChange(
-		entityName: string
+		entityName: string,
+		numberOfAffectedRecords: number
 	): EntityWhereChange {
 		let entityWhereChange = new EntityWhereChange();
 		this.setupAbstractEntityChange(entityName, entityWhereChange);
+		entityWhereChange.numberOfAffectedRecords = numberOfAffectedRecords;
 		this.entityWhereChanges.push(entityWhereChange);
 
 		return entityWhereChange;
@@ -228,7 +234,7 @@ export class StubChangeGroup implements ChangeGroupApi {
 		entity: any,
 		idProperty: string,
 		idGenerator: IdGenerator
-	): IEntityChange {
+	): EntityChangeApi {
 		return new StubEntityChange();
 	}
 
@@ -236,14 +242,15 @@ export class StubChangeGroup implements ChangeGroupApi {
 		entityName: string,
 		entity: any,
 		idProperty: string
-	): IEntityChange {
+	): EntityChangeApi {
 		return new StubEntityChange();
 	}
 
 	addNewDeleteWhereEntityChange<IE extends IEntity>(
 		entityName: string,
+		numberOfAffectedRecords: number,
 		phJsonSqlDelete: PHJsonSQLDelete<IE>
-	): IEntityWhereChange {
+	): EntityWhereChangeApi {
 		return new StubWhereEntityChange();
 	}
 
@@ -251,14 +258,15 @@ export class StubChangeGroup implements ChangeGroupApi {
 		entityName: string,
 		entity: any,
 		idProperty: string
-	): IEntityChange {
+	): EntityChangeApi {
 		return new StubEntityChange();
 	}
 
 	addNewUpdateWhereEntityChange<IE extends IEntity>(
 		entityName: string,
+		numberOfAffectedRecords: number,
 		phJsonSqlUpdate: PHJsonSQLUpdate<IE>
-	): IEntityWhereChange {
+	): EntityWhereChangeApi {
 		return new StubWhereEntityChange();
 	}
 

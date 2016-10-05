@@ -8,13 +8,13 @@ import {Observable, Subject} from "rxjs";
 import {IdGenerator, IdGeneration, getIdGenerator} from "./IdGenerator";
 import {UpdateCache} from "../core/repository/UpdateCache";
 import {ChangeGroupApi} from "../changeList/model/ChangeGroup";
-import {IEntityChange} from "../changeList/model/EntityChange";
+import {EntityChangeApi} from "../changeList/model/EntityChange";
 import {IEntityManager} from "../core/repository/EntityManager";
 import {LocalStoreType, LocalStoreSetupInfo} from "./LocalStoreApi";
 import {ILocalStoreAdaptor} from "./LocalStoreAdaptor";
 import {PHDelete} from "querydsl-typescript/lib/query/PHQuery";
-import {IAbstractEntityChange} from "../changeList/model/AbstractEntityChange";
-import {IEntityWhereChange} from "../changeList/model/EntityWhereChange";
+import {AbstractEntityChangeApi} from "../changeList/model/AbstractEntityChange";
+import {EntityWhereChangeApi} from "../changeList/model/EntityWhereChange";
 /**
  * Created by Papa on 9/9/2016.
  */
@@ -66,7 +66,7 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityChange> {
+	): Promise<EntityChangeApi> {
 
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
@@ -91,7 +91,7 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 				columnNames.push(columnName);
 				let newValue = entity[propertyName];
 				values.push(entity[propertyName]);
-				entityChange.addNewFieldChange(propertyName, null, newValue, field);
+				entityChange.addNewFieldChange(propertyName, null, null, newValue, field);
 				continue;
 			}
 			let nonPropertyValue = entity[propertyName];
@@ -121,7 +121,8 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 					}
 					columnNames.push(columnName);
 					values.push(parentObjectIdValue);
-					entityChange.addNewFieldChange(propertyName, null, parentObjectIdValue, field);
+					let relatingEntityIdField = NameMetadataUtils.getIdFieldName(entityRelation.entityName);
+					entityChange.addNewFieldChange(relatingEntityIdField, propertyName, null, parentObjectIdValue, field);
 					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
 					continue;
 				case RelationType.ONE_TO_MANY:
@@ -160,11 +161,90 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		changeGroup: ChangeGroupApi
 	);
 
+	async insert<E>(
+		entityName: string,
+		entity: E,
+		changeGroup: ChangeGroupApi
+	): Promise<EntityChangeApi> {
+
+		let qEntity = PH.qEntityMap[entityName];
+		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
+		let entityRelationMap = PH.entitiesRelationPropertyMap[entityName];
+
+		if (!entityMetadata.idProperty) {
+			throw `@Id is not defined for entity: ${entityName}`;
+		}
+
+		if (!entity[entityMetadata.idProperty]) {
+			throw `Cannot insert entity: ${entityName}, id is not defined.`;
+		}
+		let entityChange = changeGroup.addNewCreateEntityChange(entityName, entity, entityMetadata.idProperty, this.idGenerator);
+
+		let columnNames: string[] = [];
+		let values: any[] = [];
+		let cascadeRecords: CascadeRecord[] = [];
+		for (let propertyName in entity) {
+			let columnName = PHMetadataUtils.getPropertyColumnName(propertyName, qEntity);
+			let field = qEntity.__entityFieldMap__[propertyName];
+			if (columnName) {
+				columnNames.push(columnName);
+				let newValue = entity[propertyName];
+				values.push(entity[propertyName]);
+				entityChange.addNewFieldChange(propertyName, null, null, newValue, field);
+				continue;
+			}
+			let nonPropertyValue = entity[propertyName];
+			// If there is no value then it doesn't have to be created
+			if (!nonPropertyValue && nonPropertyValue !== '' && nonPropertyValue !== 0) {
+				continue;
+			}
+			columnName = PHMetadataUtils.getJoinColumnName(propertyName, qEntity);
+			// if there is no entity data on in, don't process it (transient field)
+			if (!columnName) {
+				return;
+			}
+			// If it's not an object/array
+			if (typeof nonPropertyValue != 'object' || nonPropertyValue instanceof Date) {
+				throw `Unexpected value in relation property: ${propertyName}, of entity ${entityName}`;
+			}
+			let entityRelation = entityRelationMap[propertyName];
+			switch (entityRelation.relationType) {
+				case RelationType.MANY_TO_ONE:
+					if (nonPropertyValue instanceof Array) {
+						throw `@ManyToOne relation cannot be an array`;
+					}
+					// get the parent object's id
+					let parentObjectIdValue = NameMetadataUtils.getIdValue(entityRelation.entityName, nonPropertyValue);
+					if (!parentObjectIdValue) {
+						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
+					}
+					columnNames.push(columnName);
+					values.push(parentObjectIdValue);
+					let relatingEntityIdField = NameMetadataUtils.getIdFieldName(entityRelation.entityName);
+					entityChange.addNewFieldChange(relatingEntityIdField, propertyName, null, parentObjectIdValue, field);
+					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
+					continue;
+				case RelationType.ONE_TO_MANY:
+					throw `Cannot insert entities with @OneToMay reference ${propertyName}.`;
+			}
+		}
+
+		await this.insertNative(qEntity, columnNames, values);
+
+		return entityChange;
+	}
+
+	protected abstract async insertNative(
+		qEntity: QEntity<any>,
+		columnNames: string[],
+		values: any[]
+	);
+
 	async delete<E>(
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityChange> {
+	): Promise<EntityChangeApi> {
 
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
@@ -265,21 +345,21 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		entityName: string,
 		phSqlDelete: PHSQLDelete<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void> {
+	): Promise<EntityWhereChangeApi> {
 		let sqlStringDelete: SQLStringDelete<IE> = new SQLStringDelete<IE>(phSqlDelete.toSQL(), phSqlDelete.qEntity, phSqlDelete.qEntityMap, phSqlDelete.entitiesRelationPropertyMap, phSqlDelete.entitiesPropertyTypeMap, this.getDialect());
-		await this.deleteWhereNative(sqlStringDelete, changeGroup);
+		return await this.deleteWhereNative(sqlStringDelete, changeGroup);
 	}
 
 	protected abstract async deleteWhereNative<IE extends IEntity>(
 		sqlStringDelete: SQLStringDelete<IE>,
 		changeGroup: ChangeGroupApi
-	):Promise<IEntityWhereChange>;
+	): Promise<EntityWhereChangeApi>;
 
 	async update<E>(
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise<IEntityChange> {
+	): Promise<EntityChangeApi> {
 		/**
 		 * On an update operation, can a nested create contain an update?
 		 * Via:
@@ -328,13 +408,13 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 					if (!UpdateCache.valuesEqualIgnoreObjects(originalValue, updatedValue)) {
 						columnNames.push(columnName);
 						values.push(updatedValue);
-						entityChange.addNewFieldChange(propertyName, originalValue, updatedValue, field);
+						entityChange.addNewFieldChange(propertyName, null, originalValue, updatedValue, field);
 
 					}
 				} else {
 					columnNames.push(columnName);
 					values.push(updatedValue);
-					entityChange.addNewFieldChange(propertyName, null, updatedValue, field);
+					entityChange.addNewFieldChange(propertyName, null, null, updatedValue, field);
 				}
 				continue;
 			}
@@ -359,18 +439,19 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 					if (!parentObjectIdValue) {
 						throw `Parent object's (${entityRelation.entityName}) @Id value is missing `;
 					}
+					let relatingEntityIdField = NameMetadataUtils.getIdFieldName(entityRelation.entityName);
 					if (updateCache) {
 						let originalValue = updateCache[propertyName];
 						if (!UpdateCache.valuesEqualIgnoreObjects(originalValue, parentObjectIdValue)) {
 							columnNames.push(columnName);
 							values.push(parentObjectIdValue);
-							entityChange.addNewFieldChange(propertyName, originalValue, parentObjectIdValue, field);
+							entityChange.addNewFieldChange(relatingEntityIdField, propertyName, originalValue, parentObjectIdValue, field);
 
 						}
 					} else {
 						columnNames.push(columnName);
 						values.push(parentObjectIdValue);
-						entityChange.addNewFieldChange(propertyName, null, parentObjectIdValue, field);
+						entityChange.addNewFieldChange(relatingEntityIdField, propertyName, null, parentObjectIdValue, field);
 					}
 					// Cascading on manyToOne is not currently implemented, nothing else needs to be done
 					continue;
@@ -439,15 +520,15 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		entityName: string,
 		phSqlUpdate: PHSQLUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	): Promise<void> {
+	): Promise<EntityWhereChangeApi> {
 		let sqlStringUpdate: SQLStringUpdate<IE> = new SQLStringUpdate<IE>(phSqlUpdate.toSQL(), phSqlUpdate.qEntity, phSqlUpdate.qEntityMap, phSqlUpdate.entitiesRelationPropertyMap, phSqlUpdate.entitiesPropertyTypeMap, this.getDialect());
-		await this.updateWhereNative(sqlStringUpdate, changeGroup);
+		return await this.updateWhereNative(sqlStringUpdate, changeGroup);
 	}
 
 	protected abstract async updateWhereNative<IE extends IEntity>(
 		sqlStringUpdate: SQLStringUpdate<IE>,
 		changeGroup: ChangeGroupApi
-	):Promise<IEntityWhereChange>;
+	): Promise<EntityWhereChangeApi>;
 
 	async find < E, IE extends IEntity >(
 		entityName: string,
@@ -486,7 +567,7 @@ export abstract class SqlAdaptor implements ILocalStoreAdaptor {
 		entityName: string,
 		entity: E,
 		changeGroup: ChangeGroupApi
-	): Promise < IEntityChange > {
+	): Promise < EntityChangeApi > {
 		let qEntity = PH.qEntityMap[entityName];
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
