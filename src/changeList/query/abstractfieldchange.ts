@@ -4,11 +4,11 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {AbstractFieldChange} from '../model/abstractfieldchange';
 import {IDeltaRecord, QDeltaRecord} from './deltarecord';
@@ -22,7 +22,7 @@ export interface IAbstractFieldChange
     extends IDeltaRecord
 {
 		// Properties
-		entityRelationName?: string;
+    entityRelationName?: string;
     propertyName?: string;
 
 		// Relations
@@ -40,7 +40,7 @@ export class QAbstractFieldChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	propertyName = new QStringField<QAbstractFieldChange<IQ>>(this, <any>QAbstractFieldChange, 'AbstractFieldChange', 'propertyName');
 
 	// Relations
-	entityChange = new QRelation<QEntityChange<IQ>, EntityChange, QAbstractFieldChange<any>>(this, <any>QAbstractFieldChange, RelationType.MANY_TO_ONE, QStringField, 'EntityChange', 'entityChange', EntityChange, QEntityChange);
+	entityChange = new QRelation<QEntityChange<IQ>, EntityChange, QAbstractFieldChange<any>>(this, <any>QAbstractFieldChange, RelationType.MANY_TO_ONE, 'EntityChange', 'entityChange', EntityChange, QEntityChange);
 
 	constructor(
 	entityConstructor: {new(): any},

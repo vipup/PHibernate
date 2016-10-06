@@ -1,4 +1,4 @@
-import { IQEntity, QBooleanField, PHRawSQLQuery } from 'querydsl-typescript';
+import { IQEntity, QBooleanField, PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete } from 'querydsl-typescript';
 import { BooleanFieldChange } from '../model/booleanfieldchange';
 import { IAbstractFieldChange, QAbstractFieldChange } from './abstractfieldchange';
 import { Observable, Subject } from 'rxjs';
@@ -22,8 +22,11 @@ export declare class QBooleanFieldChange<IQ extends IQEntity> extends QAbstractF
     static searchOne(entityClass: {
         new (): BooleanFieldChange;
     }, queryDefinition: PHRawSQLQuery<IBooleanFieldChange>, subject?: Subject<BooleanFieldChange>): Observable<BooleanFieldChange>;
+    static insert(entity: BooleanFieldChange): Promise<BooleanFieldChange>;
     static create(entity: BooleanFieldChange): Promise<BooleanFieldChange>;
     static update(entity: BooleanFieldChange): Promise<BooleanFieldChange>;
+    static updateWhere(phRawUpdate: PHRawSQLUpdate<IBooleanFieldChange>): Promise<number>;
     static delete(entity: BooleanFieldChange): Promise<BooleanFieldChange>;
+    static deleteWhere(phRawDelete: PHRawSQLDelete<IBooleanFieldChange>): Promise<number>;
     static save(entity: BooleanFieldChange): Promise<BooleanFieldChange>;
 }

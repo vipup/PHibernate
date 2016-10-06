@@ -4,11 +4,11 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {DeltaRecord} from '../model/deltarecord';
 import {PH} from '../../config/PH';

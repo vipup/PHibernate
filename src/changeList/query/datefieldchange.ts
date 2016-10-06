@@ -4,11 +4,11 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {DateFieldChange} from '../model/datefieldchange';
 import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange';
@@ -51,7 +51,7 @@ export class QDateFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<
 		throw 'Not Implemented';
 	}
 	
-			static async find(
+	static async find(
 		queryDefinition:PHRawSQLQuery<IDateFieldChange>
 	):Promise<DateFieldChange[]> {
 			return await PH.entityManager.find<DateFieldChange, IDateFieldChange>(DateFieldChange, queryDefinition);
@@ -79,6 +79,12 @@ export class QDateFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<
 			return PH.entityManager.searchOne<DateFieldChange, IDateFieldChange>(DateFieldChange, queryDefinition, subject);
 	}
 
+	static async insert(
+		entity: DateFieldChange
+	):Promise<DateFieldChange> {
+			return await PH.entityManager.insert<DateFieldChange>(DateFieldChange, entity);
+	}
+
 	static async create(
 		entity: DateFieldChange
 	):Promise<DateFieldChange> {
@@ -90,11 +96,23 @@ export class QDateFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<
 	):Promise<DateFieldChange> {
 			return await PH.entityManager.update<DateFieldChange>(DateFieldChange, entity);
 	}
+	
+	static async updateWhere(
+		phRawUpdate: PHRawSQLUpdate<IDateFieldChange>
+	): Promise<number> {
+		return await PH.entityManager.updateWhere<DateFieldChange, IDateFieldChange>(DateFieldChange, phRawUpdate);
+	}
 
 	static async delete(
 		entity: DateFieldChange
 	):Promise<DateFieldChange> {
 			return await PH.entityManager.delete<DateFieldChange>(DateFieldChange, entity);
+	}
+	
+	static async deleteWhere(
+		phRawDelete: PHRawSQLDelete<IDateFieldChange>
+	): Promise<number> {
+		return await PH.entityManager.deleteWhere<DateFieldChange, IDateFieldChange>(DateFieldChange, phRawDelete);
 	}
 
 	static async save(

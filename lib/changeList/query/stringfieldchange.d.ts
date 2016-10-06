@@ -1,4 +1,4 @@
-import { IQEntity, QStringField, PHRawSQLQuery } from 'querydsl-typescript';
+import { IQEntity, QStringField, PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete } from 'querydsl-typescript';
 import { StringFieldChange } from '../model/stringfieldchange';
 import { IAbstractFieldChange, QAbstractFieldChange } from './abstractfieldchange';
 import { Observable, Subject } from 'rxjs';
@@ -22,8 +22,11 @@ export declare class QStringFieldChange<IQ extends IQEntity> extends QAbstractFi
     static searchOne(entityClass: {
         new (): StringFieldChange;
     }, queryDefinition: PHRawSQLQuery<IStringFieldChange>, subject?: Subject<StringFieldChange>): Observable<StringFieldChange>;
+    static insert(entity: StringFieldChange): Promise<StringFieldChange>;
     static create(entity: StringFieldChange): Promise<StringFieldChange>;
     static update(entity: StringFieldChange): Promise<StringFieldChange>;
+    static updateWhere(phRawUpdate: PHRawSQLUpdate<IStringFieldChange>): Promise<number>;
     static delete(entity: StringFieldChange): Promise<StringFieldChange>;
+    static deleteWhere(phRawDelete: PHRawSQLDelete<IStringFieldChange>): Promise<number>;
     static save(entity: StringFieldChange): Promise<StringFieldChange>;
 }

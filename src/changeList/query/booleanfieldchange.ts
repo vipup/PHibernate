@@ -4,11 +4,11 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {BooleanFieldChange} from '../model/booleanfieldchange';
 import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange';
@@ -51,7 +51,7 @@ export class QBooleanFieldChange<IQ extends IQEntity> extends QAbstractFieldChan
 		throw 'Not Implemented';
 	}
 	
-			static async find(
+	static async find(
 		queryDefinition:PHRawSQLQuery<IBooleanFieldChange>
 	):Promise<BooleanFieldChange[]> {
 			return await PH.entityManager.find<BooleanFieldChange, IBooleanFieldChange>(BooleanFieldChange, queryDefinition);
@@ -79,6 +79,12 @@ export class QBooleanFieldChange<IQ extends IQEntity> extends QAbstractFieldChan
 			return PH.entityManager.searchOne<BooleanFieldChange, IBooleanFieldChange>(BooleanFieldChange, queryDefinition, subject);
 	}
 
+	static async insert(
+		entity: BooleanFieldChange
+	):Promise<BooleanFieldChange> {
+			return await PH.entityManager.insert<BooleanFieldChange>(BooleanFieldChange, entity);
+	}
+
 	static async create(
 		entity: BooleanFieldChange
 	):Promise<BooleanFieldChange> {
@@ -90,11 +96,23 @@ export class QBooleanFieldChange<IQ extends IQEntity> extends QAbstractFieldChan
 	):Promise<BooleanFieldChange> {
 			return await PH.entityManager.update<BooleanFieldChange>(BooleanFieldChange, entity);
 	}
+	
+	static async updateWhere(
+		phRawUpdate: PHRawSQLUpdate<IBooleanFieldChange>
+	): Promise<number> {
+		return await PH.entityManager.updateWhere<BooleanFieldChange, IBooleanFieldChange>(BooleanFieldChange, phRawUpdate);
+	}
 
 	static async delete(
 		entity: BooleanFieldChange
 	):Promise<BooleanFieldChange> {
 			return await PH.entityManager.delete<BooleanFieldChange>(BooleanFieldChange, entity);
+	}
+	
+	static async deleteWhere(
+		phRawDelete: PHRawSQLDelete<IBooleanFieldChange>
+	): Promise<number> {
+		return await PH.entityManager.deleteWhere<BooleanFieldChange, IBooleanFieldChange>(BooleanFieldChange, phRawDelete);
 	}
 
 	static async save(

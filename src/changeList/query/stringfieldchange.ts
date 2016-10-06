@@ -4,11 +4,11 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {StringFieldChange} from '../model/stringfieldchange';
 import {IAbstractFieldChange, QAbstractFieldChange} from './abstractfieldchange';
@@ -51,7 +51,7 @@ export class QStringFieldChange<IQ extends IQEntity> extends QAbstractFieldChang
 		throw 'Not Implemented';
 	}
 	
-			static async find(
+	static async find(
 		queryDefinition:PHRawSQLQuery<IStringFieldChange>
 	):Promise<StringFieldChange[]> {
 			return await PH.entityManager.find<StringFieldChange, IStringFieldChange>(StringFieldChange, queryDefinition);
@@ -79,6 +79,12 @@ export class QStringFieldChange<IQ extends IQEntity> extends QAbstractFieldChang
 			return PH.entityManager.searchOne<StringFieldChange, IStringFieldChange>(StringFieldChange, queryDefinition, subject);
 	}
 
+	static async insert(
+		entity: StringFieldChange
+	):Promise<StringFieldChange> {
+			return await PH.entityManager.insert<StringFieldChange>(StringFieldChange, entity);
+	}
+
 	static async create(
 		entity: StringFieldChange
 	):Promise<StringFieldChange> {
@@ -90,11 +96,23 @@ export class QStringFieldChange<IQ extends IQEntity> extends QAbstractFieldChang
 	):Promise<StringFieldChange> {
 			return await PH.entityManager.update<StringFieldChange>(StringFieldChange, entity);
 	}
+	
+	static async updateWhere(
+		phRawUpdate: PHRawSQLUpdate<IStringFieldChange>
+	): Promise<number> {
+		return await PH.entityManager.updateWhere<StringFieldChange, IStringFieldChange>(StringFieldChange, phRawUpdate);
+	}
 
 	static async delete(
 		entity: StringFieldChange
 	):Promise<StringFieldChange> {
 			return await PH.entityManager.delete<StringFieldChange>(StringFieldChange, entity);
+	}
+	
+	static async deleteWhere(
+		phRawDelete: PHRawSQLDelete<IStringFieldChange>
+	): Promise<number> {
+		return await PH.entityManager.deleteWhere<StringFieldChange, IStringFieldChange>(StringFieldChange, phRawDelete);
 	}
 
 	static async save(

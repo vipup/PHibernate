@@ -4,19 +4,19 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {ChangeGroup} from '../model/changegroup';
 import {IDeltaRecord, QDeltaRecord} from './deltarecord';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
 import {EntityChange} from '../model/entitychange';
-import {EntityWhereChange} from "../model/EntityWhereChange";
 import {IEntityChange, QEntityChange} from './entitychange';
+import {EntityWhereChange} from '../model/entitywherechange';
 import {IEntityWhereChange, QEntityWhereChange} from './entitywherechange';
 
 //Entity Query
@@ -48,8 +48,8 @@ export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	syncStatus = new QNumberField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'syncStatus');
 
 	// Relations
-	entityChanges = new QRelation<QEntityChange<IQ>, EntityChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, QStringField, 'EntityChange', 'entityChanges', EntityChange, QEntityChange);
-	entityWhereChanges = new QRelation<QEntityWhereChange<IQ>, EntityWhereChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, QStringField, 'EntityWhereChange', 'entityWhereChanges', EntityWhereChange, QEntityWhereChange);
+	entityChanges = new QRelation<QEntityChange<IQ>, EntityChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, 'EntityChange', 'entityChanges', EntityChange, QEntityChange);
+	entityWhereChanges = new QRelation<QEntityWhereChange<IQ>, EntityWhereChange, QChangeGroup<any>>(this, <any>QChangeGroup, RelationType.ONE_TO_MANY, 'EntityWhereChange', 'entityWhereChanges', EntityWhereChange, QEntityWhereChange);
 
 	constructor(
 	entityConstructor: {new(): any},
@@ -63,7 +63,7 @@ export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 		throw 'Not Implemented';
 	}
 	
-			static async find(
+	static async find(
 		queryDefinition:PHRawSQLQuery<IChangeGroup>
 	):Promise<ChangeGroup[]> {
 			return await PH.entityManager.find<ChangeGroup, IChangeGroup>(ChangeGroup, queryDefinition);
@@ -91,6 +91,12 @@ export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 			return PH.entityManager.searchOne<ChangeGroup, IChangeGroup>(ChangeGroup, queryDefinition, subject);
 	}
 
+	static async insert(
+		entity: ChangeGroup
+	):Promise<ChangeGroup> {
+			return await PH.entityManager.insert<ChangeGroup>(ChangeGroup, entity);
+	}
+
 	static async create(
 		entity: ChangeGroup
 	):Promise<ChangeGroup> {
@@ -102,11 +108,23 @@ export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	):Promise<ChangeGroup> {
 			return await PH.entityManager.update<ChangeGroup>(ChangeGroup, entity);
 	}
+	
+	static async updateWhere(
+		phRawUpdate: PHRawSQLUpdate<IChangeGroup>
+	): Promise<number> {
+		return await PH.entityManager.updateWhere<ChangeGroup, IChangeGroup>(ChangeGroup, phRawUpdate);
+	}
 
 	static async delete(
 		entity: ChangeGroup
 	):Promise<ChangeGroup> {
 			return await PH.entityManager.delete<ChangeGroup>(ChangeGroup, entity);
+	}
+	
+	static async deleteWhere(
+		phRawDelete: PHRawSQLDelete<IChangeGroup>
+	): Promise<number> {
+		return await PH.entityManager.deleteWhere<ChangeGroup, IChangeGroup>(ChangeGroup, phRawDelete);
 	}
 
 	static async save(

@@ -4,14 +4,14 @@ import {IEntity, IQEntity, IEntityQuery, QEntity, FieldType,
 		IQDateField, QDateField,
 		IQNumberField, QNumberField,
 		IQStringField, QStringField,
-		IBooleanOperation,JSONBooleanOperation,
-		IDateOperation,JSONDateOperation,
-		INumberOperation,JSONNumberOperation,
-		IStringOperation,JSONStringOperation,
-		PHRawSQLQuery,
+		IBooleanOperation, JSONBooleanOperation,
+		IDateOperation, JSONDateOperation,
+		INumberOperation, JSONNumberOperation,
+		IStringOperation, JSONStringOperation,
+		PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete,
 		RelationType, IQRelation, QRelation} from 'querydsl-typescript';
 import {EntityChange} from '../model/entitychange';
-import {IDeltaRecord, QDeltaRecord} from './deltarecord';
+import {IAbstractEntityChange, QAbstractEntityChange} from './abstractentitychange';
 import {PH} from '../../config/PH';
 import {Observable, Subject} from 'rxjs';
 import {BooleanFieldChange} from '../model/booleanfieldchange';
@@ -22,18 +22,13 @@ import {NumberFieldChange} from '../model/numberfieldchange';
 import {INumberFieldChange, QNumberFieldChange} from './numberfieldchange';
 import {StringFieldChange} from '../model/stringfieldchange';
 import {IStringFieldChange, QStringFieldChange} from './stringfieldchange';
-import {ChangeGroup} from '../model/changegroup';
-import {IChangeGroup, QChangeGroup} from './changegroup';
 
 //Entity Query
 export interface IEntityChange
-    extends IDeltaRecord
+    extends IAbstractEntityChange
 {
 		// Properties
-    entityName?: string;
-    changeType?: number;
     changedEntityId?: string;
-    entityChangeIdInGroup?: number;
     numberOfFieldsInEntity?: number;
 
 		// Relations
@@ -41,29 +36,24 @@ export interface IEntityChange
     dateFieldChanges?: IDateFieldChange
     numberFieldChanges?: INumberFieldChange
     stringFieldChanges?: IStringFieldChange
-    changeGroup?: IChangeGroup
 
 }
 
 
 // Entity Query Implementation
-export class QEntityChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
+export class QEntityChange<IQ extends IQEntity> extends QAbstractEntityChange<IQ>
 {
 	static from = new QEntityChange(EntityChange, 'EntityChange', 'EntityChange');  
 
 	// Fields
-	entityName = new QStringField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'entityName');
-	changeType = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'changeType');
 	changedEntityId = new QStringField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'changedEntityId');
-	entityChangeIdInGroup = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'entityChangeIdInGroup');
 	numberOfFieldsInEntity = new QNumberField<QEntityChange<IQ>>(this, <any>QEntityChange, 'EntityChange', 'numberOfFieldsInEntity');
 
 	// Relations
-	booleanFieldChanges = new QRelation<QBooleanFieldChange<IQ>, BooleanFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QStringField, 'BooleanFieldChange', 'booleanFieldChanges', BooleanFieldChange, QBooleanFieldChange);
-	dateFieldChanges = new QRelation<QDateFieldChange<IQ>, DateFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QStringField, 'DateFieldChange', 'dateFieldChanges', DateFieldChange, QDateFieldChange);
-	numberFieldChanges = new QRelation<QNumberFieldChange<IQ>, NumberFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QStringField, 'NumberFieldChange', 'numberFieldChanges', NumberFieldChange, QNumberFieldChange);
-	stringFieldChanges = new QRelation<QStringFieldChange<IQ>, StringFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, QStringField, 'StringFieldChange', 'stringFieldChanges', StringFieldChange, QStringFieldChange);
-	changeGroup = new QRelation<QChangeGroup<IQ>, ChangeGroup, QEntityChange<any>>(this, <any>QEntityChange, RelationType.MANY_TO_ONE, QStringField, 'ChangeGroup', 'changeGroup', ChangeGroup, QChangeGroup);
+	booleanFieldChanges = new QRelation<QBooleanFieldChange<IQ>, BooleanFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'BooleanFieldChange', 'booleanFieldChanges', BooleanFieldChange, QBooleanFieldChange);
+	dateFieldChanges = new QRelation<QDateFieldChange<IQ>, DateFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'DateFieldChange', 'dateFieldChanges', DateFieldChange, QDateFieldChange);
+	numberFieldChanges = new QRelation<QNumberFieldChange<IQ>, NumberFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'NumberFieldChange', 'numberFieldChanges', NumberFieldChange, QNumberFieldChange);
+	stringFieldChanges = new QRelation<QStringFieldChange<IQ>, StringFieldChange, QEntityChange<any>>(this, <any>QEntityChange, RelationType.ONE_TO_MANY, 'StringFieldChange', 'stringFieldChanges', StringFieldChange, QStringFieldChange);
 
 	constructor(
 	entityConstructor: {new(): any},
@@ -77,7 +67,7 @@ export class QEntityChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 		throw 'Not Implemented';
 	}
 	
-			static async find(
+	static async find(
 		queryDefinition:PHRawSQLQuery<IEntityChange>
 	):Promise<EntityChange[]> {
 			return await PH.entityManager.find<EntityChange, IEntityChange>(EntityChange, queryDefinition);
@@ -105,6 +95,12 @@ export class QEntityChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 			return PH.entityManager.searchOne<EntityChange, IEntityChange>(EntityChange, queryDefinition, subject);
 	}
 
+	static async insert(
+		entity: EntityChange
+	):Promise<EntityChange> {
+			return await PH.entityManager.insert<EntityChange>(EntityChange, entity);
+	}
+
 	static async create(
 		entity: EntityChange
 	):Promise<EntityChange> {
@@ -116,11 +112,23 @@ export class QEntityChange<IQ extends IQEntity> extends QDeltaRecord<IQ>
 	):Promise<EntityChange> {
 			return await PH.entityManager.update<EntityChange>(EntityChange, entity);
 	}
+	
+	static async updateWhere(
+		phRawUpdate: PHRawSQLUpdate<IEntityChange>
+	): Promise<number> {
+		return await PH.entityManager.updateWhere<EntityChange, IEntityChange>(EntityChange, phRawUpdate);
+	}
 
 	static async delete(
 		entity: EntityChange
 	):Promise<EntityChange> {
 			return await PH.entityManager.delete<EntityChange>(EntityChange, entity);
+	}
+	
+	static async deleteWhere(
+		phRawDelete: PHRawSQLDelete<IEntityChange>
+	): Promise<number> {
+		return await PH.entityManager.deleteWhere<EntityChange, IEntityChange>(EntityChange, phRawDelete);
 	}
 
 	static async save(

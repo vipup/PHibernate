@@ -1,4 +1,4 @@
-import { IQEntity, QDateField, PHRawSQLQuery } from 'querydsl-typescript';
+import { IQEntity, QDateField, PHRawSQLQuery, PHRawSQLUpdate, PHRawSQLDelete } from 'querydsl-typescript';
 import { DateFieldChange } from '../model/datefieldchange';
 import { IAbstractFieldChange, QAbstractFieldChange } from './abstractfieldchange';
 import { Observable, Subject } from 'rxjs';
@@ -22,8 +22,11 @@ export declare class QDateFieldChange<IQ extends IQEntity> extends QAbstractFiel
     static searchOne(entityClass: {
         new (): DateFieldChange;
     }, queryDefinition: PHRawSQLQuery<IDateFieldChange>, subject?: Subject<DateFieldChange>): Observable<DateFieldChange>;
+    static insert(entity: DateFieldChange): Promise<DateFieldChange>;
     static create(entity: DateFieldChange): Promise<DateFieldChange>;
     static update(entity: DateFieldChange): Promise<DateFieldChange>;
+    static updateWhere(phRawUpdate: PHRawSQLUpdate<IDateFieldChange>): Promise<number>;
     static delete(entity: DateFieldChange): Promise<DateFieldChange>;
+    static deleteWhere(phRawDelete: PHRawSQLDelete<IDateFieldChange>): Promise<number>;
     static save(entity: DateFieldChange): Promise<DateFieldChange>;
 }
