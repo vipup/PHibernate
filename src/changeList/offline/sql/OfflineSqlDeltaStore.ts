@@ -10,7 +10,7 @@ import {
 } from "querydsl-typescript";
 import {QEntityChange} from "../../query/entitychange";
 import {Transactional} from "../../../core/metadata/decorators";
-import {EntityChangeType} from "../../model/AbstractEntityChange";
+import {EntityChangeType, AbstractEntityChange} from "../../model/AbstractEntityChange";
 import {PHUpdate} from "querydsl-typescript/lib/query/PHQuery";
 /**
  * Created by Papa on 9/24/2016.
@@ -76,7 +76,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	/**
 	 * Remote updates (do not code any optimizations until there is a test suite in place)
 	 In a single Transaction:
-	 1)  Find all local change records for each remotely changed entity since the first remote records
+	 1)  Find all local change records since the time of first remote record
 	 2)  Filter out any remote changes that are already in the local store
 	 3)  Save remaining remote Change Groups
 	 4)  Add all local and remote changes into a single list and order
@@ -91,13 +91,20 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	async addRemoteChanges(
 		changeGroups: ChangeGroupApi[]
 	): Promise<void> {
-		let entityIdMap: {[entityId: string]: boolean} = {};
+		let entityNameMap: {[entityName: string]: boolean} = {};
 		let remoteChangeGroupMap: {[id: string]: ChangeGroupApi} = {};
 		let earliestDate = changeGroups.map((changeGroup) => {
 			remoteChangeGroupMap[changeGroup.id] = changeGroup;
-			changeGroup.entityChanges.sort(this.sortEntityChanges);
-			changeGroup.entityChanges.forEach((entityChange) => {
-				entityIdMap[entityChange.changedEntityId] = true;
+			if(!changeGroup.entityChanges) {
+				changeGroup.entityChanges = [];
+			}
+			if (!changeGroup.entityWhereChanges) {
+				changeGroup.entityWhereChanges = [];
+			}
+			changeGroup.abstractEntityChanges = (<AbstractEntityChange[]>changeGroup.entityChanges).concat(changeGroup.entityWhereChanges);
+			changeGroup.abstractEntityChanges.sort(this.sortEntityChanges);
+			changeGroup.abstractEntityChanges.forEach((entityChange) => {
+				entityNameMap[entityChange.entityName] = true;
 			});
 			return changeGroup.createDateTime;
 		}).reduce((previousDate, currentDate) => {
@@ -110,28 +117,57 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		for (let entityId in entityIdMap) {
 			entityIds.push(entityId);
 		}
-		// 1) Find all local records for these entities since the time of the first incoming change
-		let cg, ec;
-		let localChangeGroups = await QChangeGroup.find({
-			select: {
-				'*': null,
-				entityChanges: {
+		// 1) Find all local records since the time of the first incoming change
+		let localChangeGroups;
+		{
+			let cg, ec;
+			localChangeGroups = await QChangeGroup.find({
+				select: {
 					'*': null,
-					booleanFieldChanges: {},
-					dateFieldChanges: {},
-					numberFieldChanges: {},
-					stringFieldChanges: {}
+					entityChanges: {
+						'*': null,
+						booleanFieldChanges: {},
+						dateFieldChanges: {},
+						numberFieldChanges: {},
+						stringFieldChanges: {}
+					},
+					entityWhereChanges: {}
 				},
-			},
-			from: [
-				cg = QChangeGroup.from,
-				ec = cg.entityChanges.innerJoin()
-			],
-			where: and(
-				cg.createDateTime.greaterThanOrEquals(earliestDate),
-				ec.changedEntityId.isIn(entityIds)
-			)
-		});
+				from: [
+					cg = QChangeGroup.from,
+					ec = cg.entityChanges.innerJoin()
+				],
+				where: and(
+					cg.createDateTime.greaterThanOrEquals(earliestDate),
+					ec.changedEntityId.isIn(entityIds)
+				)
+			});
+		}
+		let localEWChangeGroups;
+		{
+			let cg, ewc;
+			localChangeGroups = await QChangeGroup.find({
+				select: {
+					'*': null,
+					entityChanges: {
+						'*': null,
+						booleanFieldChanges: {},
+						dateFieldChanges: {},
+						numberFieldChanges: {},
+						stringFieldChanges: {}
+					},
+					entityWhereChanges: {}
+				},
+				from: [
+					cg = QChangeGroup.from,
+					ewc = cg.entityWhereChanges.innerJoin()
+				],
+				where: and(
+					cg.createDateTime.greaterThanOrEquals(earliestDate)
+				)
+			});
+		}
+
 		// 2)  Filter out any remote changes that are already in the local store
 		let localChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = localChangeGroups.map((changeGroup) => {
 			delete remoteChangeGroupMap[changeGroup.id];
@@ -192,14 +228,50 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		});
 		// 6)  Re-execute all pruned ChangeGroups in order
 
+		// 6a)
 		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
-			changeGroupWithOrigin.changeGroup;
+			let entityChanges = changeGroupWithOrigin.changeGroup.entityChanges;
+			entityChanges.forEach((entityChange) => {
+				switch (entityChange.changeType) {
+					case EntityChangeType.CREATE:
+						return;
+					case EntityChangeType.DELETE:
+						return;
+					case EntityChangeType.DELETE_WHERE:
+						return;
+					case EntityChangeType.UPDATE:
+						return;
+					case EntityChangeType.UPDATE_WHERE:
+						return;
+				}
+			});
 
 		});
 
 		// 7)  Notify all matching attached queries of changes
 
 	}
+
+	private executeCreate() {
+
+	}
+
+	private executeDelete() {
+
+	}
+
+	private executeDeleteWhere() {
+
+	}
+
+	private executeUpdate() {
+
+	}
+
+	private executeUpdateWhere() {
+
+	}
+
 
 	/**
 	 * Remove any modifications that were later updated by another change
@@ -263,7 +335,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		return 0;
 	}
 
-	private sortEntityChanges(ec1: EntityChange, ec2: EntityChange): number {
+	private sortEntityChanges(ec1: AbstractEntityChange, ec2: AbstractEntityChange): number {
 		let id1 = ec1.entityChangeIdInGroup;
 		let id2 = ec2.entityChangeIdInGroup;
 		if (id1 > id2) {

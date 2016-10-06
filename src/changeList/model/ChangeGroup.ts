@@ -22,7 +22,9 @@ export enum SyncStatus {
 
 export interface ChangeGroupApi extends DeltaRecordApi {
 
+	abstractEntityChanges?: AbstractEntityChange[];
 	entityChanges: EntityChange[];
+	entityWhereChanges: EntityWhereChange[];
 	groupIndexInMillisecond: number;
 	numberOfEntitiesInGroup: number;
 	syncStatus: SyncStatus;

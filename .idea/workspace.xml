@@ -6,37 +6,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6366c34-e23e-4156-baac-5e0060b3e786" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/abstractentitychange.ts" />
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/changeList/query/entitywherechange.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/abstractfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/booleanfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/changegroup.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/query/changegroup.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/changegroup.js" afterPath="$PROJECT_DIR$/lib/changeList/query/changegroup.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/changegroup.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/changegroup.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/datefieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/entitychange.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/query/entitychange.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/entitychange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/entitychange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/entitychange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/entitychange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/numberfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.d.ts" afterPath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.d.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js" afterPath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js.map" afterPath="$PROJECT_DIR$/lib/changeList/query/stringfieldchange.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/abstractfieldchange.ts" afterPath="$PROJECT_DIR$/src/changeList/query/abstractfieldchange.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/booleanfieldchange.ts" afterPath="$PROJECT_DIR$/src/changeList/query/booleanfieldchange.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/changegroup.ts" afterPath="$PROJECT_DIR$/src/changeList/query/changegroup.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/datefieldchange.ts" afterPath="$PROJECT_DIR$/src/changeList/query/datefieldchange.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/deltarecord.ts" afterPath="$PROJECT_DIR$/src/changeList/query/deltarecord.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/entitychange.ts" afterPath="$PROJECT_DIR$/src/changeList/query/entitychange.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/numberfieldchange.ts" afterPath="$PROJECT_DIR$/src/changeList/query/numberfieldchange.ts" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/query/stringfieldchange.ts" afterPath="$PROJECT_DIR$/src/changeList/query/stringfieldchange.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts" afterPath="$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" afterPath="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" />
     </list>
     <ignored path="PHibernate.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -60,7 +31,7 @@
                 <file leaf-file-name="DDLManager.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/localStore/webSql/DDLManager.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="153">
+                      <state relative-caret-position="170">
                         <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
                         <folding>
                           <element signature="e#0#35#0" expanded="true" />
@@ -69,11 +40,11 @@
                     </provider>
                   </entry>
                 </file>
-                <file leaf-file-name="ChangeGroup.ts" pinned="false" current-in-tab="false">
+                <file leaf-file-name="ChangeGroup.ts" pinned="false" current-in-tab="true">
                   <entry file="file://$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="544">
-                        <caret line="43" column="2" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
+                      <state relative-caret-position="142">
+                        <caret line="24" column="49" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
                         <folding>
                           <element signature="e#0#129#0" expanded="true" />
                         </folding>
@@ -91,7 +62,7 @@
                     </provider>
                   </entry>
                 </file>
-                <file leaf-file-name="WebSqlAdaptor.ts" pinned="false" current-in-tab="true">
+                <file leaf-file-name="WebSqlAdaptor.ts" pinned="false" current-in-tab="false">
                   <entry file="file://$PROJECT_DIR$/src/localStore/webSql/WebSqlAdaptor.ts">
                     <provider selected="true" editor-type-id="text-editor">
                       <state relative-caret-position="585">
@@ -108,11 +79,11 @@
                 <file leaf-file-name="OfflineSqlDeltaStore.ts" pinned="false" current-in-tab="true">
                   <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
                     <provider selected="true" editor-type-id="text-editor">
-                      <state relative-caret-position="793">
-                        <caret line="56" column="12" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
+                      <state relative-caret-position="379">
+                        <caret line="108" column="39" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="39" />
                         <folding>
                           <element signature="e#0#59#0" expanded="true" />
-                          <element signature="e#810#850#0" expanded="false" />
+                          <element signature="e#832#872#0" expanded="false" />
                         </folding>
                       </state>
                     </provider>
@@ -149,7 +120,7 @@
       </split-first>
       <split-second>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="package.json" pinned="false" current-in-tab="true">
+          <file leaf-file-name="package.json" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/package.json">
               <provider selected="true" editor-type-id="text-editor">
                 <state relative-caret-position="170">
@@ -162,9 +133,34 @@
           <file leaf-file-name="OfflineDeltaStore.ts" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/src/changeList/OfflineDeltaStore.ts">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="170">
-                  <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
+                <state relative-caret-position="134">
+                  <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
                   <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="AbstractEntityChange.ts" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/src/changeList/model/AbstractEntityChange.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="214">
+                  <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+                  <folding>
+                    <element signature="e#0#42#0" expanded="true" />
+                    <element signature="e#171#211#0" expanded="false" />
+                  </folding>
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="EntityWhereChange.ts" pinned="false" current-in-tab="false">
+            <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityWhereChange.ts">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="357">
+                  <caret line="21" column="48" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
+                  <folding>
+                    <element signature="e#0#62#0" expanded="true" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -216,10 +212,8 @@
         <option value="$PROJECT_DIR$/src/changeList/model/AbstraceEntityChange.ts" />
         <option value="$PROJECT_DIR$/src/changeList/model/DeltaRecord.ts" />
         <option value="$PROJECT_DIR$/src/changeList/model/AbstractEntityChange.ts" />
-        <option value="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" />
         <option value="$PROJECT_DIR$/src/changeList/model/AbstractFieldChange.ts" />
         <option value="$PROJECT_DIR$/src/core/metadata/PHMetadataUtils.ts" />
-        <option value="$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts" />
         <option value="$PROJECT_DIR$/src/core/repository/EntityManager.ts" />
         <option value="$PROJECT_DIR$/src/localStore/SqlAdaptor.ts" />
         <option value="$PROJECT_DIR$/src/changeList/model/EntityChange.ts" />
@@ -240,6 +234,8 @@
         <option value="$PROJECT_DIR$/src/changeList/query/booleanfieldchange.ts" />
         <option value="$PROJECT_DIR$/src/changeList/query/abstractfieldchange.ts" />
         <option value="$PROJECT_DIR$/src/changeList/query/abstractentitychange.ts" />
+        <option value="$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts" />
+        <option value="$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts" />
       </list>
     </option>
   </component>
@@ -738,7 +734,7 @@
       <workItem from="1475064919584" duration="8297000" />
       <workItem from="1475413791362" duration="6795000" />
       <workItem from="1475450421804" duration="22989000" />
-      <workItem from="1475752451824" duration="1627000" />
+      <workItem from="1475752451824" duration="3363000" />
     </task>
     <servers />
   </component>
@@ -769,7 +765,7 @@
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="572008000" />
+    <option name="totallyTimeSpent" value="573744000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1096" extended-state="6" />
@@ -783,7 +779,7 @@
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32917964" sideWeight="0.49789253" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32914045" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Terminal" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30218068" sideWeight="0.51317173" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.30218068" sideWeight="0.51317173" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.39356178" sideWeight="0.459431" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -879,13 +875,6 @@
         <state relative-caret-position="310">
           <caret line="36" column="9" selection-start-line="36" selection-start-column="9" selection-end-line="36" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/typescriptCompiler/external/lib.es6.d.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="213">
-          <caret line="2466" column="4" selection-start-line="2466" selection-start-column="4" selection-end-line="2466" selection-end-column="4" />
         </state>
       </provider>
     </entry>
@@ -1005,26 +994,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/model/DeltaRecord.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="1" selection-start-line="17" selection-start-column="1" selection-end-line="17" selection-end-column="1" />
-          <folding>
-            <element signature="e#66#106#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityWhereChange.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="151">
-          <caret line="12" column="17" selection-start-line="12" selection-start-column="17" selection-end-line="12" selection-end-column="17" />
-          <folding>
-            <element signature="e#0#62#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/changeList/model/StringFieldChange.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -1039,14 +1008,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="10" column="20" selection-start-line="10" selection-start-column="20" selection-end-line="10" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/OfflineDeltaStore.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="15" column="34" selection-start-line="15" selection-start-column="34" selection-end-line="15" selection-end-column="34" />
           <folding />
         </state>
       </provider>
@@ -1089,61 +1050,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/localStore/webSql/DDLManager.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="153">
-          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-          <folding>
-            <element signature="e#0#35#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="43" column="2" selection-start-line="43" selection-start-column="2" selection-end-line="43" selection-end-column="2" />
-          <folding>
-            <element signature="e#0#129#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/localStore/SqlAdaptor.ts">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3434">
           <caret line="218" column="52" selection-start-line="218" selection-start-column="52" selection-end-line="218" selection-end-column="52" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/localStore/webSql/WebSqlAdaptor.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="358" column="108" selection-start-line="358" selection-start-column="108" selection-end-line="358" selection-end-column="108" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="793">
-          <caret line="56" column="12" selection-start-line="56" selection-start-column="12" selection-end-line="56" selection-end-column="12" />
-          <folding>
-            <element signature="e#0#59#0" expanded="true" />
-            <element signature="e#810#850#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/changeList/model/AbstractEntityChange.ts">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="23" column="54" selection-start-line="23" selection-start-column="54" selection-end-line="23" selection-end-column="54" />
-          <folding>
-            <element signature="e#0#42#0" expanded="true" />
-            <element signature="e#171#211#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1259,6 +1170,92 @@
           <caret line="43" column="16" selection-start-line="43" selection-start-column="16" selection-end-line="48" selection-end-column="21" />
           <folding>
             <element signature="e#42#133#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/localStore/webSql/WebSqlAdaptor.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="585">
+          <caret line="358" column="108" selection-start-line="358" selection-start-column="108" selection-end-line="358" selection-end-column="108" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/model/DeltaRecord.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+          <folding>
+            <element signature="e#66#106#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/OfflineDeltaStore.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="134">
+          <caret line="31" column="0" selection-start-line="31" selection-start-column="0" selection-end-line="31" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/model/EntityWhereChange.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="357">
+          <caret line="21" column="48" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
+          <folding>
+            <element signature="e#0#62#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/model/AbstractEntityChange.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="214">
+          <caret line="23" column="13" selection-start-line="23" selection-start-column="13" selection-end-line="23" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#42#0" expanded="true" />
+            <element signature="e#171#211#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/localStore/webSql/DDLManager.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
+          <folding>
+            <element signature="e#0#35#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/model/ChangeGroup.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="142">
+          <caret line="24" column="49" selection-start-line="24" selection-start-column="49" selection-end-line="24" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#129#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$APPLICATION_HOME_DIR$/plugins/JavaScriptLanguage/typescriptCompiler/external/lib.es6.d.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="326">
+          <caret line="2360" column="4" selection-start-line="2360" selection-start-column="4" selection-end-line="2360" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/changeList/offline/sql/OfflineSqlDeltaStore.ts">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="379">
+          <caret line="108" column="39" selection-start-line="108" selection-start-column="25" selection-end-line="108" selection-end-column="39" />
+          <folding>
+            <element signature="e#0#59#0" expanded="true" />
+            <element signature="e#832#872#0" expanded="false" />
           </folding>
         </state>
       </provider>
