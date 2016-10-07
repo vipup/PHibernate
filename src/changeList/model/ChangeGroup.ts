@@ -226,6 +226,7 @@ export class StubChangeGroup implements ChangeGroupApi {
 	createUserId: string;
 
 	entityChanges: EntityChange[];
+	entityWhereChanges: EntityWhereChange[];
 	groupIndexInMillisecond: number;
 	numberOfEntitiesInGroup: number;
 	syncStatus: SyncStatus;
