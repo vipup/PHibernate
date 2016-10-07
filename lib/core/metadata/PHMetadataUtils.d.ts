@@ -20,6 +20,7 @@ export declare class PHMetadataUtils {
 export declare class NameMetadataUtils {
     static getRelatedOneToManyConfig(manyToOnePropertyName: string, entityName: string): OneToManyConfigAndProperty;
     static getPropertyColumnName(propertyName: string, entityName: string): string;
+    static getJoinColumnName<IQE extends IQEntity>(propertyName: string, entityName: string): string;
     static getIdValue(entityName: string, entityObject: any): string;
     static getIdFieldName(entityName: string): string;
     static getOneToManyConfig(propertyName: string, entityName: string): OneToManyElements;

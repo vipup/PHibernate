@@ -25,7 +25,7 @@ export declare class OfflineSqlDeltaStore implements IOfflineDeltaStore {
     /**
      * Remote updates (do not code any optimizations until there is a test suite in place)
      In a single Transaction:
-     1)  Find all local change records for each remotely changed entity since the first remote records
+     1)  Find all local change records for matching Entity Names since the time of first remote record
      2)  Filter out any remote changes that are already in the local store
      3)  Save remaining remote Change Groups
      4)  Add all local and remote changes into a single list and order
@@ -37,6 +37,13 @@ export declare class OfflineSqlDeltaStore implements IOfflineDeltaStore {
      * @returns {ChangeGroupApi[]}
      */
     addRemoteChanges(changeGroups: ChangeGroupApi[]): Promise<void>;
+    private executeCreate(entityChange, fieldMap, changeGroup);
+    private addAllFieldChanges(entityChange, fieldMap);
+    private addFieldChanges<FC>(fieldChanges, entityFieldMap, entity);
+    private executeDelete(entityChange, fieldMap, changeGroup);
+    private executeDeleteWhere(entityWhereChange, fieldMap, changeGroup);
+    private executeUpdate(entityChange, fieldMap, changeGroup);
+    private executeUpdateWhere(entityWhereChange, fieldMap, changeGroup);
     /**
      * Remove any modifications that were later updated by another change
      * @param changeGroups  remotely created change groups

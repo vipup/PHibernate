@@ -3,13 +3,13 @@ import {
 	PHJsonSQLUpdate
 } from "querydsl-typescript";
 import {EntityChange, StubEntityChange, EntityChangeApi} from "./EntityChange";
-import {DeltaRecord, DeltaRecordApi} from "./DeltaRecord";
+import {DeltaRecord, DeltaRecordApi, StubDeltaRecord} from "./DeltaRecord";
 import {AbstractFieldChange} from "./AbstractFieldChange";
 import {IdGenerator} from "../../localStore/IdGenerator";
 import {PlatformUtils} from "../../shared/PlatformUtils";
 import {UserUtils} from "../../shared/UserUtils";
 import {EntityWhereChange, StubWhereEntityChange, EntityWhereChangeApi} from "./EntityWhereChange";
-import {EntityChangeType, AbstractEntityChange} from "./AbstractEntityChange";
+import {EntityChangeType, AbstractEntityChangeApi, AbstractEntityChange} from "./AbstractEntityChange";
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -22,9 +22,9 @@ export enum SyncStatus {
 
 export interface ChangeGroupApi extends DeltaRecordApi {
 
-	abstractEntityChanges?: AbstractEntityChange[];
-	entityChanges: EntityChange[];
-	entityWhereChanges: EntityWhereChange[];
+	abstractEntityChanges?: AbstractEntityChangeApi[];
+	entityChanges: EntityChangeApi[];
+	entityWhereChanges: EntityWhereChangeApi[];
 	groupIndexInMillisecond: number;
 	numberOfEntitiesInGroup: number;
 	syncStatus: SyncStatus;
@@ -205,7 +205,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 
 	private setupAbstractEntityChange(
 		entityName: string,
-		abstractEntityChange: AbstractEntityChange
+		abstractEntityChange: AbstractEntityChangeApi
 	): void {
 		abstractEntityChange.entityChangeIdInGroup = ++this.numberOfEntitiesInGroup;
 
@@ -220,12 +220,7 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 	}
 }
 
-export class StubChangeGroup implements ChangeGroupApi {
-
-	id: string;
-	createDateTime: Date;
-	createDeviceId: string;
-	createUserId: string;
+export class StubChangeGroup extends StubDeltaRecord implements ChangeGroupApi {
 
 	entityChanges: EntityChange[];
 	entityWhereChanges: EntityWhereChange[];

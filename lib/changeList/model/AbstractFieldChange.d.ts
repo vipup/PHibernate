@@ -1,8 +1,15 @@
 import { EntityChange } from "./EntityChange";
-import { DeltaRecord } from "./DeltaRecord";
+import { DeltaRecord, DeltaRecordApi } from "./DeltaRecord";
 /**
  * Created by Papa on 9/15/2016.
  */
+export interface AbstractFieldChangeApi<P> extends DeltaRecordApi {
+    newValue: P;
+    oldValue: P;
+    entityRelationName: string;
+    propertyName: string;
+    entityChange: EntityChange;
+}
 export declare abstract class AbstractFieldChange extends DeltaRecord {
     entityRelationName: string;
     propertyName: string;

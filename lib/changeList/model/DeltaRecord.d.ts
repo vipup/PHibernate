@@ -18,3 +18,9 @@ export declare abstract class DeltaRecord {
     createDateTime: Date;
     createUserId: string;
 }
+export declare class StubDeltaRecord implements DeltaRecordApi {
+    id: string;
+    createDateTime: Date;
+    createDeviceId: string;
+    createUserId: string;
+}

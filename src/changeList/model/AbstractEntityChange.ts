@@ -1,6 +1,6 @@
-import {DeltaRecord} from "./DeltaRecord";
+import {DeltaRecord, DeltaRecordApi, StubDeltaRecord} from "./DeltaRecord";
 import {MappedSuperclass, Column, JoinColumn, ManyToOne} from "querydsl-typescript";
-import {ChangeGroup} from "./ChangeGroup";
+import {ChangeGroup, ChangeGroupApi} from "./ChangeGroup";
 /**
  * Created by Papa on 10/4/2016.
  */
@@ -13,11 +13,11 @@ export enum EntityChangeType {
 	UPDATE_WHERE
 }
 
-export interface AbstractEntityChangeApi {
+export interface AbstractEntityChangeApi extends DeltaRecordApi{
 	entityName: string;
 	changeType: EntityChangeType;
 	entityChangeIdInGroup: number;
-	changeGroup: ChangeGroup;
+	changeGroup: ChangeGroupApi;
 }
 
 @MappedSuperclass()
@@ -48,7 +48,7 @@ export class AbstractEntityChange extends DeltaRecord{
 
 }
 
-export class StubAbstractEntityChange implements AbstractEntityChangeApi {
+export class StubAbstractEntityChange extends StubDeltaRecord implements AbstractEntityChangeApi {
 	entityName: string;
 	changeType: EntityChangeType;
 	entityChangeIdInGroup: number;

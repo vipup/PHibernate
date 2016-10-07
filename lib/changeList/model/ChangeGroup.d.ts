@@ -1,8 +1,9 @@
 import { PHJsonSQLDelete, IEntity, PHJsonSQLUpdate } from "querydsl-typescript";
 import { EntityChange, EntityChangeApi } from "./EntityChange";
-import { DeltaRecord, DeltaRecordApi } from "./DeltaRecord";
+import { DeltaRecord, DeltaRecordApi, StubDeltaRecord } from "./DeltaRecord";
 import { IdGenerator } from "../../localStore/IdGenerator";
 import { EntityWhereChange, EntityWhereChangeApi } from "./EntityWhereChange";
+import { AbstractEntityChangeApi } from "./AbstractEntityChange";
 /**
  * Created by Papa on 9/15/2016.
  */
@@ -12,7 +13,9 @@ export declare enum SyncStatus {
     REMOTE_CHANGES_SYNC_PENDING = 2,
 }
 export interface ChangeGroupApi extends DeltaRecordApi {
-    entityChanges: EntityChange[];
+    abstractEntityChanges?: AbstractEntityChangeApi[];
+    entityChanges: EntityChangeApi[];
+    entityWhereChanges: EntityWhereChangeApi[];
     groupIndexInMillisecond: number;
     numberOfEntitiesInGroup: number;
     syncStatus: SyncStatus;
@@ -40,12 +43,9 @@ export declare class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
     private addNewEntityWhereChange(entityName, numberOfAffectedRecords);
     private setupAbstractEntityChange(entityName, abstractEntityChange);
 }
-export declare class StubChangeGroup implements ChangeGroupApi {
-    id: string;
-    createDateTime: Date;
-    createDeviceId: string;
-    createUserId: string;
+export declare class StubChangeGroup extends StubDeltaRecord implements ChangeGroupApi {
     entityChanges: EntityChange[];
+    entityWhereChanges: EntityWhereChange[];
     groupIndexInMillisecond: number;
     numberOfEntitiesInGroup: number;
     syncStatus: SyncStatus;
