@@ -117,7 +117,9 @@ export class ChangeGroup extends DeltaRecord implements ChangeGroupApi {
 		let entityChange = this.addNewEntityChange(entityName);
 		entityChange.changeType = EntityChangeType.CREATE;
 
-		entity[idProperty] = entityChange.changedEntityId = idGenerator.generateEntityId(entity, entityChange);
+		if (!entity[idProperty]) {
+			entity[idProperty] = entityChange.changedEntityId = idGenerator.generateEntityId(entity, entityChange);
+		}
 
 		return entityChange;
 	}

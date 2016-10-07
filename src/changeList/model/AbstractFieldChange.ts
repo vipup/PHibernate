@@ -1,9 +1,17 @@
 import {EntityChange} from "./EntityChange";
 import {Column, JoinColumn, ManyToOne, MappedSuperclass} from "querydsl-typescript";
-import {DeltaRecord} from "./DeltaRecord";
+import {DeltaRecord, DeltaRecordApi} from "./DeltaRecord";
 /**
  * Created by Papa on 9/15/2016.
  */
+
+export class AbstractFieldChangeApi<P> extends DeltaRecordApi {
+	newValue:P;
+	oldValue:P;
+	entityRelationName: string;
+	propertyName: string;
+	entityChange: EntityChange;
+}
 
 @MappedSuperclass()
 export abstract class AbstractFieldChange extends DeltaRecord {

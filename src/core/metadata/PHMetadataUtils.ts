@@ -48,7 +48,7 @@ export class PHMetadataUtils {
 
 		let entityMetadata: EntityMetadata = <EntityMetadata><any>qEntity.__entityConstructor__;
 
-		return MetadataUtils.getPropertyColumnName(propertyName, entityMetadata);
+		return MetadataUtils.getJoinColumnName(propertyName, entityMetadata);
 
 	}
 
@@ -109,6 +109,13 @@ export class NameMetadataUtils {
 		entityName: string
 	): string {
 		return PHMetadataUtils.getPropertyColumnName(propertyName, this.getQEntity(entityName));
+	}
+
+	static getJoinColumnName<IQE extends IQEntity>(
+		propertyName: string,
+		entityName: string
+	): string {
+		return PHMetadataUtils.getJoinColumnName(propertyName, this.getQEntity(entityName));
 	}
 
 	static getIdValue(

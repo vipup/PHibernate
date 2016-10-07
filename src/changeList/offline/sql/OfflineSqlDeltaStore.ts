@@ -12,7 +12,10 @@ import {QEntityChange} from "../../query/entitychange";
 import {Transactional} from "../../../core/metadata/decorators";
 import {EntityChangeType, AbstractEntityChange} from "../../model/AbstractEntityChange";
 import {PHUpdate} from "querydsl-typescript/lib/query/PHQuery";
-import {EntityWhereChange} from "../../model/EntityWhereChange";
+import {EntityWhereChange, EntityWhereChangeApi} from "../../model/EntityWhereChange";
+import {SyncFieldMap, SyncEntityFieldMap} from "./SyncFieldMap";
+import {NameMetadataUtils} from "../../../core/metadata/PHMetadataUtils";
+import {AbstractFieldChange, AbstractFieldChangeApi} from "../../model/AbstractFieldChange";
 /**
  * Created by Papa on 9/24/2016.
  */
@@ -23,28 +26,28 @@ export enum ChangeGroupOrigin {
 }
 
 export interface ChangeGroupWithOrigin {
-	changeGroup:ChangeGroupApi;
-	origin:ChangeGroupOrigin;
+	changeGroup: ChangeGroupApi;
+	origin: ChangeGroupOrigin;
 }
 
 export interface OrderedEntityChange {
-	order:number;
-	entityChange:EntityChange;
+	order: number;
+	entityChange: EntityChange;
 }
 
 class PHRemoteSQLUpdate<IE extends IEntity> extends PHSQLUpdate<IE> {
 
 	constructor(
-		public phJsonSqlQuery:PHJsonSQLUpdate<IE>,
-		qEntity:QEntity<any>,
-		qEntityMap:{[entityName:string]:QEntity<any>},
-		entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}},
-		entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}}
+		public phJsonSqlQuery: PHJsonSQLUpdate<IE>,
+		qEntity: QEntity<any>,
+		qEntityMap: {[entityName: string]: QEntity<any>},
+		entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}},
+		entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}}
 	) {
 		super(null, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
 	}
 
-	toSQL():PHJsonSQLUpdate<IE> {
+	toSQL(): PHJsonSQLUpdate<IE> {
 		return this.phJsonSqlQuery;
 	}
 }
@@ -52,16 +55,16 @@ class PHRemoteSQLUpdate<IE extends IEntity> extends PHSQLUpdate<IE> {
 class PHRemoteSQLDelete<IE extends IEntity> extends PHSQLDelete<IE> {
 
 	constructor(
-		public phJsonSqlQuery:PHJsonSQLDelete<IE>,
-		qEntity:QEntity<any>,
-		qEntityMap:{[entityName:string]:QEntity<any>},
-		entitiesRelationPropertyMap:{[entityName:string]:{[propertyName:string]:RelationRecord}},
-		entitiesPropertyTypeMap:{[entityName:string]:{[propertyName:string]:boolean}}
+		public phJsonSqlQuery: PHJsonSQLDelete<IE>,
+		qEntity: QEntity<any>,
+		qEntityMap: {[entityName: string]: QEntity<any>},
+		entitiesRelationPropertyMap: {[entityName: string]: {[propertyName: string]: RelationRecord}},
+		entitiesPropertyTypeMap: {[entityName: string]: {[propertyName: string]: boolean}}
 	) {
 		super(null, qEntity, qEntityMap, entitiesRelationPropertyMap, entitiesPropertyTypeMap);
 	}
 
-	toSQL():PHJsonSQLDelete<IE> {
+	toSQL(): PHJsonSQLDelete<IE> {
 		return this.phJsonSqlQuery;
 	}
 }
@@ -69,8 +72,8 @@ class PHRemoteSQLDelete<IE extends IEntity> extends PHSQLDelete<IE> {
 export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 
 	constructor(
-		private localStore:ILocalStoreAdaptor,
-		public config:IOfflineDeltaStoreConfig
+		private localStore: ILocalStoreAdaptor,
+		public config: IOfflineDeltaStoreConfig
 	) {
 	}
 
@@ -90,10 +93,10 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	 */
 	@Transactional()
 	async addRemoteChanges(
-		changeGroups:ChangeGroupApi[]
-	):Promise<void> {
-		let entityNameMap:{[entityName:string]:boolean} = {};
-		let remoteChangeGroupMap:{[id:string]:ChangeGroupApi} = {};
+		changeGroups: ChangeGroupApi[]
+	): Promise<void> {
+		let entityNameMap: {[entityName: string]: boolean} = {};
+		let remoteChangeGroupMap: {[id: string]: ChangeGroupApi} = {};
 		// 0) a) merge all entity changes into a single list and sort,
 		// b) get the names of all entities in remote changes
 		// c) get the earliest time of all remote changes coming in
@@ -117,7 +120,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 			}
 			return previousDate;
 		});
-		let entityNames:string[] = [];
+		let entityNames: string[] = [];
 		for (let entityName in entityNameMap) {
 			entityNames.push(entityName);
 		}
@@ -188,10 +191,16 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		let localChangeGroups = localEChangeGroups.concat(localEWChangeGroups);
 
 		// 2)  Filter out any remote changes that are already in the local store
-		let localChangeGroupsWithOrigin:ChangeGroupWithOrigin[] = localChangeGroups.map((changeGroup) => {
+		let localChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = localChangeGroups.map((changeGroup) => {
 			delete remoteChangeGroupMap[changeGroup.id];
 			if (!changeGroup.entityChanges) {
 				changeGroup.entityChanges = [];
+			}
+			for (let i = changeGroup.entityChanges.length - 1; i >= 0; i--) {
+				// a) remove all local creates (do not attempt to re-create already existing entities)
+				if (changeGroup.entityChanges[0] === EntityChangeType.CREATE) {
+					changeGroup.entityChanges.splice(i, 1);
+				}
 			}
 			if (!changeGroup.entityWhereChanges) {
 				changeGroup.entityWhereChanges = [];
@@ -204,7 +213,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 			}
 		});
 		// 3)  Save remaining remote Change Groups
-		let remoteChangeGroupsWithOrigin:ChangeGroupWithOrigin[] = [];
+		let remoteChangeGroupsWithOrigin: ChangeGroupWithOrigin[] = [];
 		for (let id in remoteChangeGroupMap) {
 			let remoteChangeGroup = remoteChangeGroupMap[id];
 			this.addChange(remoteChangeGroup);
@@ -233,7 +242,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		changeGroupsWithOrigin = changeGroupsWithOrigin.slice(lastPriorLocalChangeIndex + 1, changeGroupsWithOrigin.length);
 
 		// 5)  Prune all deleted entities from the point of their deletion forward
-		let deletedEntityMap:{[type:string]:{[id:string]:EntityChange}} = {};
+		let deletedEntityMap: {[type: string]: {[id: string]: EntityChange}} = {};
 		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
 			let entityChanges = changeGroupWithOrigin.changeGroup.entityChanges;
 			for (let i = entityChanges.length - 1; i >= 0; i--) {
@@ -254,27 +263,26 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		});
 		// 6)  Re-execute all pruned ChangeGroups in order
 		// a)
-
-		let fieldMap = new FieldMap();
+		let fieldMap = new SyncFieldMap();
 		changeGroupsWithOrigin.forEach((changeGroupWithOrigin) => {
 			let stubChangeGroup = new StubChangeGroup();
 			let entityChanges = changeGroupWithOrigin.changeGroup.abstractEntityChanges;
 			entityChanges.forEach((entityChange) => {
 				switch (entityChange.changeType) {
 					case EntityChangeType.CREATE:
-						await this.executeCreate(<EntityChange>entityChange, fieldMap, stubChangeGroup);
+						await this.executeCreate(<EntityChangeApi>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.DELETE:
-						await this.executeDelete(<EntityChange>entityChange, fieldMap, stubChangeGroup);
+						await this.executeDelete(<EntityChangeApi>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.DELETE_WHERE:
-						await this.executeDeleteWhere(<EntityWhereChange>entityChange, fieldMap, stubChangeGroup);
+						await this.executeDeleteWhere(<EntityWhereChangeApi>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.UPDATE:
-						await this.executeUpdate(<EntityChange>entityChange, fieldMap, stubChangeGroup);
+						await this.executeUpdate(<EntityChangeApi>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.UPDATE_WHERE:
-						await this.executeUpdateWhere(<EntityWhereChange>entityChange, fieldMap, stubChangeGroup);
+						await this.executeUpdateWhere(<EntityWhereChangeApi>entityChange, fieldMap, stubChangeGroup);
 						return;
 				}
 			});
@@ -285,26 +293,41 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 
 	}
 
-	private async executeCreate(entityChange:EntityChange, fieldMap:FieldMap, changeGroup:ChangeGroupApi):Promise<void> {
+	private async executeCreate(entityChange: EntityChangeApi, fieldMap: SyncFieldMap, changeGroup: ChangeGroupApi): Promise<void> {
 		let entityName = entityChange.entityName;
 		let entity = {};
-		FIXME: work here next - and add fields to the fieldMap
-		this.localStore.insert(entityName, entity, changeGroup);
+		let entityFieldMap = fieldMap.ensureEntity(entityName);
+		this.addFieldChanges(entityChange.booleanFieldChanges, entityFieldMap, entity);
+		this.addFieldChanges(entityChange.dateFieldChanges, entityFieldMap, entity);
+		this.addFieldChanges(entityChange.numberFieldChanges, entityFieldMap, entity);
+		this.addFieldChanges(entityChange.stringFieldChanges, entityFieldMap, entity);
+		await this.localStore.insert(entityName, entity, changeGroup);
 	}
 
-	private async executeDelete(entityChange:EntityChange, fieldMap:FieldMap, changeGroup:ChangeGroupApi):Promise<void> {
+	private addFieldChanges<FC extends AbstractFieldChangeApi<any>>(fieldChanges: FC[], entityFieldMap: SyncEntityFieldMap, entity: any) {
+		fieldChanges.forEach((fieldChange) => {
+			if (fieldChange.entityRelationName) {
+				entityFieldMap.ensureRelation(fieldChange.propertyName);
+			} else {
+				entityFieldMap.ensureField(fieldChange.propertyName);
+			}
+			entity[fieldChange.propertyName] = fieldChange.newValue;
+		});
+	}
+
+	private async executeDelete(entityChange: EntityChangeApi, fieldMap: SyncFieldMap, changeGroup: ChangeGroupApi): Promise<void> {
 
 	}
 
-	private async executeDeleteWhere(entityWhereChange:EntityWhereChange, fieldMap:FieldMap, changeGroup:ChangeGroupApi):Promise<void> {
+	private async executeDeleteWhere(entityWhereChange: EntityWhereChangeApi, fieldMap: SyncFieldMap, changeGroup: ChangeGroupApi): Promise<void> {
 
 	}
 
-	private async executeUpdate(entityChange:EntityChange, fieldMap:FieldMap, changeGroup:ChangeGroupApi):Promise<void> {
+	private async executeUpdate(entityChange: EntityChangeApi, fieldMap: SyncFieldMap, changeGroup: ChangeGroupApi): Promise<void> {
 
 	}
 
-	private async executeUpdateWhere(entityWhereChange:EntityWhereChange, fieldMap:FieldMap):Promise<void> {
+	private async executeUpdateWhere(entityWhereChange: EntityWhereChangeApi, fieldMap: SyncFieldMap): Promise<void> {
 
 	}
 
@@ -315,8 +338,8 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	 * @param localChangeGroups locally created change groups
 	 */
 	private filterOutOverwrittenChanges(
-		changeGroups:ChangeGroupApi[],
-		localChangeGroups:ChangeGroupApi[]
+		changeGroups: ChangeGroupApi[],
+		localChangeGroups: ChangeGroupApi[]
 	) {
 
 		let currLocalCGIndex = 0;
@@ -331,11 +354,11 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		});
 	}
 
-	private sortChangeGroupsWithOrigin(cgo1:ChangeGroupWithOrigin, cgo2:ChangeGroupWithOrigin) {
+	private sortChangeGroupsWithOrigin(cgo1: ChangeGroupWithOrigin, cgo2: ChangeGroupWithOrigin) {
 		return this.sortChangeGroups(cgo1.changeGroup, cgo2.changeGroup);
 	}
 
-	private sortChangeGroups(cg1:ChangeGroupApi, cg2:ChangeGroupApi):number {
+	private sortChangeGroups(cg1: ChangeGroupApi, cg2: ChangeGroupApi): number {
 		let time1 = cg1.createDateTime.getTime();
 		let time2 = cg2.createDateTime.getTime();
 		if (time1 > time2) {
@@ -371,7 +394,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		return 0;
 	}
 
-	private sortEntityChanges(ec1:AbstractEntityChange, ec2:AbstractEntityChange):number {
+	private sortEntityChanges(ec1: AbstractEntityChange, ec2: AbstractEntityChange): number {
 		let id1 = ec1.entityChangeIdInGroup;
 		let id2 = ec2.entityChangeIdInGroup;
 		if (id1 > id2) {
@@ -384,24 +407,24 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	}
 
 	async addChange(
-		changeRecord:ChangeGroupApi
-	):Promise<ChangeGroupApi> {
+		changeRecord: ChangeGroupApi
+	): Promise<ChangeGroupApi> {
 		await this.localStore.create('ChangeGroup', changeRecord, new StubChangeGroup());
 
 		return null;
 	}
 
 	async findChangesForEntitiesWithFieldsSinceTime(
-		entityChanges:EntityChangeApi[]
-	):Promise<EntityChangeApi[]> {
+		entityChanges: EntityChangeApi[]
+	): Promise<EntityChangeApi[]> {
 		return null;
 	}
 
-	async findUnsyncedChanges():Promise<ChangeGroupApi[]> {
+	async findUnsyncedChanges(): Promise<ChangeGroupApi[]> {
 		return null;
 	}
 
-	async markChangesAsSynced(changeGroups:ChangeGroupApi[]):Promise<void> {
+	async markChangesAsSynced(changeGroups: ChangeGroupApi[]): Promise<void> {
 		return null;
 	}
 }
