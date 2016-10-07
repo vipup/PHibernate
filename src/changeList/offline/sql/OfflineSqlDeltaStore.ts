@@ -6,7 +6,7 @@ import {EntityChangeApi, EntityChange} from "../../model/EntityChange";
 import {QChangeGroup} from "../../query/changegroup";
 import {
 	and, or, QEntity, RelationRecord, PHJsonSQLUpdate, IEntity, PHSQLUpdate,
-	PHSQLDelete, PHJsonSQLDelete
+	PHSQLDelete, PHJsonSQLDelete, FieldMap
 } from "querydsl-typescript";
 import {QEntityChange} from "../../query/entitychange";
 import {Transactional} from "../../../core/metadata/decorators";
@@ -262,19 +262,19 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 			entityChanges.forEach((entityChange) => {
 				switch (entityChange.changeType) {
 					case EntityChangeType.CREATE:
-						this.executeCreate(<EntityChange>entityChange, fieldMap);
+						await this.executeCreate(<EntityChange>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.DELETE:
-						this.executeDelete(<EntityChange>entityChange, fieldMap);
+						await this.executeDelete(<EntityChange>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.DELETE_WHERE:
-						this.executeDeleteWhere(<EntityWhereChange>entityChange, fieldMap);
+						await this.executeDeleteWhere(<EntityWhereChange>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.UPDATE:
-						this.executeUpdate(<EntityChange>entityChange, fieldMap);
+						await this.executeUpdate(<EntityChange>entityChange, fieldMap, stubChangeGroup);
 						return;
 					case EntityChangeType.UPDATE_WHERE:
-						this.executeUpdateWhere(<EntityWhereChange>entityChange, fieldMap);
+						await this.executeUpdateWhere(<EntityWhereChange>entityChange, fieldMap, stubChangeGroup);
 						return;
 				}
 			});
