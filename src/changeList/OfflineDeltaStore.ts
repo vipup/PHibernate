@@ -4,6 +4,7 @@ import {OfflineSqlDeltaStore} from "./offline/sql/OfflineSqlDeltaStore";
 import {IOfflineDeltaStoreConfig} from "../config/OfflineDeltaStoreConfig";
 import {EntityChangeApi} from "./model/EntityChange";
 import {ChangeGroupApi} from "./model/ChangeGroup";
+import {SyncFieldMap} from "./offline/sql/SyncFieldMap";
 /**
  * Created by Papa on 5/31/2016.
  */
@@ -14,7 +15,7 @@ export interface IOfflineDeltaStore {
 
 	addRemoteChanges(
 		changeRecords:ChangeGroupApi[]
-	):Promise<void>;
+	):Promise<SyncFieldMap>;
 
 	addChange(
 		changeRecord:ChangeGroupApi

@@ -89,7 +89,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 	@Transactional()
 	async addRemoteChanges(
 		changeGroups: ChangeGroupApi[]
-	): Promise<void> {
+	): Promise<SyncFieldMap> {
 		let entityNameMap: {[entityName: string]: boolean} = {};
 		let remoteChangeGroupMap: {[id: string]: ChangeGroupApi} = {};
 		// 0) a) merge all entity changes into a single list and sort,
@@ -286,7 +286,7 @@ export class OfflineSqlDeltaStore implements IOfflineDeltaStore {
 		}
 
 		// 7)  Notify all matching attached queries of changes
-
+		return fieldMap;
 	}
 
 	private async executeCreate(entityChange: EntityChangeApi, fieldMap: SyncFieldMap, changeGroup: ChangeGroupApi): Promise<void> {
