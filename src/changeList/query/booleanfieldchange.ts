@@ -31,7 +31,9 @@ export interface IBooleanFieldChange
 // Entity Query Implementation
 export class QBooleanFieldChange<IQ extends IQEntity> extends QAbstractFieldChange<IQ>
 {
-	static from = new QBooleanFieldChange(BooleanFieldChange, 'BooleanFieldChange', 'BooleanFieldChange');  
+	static from():QBooleanFieldChange<any> {
+		return new QBooleanFieldChange(BooleanFieldChange, 'BooleanFieldChange', 'BooleanFieldChange');
+	}
 
 	// Fields
 	newValue = new QBooleanField<QBooleanFieldChange<IQ>>(this, <any>QBooleanFieldChange, 'BooleanFieldChange', 'newValue');

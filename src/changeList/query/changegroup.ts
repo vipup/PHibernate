@@ -39,7 +39,9 @@ export interface IChangeGroup
 // Entity Query Implementation
 export class QChangeGroup<IQ extends IQEntity> extends QDeltaRecord<IQ>
 {
-	static from = new QChangeGroup(ChangeGroup, 'ChangeGroup', 'ChangeGroup');  
+	static from():QChangeGroup<any> {
+		return new QChangeGroup(ChangeGroup, 'ChangeGroup', 'ChangeGroup');
+	}
 
 	// Fields
 	type = new QStringField<QChangeGroup<IQ>>(this, <any>QChangeGroup, 'ChangeGroup', 'type');
